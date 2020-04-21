@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name"></string>
+    <string name="button">Button</string>
+    <string name="vreme_osvezavanja">Vreme osvezavanja</string>
+    <string name="sortiraj_poruke">Sortiraj poruke:</string>
+    <string name="korisnicko_ime">Korisnicko ime:</string>
+    <string name="lozinka">Lozinka:</string>
+    <string name="kome">Kome:</string>
+    <string name="od">Od:</string>
+    <string name="naslov">Naslov:</string>
+    <string name="sadr_aj">Sadržaj:</string>
+
+    <string name="sadr_aj_poruke">Sadržaj poruke:</string>
+    <string name="kreiraj_kontakt">Kreiraj kontakt</string>
+    <string name="kontakt">Kontakt</string>
+    <string name="kreiraj_e_mail">Kreiraj e-mail</string>
+    <string name="email">Email</string>
+    <string name="folder_i">Folder-i</string>
+    <string name="kreirajfolder">KreirajFolder</string>
+    <string name="folder">Folder</string>
+    <string name="settings">Podešavanja</string>
+
+    <string name="action_search">Pretraži...</string>
+    <string name="action_new">Nova poruka</string>
+    <string name="action_send">Pošalji</string>
+    <string name="action_cancel">Odustani</string>
+    <string name="action_back">Prethodna strana</string>
+    <string name="action_replay">Odgovori</string>
+    <string name="action_replay_to_all">Odgovori svima</string>
+    <string name="action_forward">Prosledi</string>
+    <string name="action_delete">Obrisi</string>
+    <string name="image">Slika moj profil</string>
+    <string name="all_folders">Direktorijumi</string>
+    <string name="poruke">Poruke</string>
+
+    <string name="kontakti">Kontakti</string>
+    <string name="pretra_i">Pretraži...</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+</resources>

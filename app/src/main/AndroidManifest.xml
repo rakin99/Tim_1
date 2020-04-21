@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.mojprojekat">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".aktivnosti.DetailActivity"></activity>
+        <activity android:name=".aktivnosti.LoginActivity" />
+        <activity android:name=".aktivnosti.ContactActivity" />
+        <activity android:name=".aktivnosti.CreateContactActivity" />
+        <activity android:name=".aktivnosti.ContactsActivity" />
+        <activity android:name=".aktivnosti.ProfileActivity" />
+        <activity android:name=".aktivnosti.SettingsActivity" />
+        <activity android:name=".aktivnosti.FolderActivity" />
+        <activity android:name=".aktivnosti.FoldersActivity" />
+        <activity android:name=".aktivnosti.EmailActivity" />
+        <activity android:name=".aktivnosti.EmailsActivity" />
+        <activity android:name=".aktivnosti.CreateFolderActivity" />
+        <activity android:name=".aktivnosti.CreateEmailActivity" />
+        <activity android:name=".aktivnosti.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity" />
+    </application>
+
+</manifest>

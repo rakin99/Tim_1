@@ -1,0 +1,29 @@
+package com.example.mojprojekat;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+
+import com.example.mojprojekat.aktivnosti.LoginActivity;
+import com.example.mojprojekat.aktivnosti.SplashActivity;
+
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        int SPLASH_TIME_OUT=100;
+        new Timer().schedule(new TimerTask() {
+            @Override
+            public void run() {
+                startActivity(new Intent(MainActivity.this, SplashActivity.class));
+                finish();
+            }
+        }, SPLASH_TIME_OUT);
+    }
+}
