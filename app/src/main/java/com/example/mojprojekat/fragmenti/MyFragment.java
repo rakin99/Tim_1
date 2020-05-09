@@ -1,26 +1,33 @@
 package com.example.mojprojekat.fragmenti;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.SimpleCursorAdapter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.example.mojprojekat.R;
-import com.example.mojprojekat.adapteri.MessageAdapter;
-import com.example.mojprojekat.aktivnosti.EmailsActivity;
-import com.example.mojprojekat.model.Message;
-import com.example.mojprojekat.tools.Mokap;
+import com.example.mojprojekat.aktivnosti.EmailActivity;
+import com.example.mojprojekat.database.DBContentProviderEmail;
+import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 
-public class MyFragment extends ListFragment {
+public class MyFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+
+    public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
+    private SimpleCursorAdapter adapter;
 
 	public static MyFragment newInstance() {
         return new MyFragment();
@@ -36,7 +43,7 @@ public class MyFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Message message = Mokap.getMesagges().get(position);
+       // Message message = Mokap.getMesagges().get(position);
 
         /*
         * Ako nasoj aktivnosti zelimo da posaljemo nekakve podatke
@@ -46,19 +53,23 @@ public class MyFragment extends ListFragment {
         * intent ce formirati Bundle za nas, ali mi treba da pozovemo
         * odgovarajucu putExtra metodu.
         * */
-        Intent intent = new Intent(getActivity(), EmailsActivity.class);
-        intent.putExtra("from", message.getFrom());
-        intent.putExtra("subject", message.getSubject());
+        Intent intent = new Intent(getActivity(), EmailActivity.class);
+        Uri todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
+        intent.putExtra("id", todoUri);
         startActivity(intent);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
 
         //Dodaje se adapter
-        MessageAdapter adapter = new MessageAdapter(getActivity());
+        getLoaderManager().initLoader(0, null,  this);
+        String[] from = new String[] { ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_SUBJECT};
+        int[] to = new int[] {R.id.from, R.id.subject};
+        adapter = new SimpleCursorAdapter(getActivity(), R.layout.messages_list, null, from,
+                to, 0);
         setListAdapter(adapter);
     }
 
@@ -87,7 +98,7 @@ public class MyFragment extends ListFragment {
     * da ce on vratiti i id, tacno znamo na koji element je korisnik
     * kliknuo, i shodno tome reagujemo.
     * */
-    @Override
+   /* @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -101,5 +112,26 @@ public class MyFragment extends ListFragment {
             Toast.makeText(getActivity(), "New", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }*/
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
+        String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
+                ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
+                ReviewerSQLiteHelper.COLUMN_DATE_TIME, ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT,};
+
+        return new CursorLoader(getActivity(), DBContentProviderEmail.CONTENT_URI_EMAIL,
+                allColumns, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
+        adapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+        adapter.swapCursor(null);
     }
 }
