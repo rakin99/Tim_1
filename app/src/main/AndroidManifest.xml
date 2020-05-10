@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mojprojekat">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,16 +17,36 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <receiver android:name=".sync.SyncReceiver" />
+        <service android:name=".sync.SyncService" />
+
         <activity android:name=".aktivnosti.DetailActivity"></activity>
         <activity android:name=".aktivnosti.LoginActivity" />
         <activity android:name=".aktivnosti.ContactActivity" />
         <activity android:name=".aktivnosti.CreateContactActivity" />
         <activity android:name=".aktivnosti.ContactsActivity" />
         <activity android:name=".aktivnosti.ProfileActivity" />
-        <activity android:name=".aktivnosti.SettingsActivity" />
+        <activity
+            android:name=".aktivnosti.SettingsActivity"
+            android:label="@string/preferences"
+            android:parentActivityName=".aktivnosti.EmailsActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".aktivnosti.EmailsActivity" />
+
+        </activity>
         <activity android:name=".aktivnosti.FolderActivity" />
         <activity android:name=".aktivnosti.FoldersActivity" />
-        <activity android:name=".aktivnosti.EmailActivity" />
+        <activity
+            android:name=".aktivnosti.EmailActivity"
+            android:label="@string/message"
+            android:parentActivityName=".aktivnosti.EmailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".aktivnosti.EmailsActivity" />
+        </activity>
         <activity android:name=".aktivnosti.EmailsActivity" />
         <activity android:name=".aktivnosti.CreateFolderActivity" />
         <activity android:name=".aktivnosti.CreateEmailActivity" />
@@ -30,6 +58,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
+
+        <provider
+            android:name="com.example.mojprojekat.database.DBContentProviderEmail"
+            android:authorities="com.example.mojprojekat"
+            android:exported="false" />
     </application>
 
 </manifest>

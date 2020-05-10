@@ -34,7 +34,24 @@
     <string name="poruke">Poruke</string>
 
     <string name="kontakti">Kontakti</string>
-    <string name="pretra_i">Pretraži...</string>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="autosync_problem">Automatic Sync problem</string>
+    <string name="no_internet">Bad news, no internet connection</string>
+    <string name="turn_wifi_on">Turn wifi on</string>
+    <string name="turn_notif_on">Stop notification</string>
+    <string name="autosync_warning">Automatic Sync warning</string>
+    <string name="connect_to_wifi">Please connect to wifi to sync data</string>
+    <string name="autosync">Automatic Sync</string>
+    <string name="good_news_sync">Good news, everything is sync now.</string>
+    <string name="notif_on_sync_key">notif_on_sync</string>
+    <string name="pref_sync_list">pref_sync_list</string>
+    <string name="pref_sync">pref_sync</string>
+    <string name="opis_sortiranja">Izaberite kriterijum po kome ce biti sortirane poruke</string>
+    <string name="pref_sync_title">Sinhronizacija</string>
+    <string name="pref_syncConnectionType">Interval sinhronizacije</string>
+    <string name="sortiranje">Sortiranje</string>
+    <string name="sort">pref_sort</string>
+    <string name="preferences">Podesavanja</string>
+    <string name="message">Poruka</string>
 </resources>

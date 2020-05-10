@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string-array name="vreme">
         <item>1min</item>
         <item>5min</item>
@@ -7,8 +8,18 @@
         <item>1h</item>
         <item>10h</item>
     </string-array>
+
     <string-array name="sortiranje">
         <item>Opadajuce</item>
         <item>Rastuce</item>
     </string-array>
+
+    <string-array name="pref_syncConnectionTypes_values">
+        <item>1</item>
+        <item>5</item>
+        <item>10</item>
+        <item>60</item>
+        <item>600</item>
+    </string-array>
+
 </resources>

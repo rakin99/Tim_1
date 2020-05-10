@@ -1,17 +1,15 @@
 package com.example.mojprojekat.model;
 
-import java.util.Date;
-
 /**
  * Created by milossimic on 3/21/16.
  */
 public class Message {
-    private int id;
+    private long id;
     private String from;
     private String to;
     private String cc;
     private String bcc;
-    private Date dateTime;
+    private String dateTime;
     private String subject;
     private String content;
 
@@ -19,7 +17,7 @@ public class Message {
 
     }
 
-    public Message(int id, String from, String to,String cc,String bcc,Date dateTime,String subject,String content) {
+    public Message(long id, String from, String to,String cc,String bcc,String dateTime,String subject,String content) {
         this.id = id;
         this.from=from;
         this.to=to;
@@ -29,8 +27,15 @@ public class Message {
         this.subject=subject;
         this.content=content;
     }
+    public long getId() {
+        return id;
+    }
 
-    public int getName() {
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getName() {
         return id;
     }
 
@@ -70,11 +75,11 @@ public class Message {
         this.bcc = bcc;
     }
 
-    public Date getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(Date dateTime) {
+    public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
     }
 

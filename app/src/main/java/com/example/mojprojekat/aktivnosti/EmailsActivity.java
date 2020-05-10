@@ -1,7 +1,14 @@
 package com.example.mojprojekat.aktivnosti;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
@@ -22,7 +30,11 @@ import com.example.mojprojekat.R;
 import com.example.mojprojekat.adapteri.DrawerListAdapter;
 import com.example.mojprojekat.fragmenti.MyFragment;
 import com.example.mojprojekat.model.NavItem;
+import com.example.mojprojekat.sync.SyncReceiver;
+import com.example.mojprojekat.sync.SyncService;
 import com.example.mojprojekat.tools.FragmentTransition;
+import com.example.mojprojekat.tools.ReviewerTools;
+import com.example.mojprojekat.tools.Util;
 
 import java.util.ArrayList;
 
@@ -34,7 +46,19 @@ public class EmailsActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private RelativeLayout mDrawerPane;
     private CharSequence mTitle;
+    private AlertDialog dialog;
 
+    public static String SYNC_DATA = "SYNC_DATA";
+    private SyncReceiver sync;
+
+    private PendingIntent pendingIntent;
+    private AlarmManager manager;
+
+    private boolean allowSync;
+
+    private SharedPreferences sharedPreferences;
+    private String synctime;
+    private String sort;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +120,8 @@ public class EmailsActivity extends AppCompatActivity {
             selectItemFromDrawer(0);
         }
 
+        setUpReceiver();
+        consultPreferences();
     }
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -103,6 +129,15 @@ public class EmailsActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectItemFromDrawer(position);
         }
+    }
+
+    private void setUpReceiver(){
+        sync = new SyncReceiver();
+
+        // Retrieve a PendingIntent that will perform a broadcast
+        Intent alarmIntent = new Intent(this, SyncService.class);
+        pendingIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
+        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
     }
 
     private void selectItemFromDrawer(int position) {
@@ -114,18 +149,12 @@ public class EmailsActivity extends AppCompatActivity {
         }else if(position == 2){
             Intent intent = new Intent(EmailsActivity.this, FoldersActivity.class);
             startActivity(intent);
-        }else if(position == 3){
-            //..
-        }else if(position == 4){
-            //..
-        }else if(position == 5){
-            //...
         }else{
             Log.e("DRAWER", "Nesto van opsega!");
         }
 
         mDrawerList.setItemChecked(position, true);
-        if(position != 5) // za sve osim za sync
+        if(position != 2)
         {
             setTitle(mNavItems.get(position).getmTitle());
         }
@@ -147,13 +176,36 @@ public class EmailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new:{
-                Intent intent = new Intent(EmailsActivity.this, CreateEmailActivity.class);
-                startActivity(intent);
+                /*Intent intent = new Intent(EmailsActivity.this, CreateEmailActivity.class);
+                startActivity(intent);*/
+                Util.initDB(EmailsActivity.this);
+                finish();
+                startActivity(getIntent());
             }
                 return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -164,13 +216,60 @@ public class EmailsActivity extends AppCompatActivity {
     @Override
     protected  void onResume(){
         super.onResume();
-        Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
+
+        //Za slucaj da referenca nije postavljena da se izbegne problem sa androidom!
+        if (manager == null) {
+            setUpReceiver();
+        }
+
+        if(allowSync){
+            int interval = ReviewerTools.calculateTimeTillNextSync(Integer.parseInt(synctime));
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
+            Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+        }
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(SYNC_DATA);
+
+        registerReceiver(sync, filter);
+    }
+
+    private void consultPreferences(){
+
+        /*
+         * getDefaultSharedPreferences():
+         * koristi podrazumevano ime preference-file-a.
+         * Podrzazumevani fajl je setovan na nivou aplikacije tako da sve aktivnosti u istom context-u mogu da mu pristupe jednostavnije
+         * getSharedPreferences(name,mode):
+         * trazi da se specificira ime preference file-a requires i mod u kome se radi (e.g. private, world_readable, etc.)
+         */
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        /*
+         * Koristeci parove kljuc-vrednost iz shared preferences mozemo da dobijemo
+         * odnosno da zapisemo nekakve vrednosti. Te vrednosti mogu da budu iskljucivo
+         * prosti tipovi u Javi.
+         * Kao prvi parametar prosledjujemo kljuc, a kao drugi podrazumevanu vrednost,
+         * ako nesto pod tim kljucem se ne nalazi u storage-u, da dobijemo podrazumevanu
+         * vrednost nazad, i to nam je signal da nista nije sacuvano pod tim kljucem.
+         * */
+        synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");// pola minuta
+        allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), false);
+        sort = sharedPreferences.getString(getString(R.string.sortiranje), "Opadajuce");
     }
 
     @Override
     protected void onPause(){
+        if (manager != null) {
+            manager.cancel(pendingIntent);
+        }
+
+        //osloboditi resurse
+        if(sync != null){
+            unregisterReceiver(sync);
+        }
+
         super.onPause();
-        Toast.makeText(this, "onPause()", Toast.LENGTH_SHORT).show();
     }
 
     @Override

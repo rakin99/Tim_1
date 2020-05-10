@@ -1,18 +1,17 @@
 package com.example.mojprojekat.aktivnosti;
 
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.mojprojekat.R;
+import com.example.mojprojekat.tools.FragmentTransition;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    @Override
+  /*  @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
@@ -30,6 +29,12 @@ public class SettingsActivity extends AppCompatActivity {
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
         spinner2.setAdapter(adapter2);
+    }*/
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_settings);
+        FragmentTransition.to(PrefsFragment.newInstance(), this,true, R.id.settingsContent);
     }
 
     @Override
@@ -59,5 +64,21 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onDestroy(){
         super.onDestroy();
         Toast.makeText(this,"onDestroy()", Toast.LENGTH_SHORT).show();
+    }
+
+    public static class PrefsFragment extends PreferenceFragmentCompat {
+
+        private static PrefsFragment newInstance() {
+            Bundle args = new Bundle();
+
+            PrefsFragment fragment = new PrefsFragment();
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+            addPreferencesFromResource(R.xml.preferences);
+        }
     }
 }
