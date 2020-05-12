@@ -41,7 +41,8 @@ public class EmailActivity extends AppCompatActivity {
 
     private void fillData(Uri todoUri) {
         String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
-                ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_SUBJECT };
+                ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
+                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT };
 
         Cursor cursor = getContentResolver().query(todoUri, allColumns, null, null,
                 null);
@@ -51,9 +52,11 @@ public class EmailActivity extends AppCompatActivity {
 
         TextView tvFrom = (TextView)findViewById(R.id.tvFrom);
         TextView tvSubject = (TextView)findViewById(R.id.tvSubject);
+        TextView tvContent = (TextView)findViewById(R.id.tvContent);
 
         tvFrom.setText(message.getFrom());
         tvSubject.setText(message.getSubject());
+        tvContent.setText(message.getContent());
 
         cursor.close();
     }

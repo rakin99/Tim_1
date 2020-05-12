@@ -8,8 +8,8 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
 
     public static final String TABLE_EMAILS = "emails";
     public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_FROM = "from";
-    public static final String COLUMN_TO = "to";
+    public static final String COLUMN_FROM = "_from";
+    public static final String COLUMN_TO = "_to";
     public static final String COLUMN_CC = "cc";
     public static final String COLUMN_BCC = "bcc";
     public static final String COLUMN_DATE_TIME = "dateTime";
@@ -25,10 +25,10 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_ID  + " integer primary key autoincrement , "
             + COLUMN_FROM + " text, "
             + COLUMN_TO + " text, "
-            + COLUMN_CC + " text"
-            + COLUMN_BCC + " text"
-            + COLUMN_DATE_TIME + " datetime"
-            + COLUMN_SUBJECT + " text"
+            + COLUMN_CC + " text,"
+            + COLUMN_BCC + " text,"
+            + COLUMN_DATE_TIME + " datetime,"
+            + COLUMN_SUBJECT + " text,"
             + COLUMN_CONTENT + " text"
             + ")";
 
