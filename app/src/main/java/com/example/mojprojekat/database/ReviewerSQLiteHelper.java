@@ -16,11 +16,19 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_SUBJECT = "subject";
     public static final String COLUMN_CONTENT = "content";
 
+    public static final String TABLE_USERS = "users";
+    public static final String COLUMN_FIRST = "first";
+    public static final String COLUMN_LAST = "last";
+    public static final String COLUMN_DISPLAY = "display";
+    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_PASSWORD = "password";
+
+
     private static final String DATABASE_NAME = "emails.db";
     //i pocetnu verziju baze. Obicno krece od 1
     private static final int DATABASE_VERSION = 1;
 
-    private static final String DB_CREATE = "create table "
+    private static final String DB_CREATE_EMAILS = "create table "
             + TABLE_EMAILS + "("
             + COLUMN_ID  + " integer primary key autoincrement , "
             + COLUMN_FROM + " text, "
@@ -32,6 +40,16 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CONTENT + " text"
             + ")";
 
+    private static final String DB_CREATE_USERS = "create table "
+            + TABLE_USERS + "("
+            + COLUMN_ID  + " integer primary key autoincrement , "
+            + COLUMN_FIRST + " text, "
+            + COLUMN_LAST + " text, "
+            + COLUMN_DISPLAY + " text,"
+            + COLUMN_EMAIL + " text,"
+            + COLUMN_PASSWORD + " text"
+            + ")";
+
     //Potrebno je dodati konstruktor zbog pravilne inicijalizacije
     public ReviewerSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,13 +59,14 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     //prilikom kreiranja moramo pozvati db.execSQL za svaku tabelu koju imamo
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(DB_CREATE);
+        db.execSQL(DB_CREATE_EMAILS);
+        db.execSQL(DB_CREATE_USERS);
     }
 
     //kada zelimo da izmenomo tabele, moramo pozvati drop table za sve tabele koje imamo
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EMAILS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EMAILS+TABLE_USERS);
         onCreate(db);
     }
 }

@@ -5,11 +5,12 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.mojprojekat.database.DBContentProviderEmail;
+import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 
 public class Util {
 
-    public static void initDB(Activity activity) {
+    public static void initDBEmails(Activity activity) {
         ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(activity);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         {
@@ -35,7 +36,31 @@ public class Util {
 
             activity.getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, entry);
         }
-
         db.close();
+    }
+
+    public static void initDBUsers(Activity activity){
+        ReviewerSQLiteHelper dbHelperUser=new ReviewerSQLiteHelper(activity);
+        SQLiteDatabase dbUser=dbHelperUser.getWritableDatabase();
+        {
+            ContentValues entryUser=new ContentValues();
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_FIRST,"Mika");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_LAST,"Mikic");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"Slika lepog Mike");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_EMAIL,"lepimika@gmail.com");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_PASSWORD,"0000");
+
+            activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
+
+            entryUser=new ContentValues();
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_FIRST,"Mile");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_LAST,"Milic");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"Slika lepog Mileta");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_EMAIL,"lepimile@gmail.com");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"0000");
+
+            activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
+        }
+        dbUser.close();
     }
 }

@@ -34,7 +34,7 @@ public class EmailActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        todoUri = extras.getParcelable("id");
+        todoUri = extras. getParcelable("id");
         fillData(todoUri);
 
     }

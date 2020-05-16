@@ -24,13 +24,13 @@ import com.example.mojprojekat.aktivnosti.EmailActivity;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 
-public class MyFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class FragmentEmails extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
 
     public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
     private SimpleCursorAdapter adapter;
 
-	public static MyFragment newInstance() {
-        return new MyFragment();
+	public static FragmentEmails newInstance() {
+        return new FragmentEmails();
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class MyFragment extends ListFragment implements LoaderManager.LoaderCall
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
                 ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
-                ReviewerSQLiteHelper.COLUMN_DATE_TIME, ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT,};
+                ReviewerSQLiteHelper.COLUMN_DATE_TIME, ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT};
 
         return new CursorLoader(getActivity(), DBContentProviderEmail.CONTENT_URI_EMAIL,
                 allColumns, null, null, null);

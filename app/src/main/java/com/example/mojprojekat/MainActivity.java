@@ -1,11 +1,10 @@
 package com.example.mojprojekat;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.example.mojprojekat.aktivnosti.LoginActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.mojprojekat.aktivnosti.SplashActivity;
 
 import java.util.Timer;

@@ -28,13 +28,12 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.adapteri.DrawerListAdapter;
-import com.example.mojprojekat.fragmenti.MyFragment;
+import com.example.mojprojekat.fragmenti.FragmentEmails;
 import com.example.mojprojekat.model.NavItem;
 import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.ReviewerTools;
-import com.example.mojprojekat.tools.Util;
 
 import java.util.ArrayList;
 
@@ -64,9 +63,9 @@ public class EmailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emails);
-
         prepareMenu(mNavItems);
 
+        //Util.initDBEmails(EmailsActivity.this);
         mTitle=getTitle();
         mDrawerLayout=findViewById(R.id.drawerLayout);
         mDrawerList = findViewById(R.id.navList);
@@ -142,7 +141,7 @@ public class EmailsActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if(position == 0){
-            FragmentTransition.to(MyFragment.newInstance(), this, false, R.id.mainContent);
+            FragmentTransition.to(FragmentEmails.newInstance(), this, false, R.id.mainContent);
         }else if(position == 1){
             Intent intent = new Intent(EmailsActivity.this, SettingsActivity.class);
             startActivity(intent);
@@ -176,11 +175,8 @@ public class EmailsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_new:{
-                /*Intent intent = new Intent(EmailsActivity.this, CreateEmailActivity.class);
-                startActivity(intent);*/
-                Util.initDB(EmailsActivity.this);
-                finish();
-                startActivity(getIntent());
+                Intent intent = new Intent(EmailsActivity.this, CreateEmailActivity.class);
+                startActivity(intent);
             }
                 return true;
         }

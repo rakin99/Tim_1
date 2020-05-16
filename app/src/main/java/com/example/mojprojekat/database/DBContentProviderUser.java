@@ -11,24 +11,24 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
-public class DBContentProviderEmail extends ContentProvider {
+public class DBContentProviderUser extends ContentProvider{
 
     private ReviewerSQLiteHelper database;
 
-    private static final int EMAIL = 10;
-    private static final int EMAIL_ID = 20;
+    private static final int USER = 30;
+    private static final int USER_ID = 40;
 
     private static final String AUTHORITY = "com.example.mojprojekat";
 
-    private static final String EMAIL_PATH = "email";
+    private static final String USER_PATH = "user";
 
-    public static final Uri CONTENT_URI_EMAIL = Uri.parse("content://" + AUTHORITY + "/" + EMAIL_PATH);
+    public static final Uri CONTENT_URI_USER = Uri.parse("content://" + AUTHORITY + "/" + USER_PATH);
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        sURIMatcher.addURI(AUTHORITY, EMAIL_PATH, EMAIL);
-        sURIMatcher.addURI(AUTHORITY, EMAIL_PATH + "/#", EMAIL_ID);
+        sURIMatcher.addURI(AUTHORITY, USER_PATH, USER);
+        sURIMatcher.addURI(AUTHORITY, USER_PATH + "/#", USER_ID);
     }
 
     @Override
@@ -47,14 +47,14 @@ public class DBContentProviderEmail extends ContentProvider {
         //checkColumns(projection);
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
-            case EMAIL_ID:
+            case USER_ID:
                 // Adding the ID to the original query
                 queryBuilder.appendWhere(ReviewerSQLiteHelper.COLUMN_ID + "="
                         + uri.getLastPathSegment());
                 //$FALL-THROUGH$
-            case EMAIL:
+            case USER:
                 // Set the table
-                queryBuilder.setTables(ReviewerSQLiteHelper.TABLE_EMAILS);
+                queryBuilder.setTables(ReviewerSQLiteHelper.TABLE_USERS);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -83,9 +83,9 @@ public class DBContentProviderEmail extends ContentProvider {
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         long id = 0;
         switch (uriType) {
-            case EMAIL:
-                id = sqlDB.insert(ReviewerSQLiteHelper.TABLE_EMAILS, null, values);
-                retVal = Uri.parse(EMAIL_PATH + "/" + id);
+            case USER:
+                id = sqlDB.insert(ReviewerSQLiteHelper.TABLE_USERS, null, values);
+                retVal = Uri.parse(USER_PATH + "/" + id);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -101,20 +101,20 @@ public class DBContentProviderEmail extends ContentProvider {
         long id = 0;
         int rowsDeleted = 0;
         switch (uriType) {
-            case EMAIL:
-                rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_EMAILS,
+            case USER:
+                rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_USERS,
                         selection,
                         selectionArgs);
                 break;
-            case EMAIL_ID:
-                String idEmail = uri.getLastPathSegment();
+            case USER_ID:
+                String idUser = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_EMAILS,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idEmail,
+                    rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_USERS,
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser,
                             null);
                 } else {
-                    rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_EMAILS,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idEmail
+                    rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_USERS,
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser
                                     + " and "
                                     + selection,
                             selectionArgs);
@@ -134,23 +134,23 @@ public class DBContentProviderEmail extends ContentProvider {
         long id = 0;
         int rowsUpdated = 0;
         switch (uriType) {
-            case EMAIL:
-                rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_EMAILS,
+            case USER:
+                rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_USERS,
                         values,
                         selection,
                         selectionArgs);
                 break;
-            case EMAIL_ID:
-                String idCinema = uri.getLastPathSegment();
+            case USER_ID:
+                String idUser = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_EMAILS,
+                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_USERS,
                             values,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idCinema,
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser,
                             null);
                 } else {
-                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_EMAILS,
+                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_USERS,
                             values,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idCinema
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser
                                     + " and "
                                     + selection,
                             selectionArgs);

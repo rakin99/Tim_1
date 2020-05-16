@@ -1,8 +1,5 @@
 package com.example.mojprojekat.model;
 
-/**
- * Created by milossimic on 3/21/16.
- */
 public class Message {
     private long id;
     private String from;
@@ -14,7 +11,14 @@ public class Message {
     private String content;
 
     public Message(){
-
+        this.id=0;
+        this.from="";
+        this.to="";
+        this.cc="";
+        this.bcc="";
+        this.dateTime="";
+        this.subject="";
+        this.content="";
     }
 
     public Message(long id, String from, String to,String cc,String bcc,String dateTime,String subject,String content) {

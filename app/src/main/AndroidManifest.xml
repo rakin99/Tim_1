@@ -63,6 +63,11 @@
             android:name="com.example.mojprojekat.database.DBContentProviderEmail"
             android:authorities="com.example.mojprojekat"
             android:exported="false" />
+
+        <provider
+            android:name="com.example.mojprojekat.database.DBContentProviderUser"
+            android:authorities="com.example.mojprojekat"
+            android:exported="false" />
     </application>
 
 </manifest>
