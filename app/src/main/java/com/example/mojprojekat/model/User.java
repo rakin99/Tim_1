@@ -1,6 +1,6 @@
 package com.example.mojprojekat.model;
 
-public class Korisnik {
+public class User {
 
     private long id;
     private String first;
@@ -9,7 +9,7 @@ public class Korisnik {
     private String email;
     private String password;
 
-    public Korisnik(){
+    public User(){
         this.id=0;
         this.first="";
         this.last="";
@@ -18,7 +18,7 @@ public class Korisnik {
         this.password="";
     };
 
-    public Korisnik(long id,String first,String last, String display,String email,String password){
+    public User(long id, String first, String last, String display, String email, String password){
         this.id=id;
         this.first=first;
         this.last=last;

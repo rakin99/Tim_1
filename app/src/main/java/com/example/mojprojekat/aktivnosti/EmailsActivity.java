@@ -14,8 +14,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
@@ -34,11 +36,14 @@ import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.ReviewerTools;
+import com.example.mojprojekat.tools.Util;
 
 import java.util.ArrayList;
 
 public class EmailsActivity extends AppCompatActivity {
 
+    private ImageView profile;
+    private TextView profileUserName;
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayList<NavItem> mNavItems = new ArrayList<NavItem>();
@@ -65,10 +70,12 @@ public class EmailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_emails);
         prepareMenu(mNavItems);
 
-        //Util.initDBEmails(EmailsActivity.this);
+        Util.initDBEmails(EmailsActivity.this);
         mTitle=getTitle();
         mDrawerLayout=findViewById(R.id.drawerLayout);
         mDrawerList = findViewById(R.id.navList);
+        profile=findViewById(R.id.avatar);
+        profileUserName=findViewById(R.id.userName);
 
         mDrawerPane=findViewById(R.id.drawerPane);
         DrawerListAdapter adapter=new DrawerListAdapter(this,mNavItems);
@@ -77,6 +84,21 @@ public class EmailsActivity extends AppCompatActivity {
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         // dodajemo listener koji ce reagovati na klik pojedinacnog elementa u listi
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EmailsActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        profileUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EmailsActivity.this, ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
         // drawer-u postavljamo unapred definisan adapter
         mDrawerList.setAdapter(adapter);
 
@@ -148,6 +170,13 @@ public class EmailsActivity extends AppCompatActivity {
         }else if(position == 2){
             Intent intent = new Intent(EmailsActivity.this, FoldersActivity.class);
             startActivity(intent);
+        }else if(position == 3){
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor=sharedPreferences.edit();
+            editor.putString(getString(R.string.login),"");
+            editor.commit();
+            Intent intent = new Intent(EmailsActivity.this, LoginActivity.class);
+            startActivity(intent);
         }else{
             Log.e("DRAWER", "Nesto van opsega!");
         }
@@ -169,6 +198,7 @@ public class EmailsActivity extends AppCompatActivity {
         mNavItems.add(new NavItem(getString(R.string.poruke),R.drawable.email));
         mNavItems.add(new NavItem(getString(R.string.settings),R.drawable.ic_settings_applications_black_24dp));
         mNavItems.add(new NavItem(getString(R.string.all_folders),R.drawable.folders));
+        mNavItems.add(new NavItem(getString(R.string.my_profile),R.drawable.exit));
     }
 
     @Override

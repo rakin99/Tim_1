@@ -61,12 +61,12 @@
 
         <provider
             android:name="com.example.mojprojekat.database.DBContentProviderEmail"
-            android:authorities="com.example.mojprojekat"
+            android:authorities="com.example.mojprojekat.emails"
             android:exported="false" />
 
         <provider
             android:name="com.example.mojprojekat.database.DBContentProviderUser"
-            android:authorities="com.example.mojprojekat"
+            android:authorities="com.example.mojprojekat.users"
             android:exported="false" />
     </application>
 

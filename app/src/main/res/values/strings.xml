@@ -32,6 +32,7 @@
     <string name="image">Slika moj profil</string>
     <string name="all_folders">Direktorijumi</string>
     <string name="poruke">Poruke</string>
+    <string name="my_profile">Odjavi se</string>
 
     <string name="kontakti">Kontakti</string>
     <string name="drawer_open">Open navigation drawer</string>
@@ -54,4 +55,6 @@
     <string name="sort">pref_sort</string>
     <string name="preferences">Podesavanja</string>
     <string name="message">Poruka</string>
+    <string name="login"></string>
+    <string name="action_save">Sačuvaj</string>
 </resources>

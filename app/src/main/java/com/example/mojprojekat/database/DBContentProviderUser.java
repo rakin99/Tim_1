@@ -18,9 +18,9 @@ public class DBContentProviderUser extends ContentProvider{
     private static final int USER = 30;
     private static final int USER_ID = 40;
 
-    private static final String AUTHORITY = "com.example.mojprojekat";
+    private static final String AUTHORITY = "com.example.mojprojekat.users";
 
-    private static final String USER_PATH = "user";
+    private static final String USER_PATH = "users";
 
     public static final Uri CONTENT_URI_USER = Uri.parse("content://" + AUTHORITY + "/" + USER_PATH);
 

@@ -47,8 +47,8 @@ public class Util {
             entryUser.put(ReviewerSQLiteHelper.COLUMN_FIRST,"Mika");
             entryUser.put(ReviewerSQLiteHelper.COLUMN_LAST,"Mikic");
             entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"Slika lepog Mike");
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_EMAIL,"lepimika@gmail.com");
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_PASSWORD,"0000");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_EMAIL,"m");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_PASSWORD,"m");
 
             activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
 

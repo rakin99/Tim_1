@@ -18,7 +18,7 @@ public class DBContentProviderEmail extends ContentProvider {
     private static final int EMAIL = 10;
     private static final int EMAIL_ID = 20;
 
-    private static final String AUTHORITY = "com.example.mojprojekat";
+    private static final String AUTHORITY = "com.example.mojprojekat.emails";
 
     private static final String EMAIL_PATH = "email";
 

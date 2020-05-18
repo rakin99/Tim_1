@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
 
-    public static final String TABLE_EMAILS = "emails";
+    public static final String TABLE_EMAILS = "email";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_FROM = "_from";
     public static final String COLUMN_TO = "_to";
