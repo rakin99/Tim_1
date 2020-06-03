@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.aktivnosti.SplashActivity;
+import com.example.mojprojekat.tools.Util;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Util.initDBEmails(MainActivity.this);
         int SPLASH_TIME_OUT=100;
         new Timer().schedule(new TimerTask() {
             @Override

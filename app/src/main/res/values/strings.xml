@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">Moj projekat</string>
     <string name="button">Button</string>
     <string name="vreme_osvezavanja">Vreme osvezavanja</string>
     <string name="sortiraj_poruke">Sortiraj poruke:</string>
@@ -32,7 +32,8 @@
     <string name="image">Slika moj profil</string>
     <string name="all_folders">Direktorijumi</string>
     <string name="poruke">Poruke</string>
-    <string name="my_profile">Odjavi se</string>
+    <string name="my_profile">Moj profil</string>
+    <string name="logout">Odjavi se</string>
 
     <string name="kontakti">Kontakti</string>
     <string name="drawer_open">Open navigation drawer</string>

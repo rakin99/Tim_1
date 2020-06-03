@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
+import com.example.mojprojekat.model.Message;
 
 public class Util {
 
@@ -62,5 +63,19 @@ public class Util {
             activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
         }
         dbUser.close();
+    }
+
+    public static ContentValues createContentValues(Activity activity, Message message){
+        ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(activity);
+        ContentValues entry = new ContentValues();
+        entry.put(ReviewerSQLiteHelper.COLUMN_FROM, message.getFrom());
+        entry.put(ReviewerSQLiteHelper.COLUMN_TO, message.getTo());
+        entry.put(ReviewerSQLiteHelper.COLUMN_CC, message.getCc());
+        entry.put(ReviewerSQLiteHelper.COLUMN_BCC, message.getBcc());
+        entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, message.getDateTime());
+        entry.put(ReviewerSQLiteHelper.COLUMN_SUBJECT, message.getSubject());
+        entry.put(ReviewerSQLiteHelper.COLUMN_CONTENT, message.getContent());
+
+        return entry;
     }
 }

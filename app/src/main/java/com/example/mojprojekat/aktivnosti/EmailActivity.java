@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -85,6 +86,12 @@ public class EmailActivity extends AppCompatActivity {
             case R.id.action_back:
                 Intent intent = new Intent(EmailActivity.this, EmailsActivity.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_delete:
+                int deleted = getContentResolver().delete(todoUri,null, null);
+                Log.d("Broj obrisanih redova",String.valueOf(deleted));
+                Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);
+                startActivity(intent1);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

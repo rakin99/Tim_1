@@ -24,7 +24,7 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.drawerlayout.widget.DrawerLayout
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/drawerLayoutCreateMail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -54,6 +54,7 @@
                 <EditText
                     android:layout_marginLeft="50dp"
                     android:id="@+id/etFrom"
+                    android:editable="false"
                     android:layout_width="200dp"
                     android:layout_height="wrap_content" />
 
@@ -140,7 +141,7 @@
 
         </RelativeLayout>
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+    </androidx.core.widget.NestedScrollView>
 
 
 </LinearLayout>

@@ -1,12 +1,10 @@
 package com.example.mojprojekat.aktivnosti;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
 
-import com.example.mojprojekat.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.mojprojekat.R;
 
 import java.util.Timer;
@@ -30,29 +28,29 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
     }
     @Override
     protected  void onResume(){
         super.onResume();
-        Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        Toast.makeText(this, "onPause()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onPause()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        Toast.makeText(this,"onStop()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"onStop()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        Toast.makeText(this,"onDestroy()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"onDestroy()", Toast.LENGTH_SHORT).show();
     }
 }
