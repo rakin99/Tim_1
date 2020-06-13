@@ -36,6 +36,7 @@ import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.ReviewerTools;
+import com.example.mojprojekat.tools.Util;
 
 import java.util.ArrayList;
 
@@ -232,7 +233,6 @@ public class EmailsActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
     }
     @Override
     protected  void onResume(){

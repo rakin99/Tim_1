@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
                     Intent intent = new Intent(LoginActivity.this, EmailsActivity.class);
                     startActivity(intent);
+                    finish();
                 }else{
                     Toast.makeText(LoginActivity.this, "Pogrešili ste korisničko ili lozinku! \n Pokušajte ponovo!",Toast.LENGTH_SHORT).show();
                 }

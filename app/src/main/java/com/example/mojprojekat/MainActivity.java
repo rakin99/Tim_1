@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.aktivnosti.SplashActivity;
 import com.example.mojprojekat.tools.Util;
 

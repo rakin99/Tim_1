@@ -1,9 +1,11 @@
 package com.example.mojprojekat.model;
 
+import android.util.Log;
+
 public class Message {
     private long id;
-    private String from;
-    private String to;
+    private Contact from;
+    private Contact to;
     private String cc;
     private String bcc;
     private String dateTime;
@@ -12,8 +14,8 @@ public class Message {
 
     public Message(){
         this.id=0;
-        this.from="";
-        this.to="";
+        this.from=new Contact();
+        this.to=new Contact();
         this.cc="";
         this.bcc="";
         this.dateTime="";
@@ -21,7 +23,7 @@ public class Message {
         this.content="";
     }
 
-    public Message(long id, String from, String to,String cc,String bcc,String dateTime,String subject,String content) {
+    public Message(long id, Contact from, Contact to,String cc,String bcc,String dateTime,String subject,String content) {
         this.id = id;
         this.from=from;
         this.to=to;
@@ -47,19 +49,20 @@ public class Message {
         this.id = id;
     }
 
-    public String getFrom() {
+    public Contact getFrom() {
         return from;
     }
 
-    public void setFrom(String from) {
+    public void setFrom(Contact from) {
+        Log.d("Tu sam","Tu sam:");
         this.from = from;
     }
 
-    public String getTo() {
+    public Contact getTo() {
         return to;
     }
 
-    public void setTo(String to) {
+    public void setTo(Contact to) {
         this.to = to;
     }
 

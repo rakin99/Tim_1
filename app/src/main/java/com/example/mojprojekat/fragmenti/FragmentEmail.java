@@ -28,7 +28,6 @@ public class FragmentEmail extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
     }
 
     @Override

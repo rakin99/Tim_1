@@ -1,33 +1,31 @@
 package com.example.mojprojekat.fragmenti;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.ListFragment;
-import androidx.loader.app.LoaderManager;
-import androidx.loader.content.CursorLoader;
-import androidx.loader.content.Loader;
 
 import com.example.mojprojekat.R;
+import com.example.mojprojekat.adapteri.MessageAdapter;
 import com.example.mojprojekat.aktivnosti.EmailActivity;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
+import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.Data;
 
-public class FragmentEmails extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor>{
+public class FragmentEmails extends ListFragment {
 
     public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
-    private SimpleCursorAdapter adapter;
+    private MessageAdapter adapter;
 
 	public static FragmentEmails newInstance() {
         return new FragmentEmails();
@@ -43,7 +41,7 @@ public class FragmentEmails extends ListFragment implements LoaderManager.Loader
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-       // Message message = Mokap.getMesagges().get(position);
+        Message message = Data.getMessages(getActivity()).get(position);
 
         /*
         * Ako nasoj aktivnosti zelimo da posaljemo nekakve podatke
@@ -54,8 +52,8 @@ public class FragmentEmails extends ListFragment implements LoaderManager.Loader
         * odgovarajucu putExtra metodu.
         * */
         Intent intent = new Intent(getActivity(), EmailActivity.class);
-        Uri todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
-        intent.putExtra("id", todoUri);
+        //Uri todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
+        intent.putExtra("id", message.getId());
         startActivity(intent);
     }
 
@@ -65,12 +63,19 @@ public class FragmentEmails extends ListFragment implements LoaderManager.Loader
         //Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
 
         //Dodaje se adapter
-        getLoaderManager().initLoader(0, null,  this);
-        String[] from = new String[] { ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_SUBJECT};
-        int[] to = new int[] {R.id.from, R.id.subject};
-        adapter = new SimpleCursorAdapter(getActivity(), R.layout.messages_list, null, from,
-                to, 0);
+       /* getLoaderManager().initLoader(0, null,  this);
+        String[] from = new String[] { ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT,ReviewerSQLiteHelper.COLUMN_DATE_TIME};
+        int[] to = new int[] {R.id.from, R.id.subject,R.id.date};*/
+        adapter = new MessageAdapter(getActivity());
         setListAdapter(adapter);
+    }
+
+    public String proveriDuzinu(String s){
+	    if (s.length()>20){
+	        return s.substring(0,20);
+        }
+        Log.d("Content: ",ReviewerSQLiteHelper.COLUMN_CONTENT);
+	    return  s;
     }
 
     /*
@@ -114,7 +119,7 @@ public class FragmentEmails extends ListFragment implements LoaderManager.Loader
         return super.onOptionsItemSelected(item);
     }*/
 
-    @NonNull
+    /*@NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
         String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
@@ -123,9 +128,9 @@ public class FragmentEmails extends ListFragment implements LoaderManager.Loader
 
         return new CursorLoader(getActivity(), DBContentProviderEmail.CONTENT_URI_EMAIL,
                 allColumns, null, null, null);
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
         adapter.swapCursor(data);
     }
@@ -133,5 +138,5 @@ public class FragmentEmails extends ListFragment implements LoaderManager.Loader
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
         adapter.swapCursor(null);
-    }
+    }*/
 }

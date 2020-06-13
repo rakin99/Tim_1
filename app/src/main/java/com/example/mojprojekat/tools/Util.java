@@ -3,6 +3,7 @@ package com.example.mojprojekat.tools;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.DBContentProviderUser;
@@ -16,8 +17,8 @@ public class Util {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         {
             ContentValues entry = new ContentValues();
-            entry.put(ReviewerSQLiteHelper.COLUMN_FROM, "Mile");
-            entry.put(ReviewerSQLiteHelper.COLUMN_TO, "Mika");
+            entry.put(ReviewerSQLiteHelper.COLUMN_FROM, "Mika");
+            entry.put(ReviewerSQLiteHelper.COLUMN_TO, "Mikic");
             entry.put(ReviewerSQLiteHelper.COLUMN_CC, "CC");
             entry.put(ReviewerSQLiteHelper.COLUMN_BCC, "BCC");
             entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, "datetime");
@@ -68,8 +69,10 @@ public class Util {
     public static ContentValues createContentValues(Activity activity, Message message){
         ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(activity);
         ContentValues entry = new ContentValues();
-        entry.put(ReviewerSQLiteHelper.COLUMN_FROM, message.getFrom());
-        entry.put(ReviewerSQLiteHelper.COLUMN_TO, message.getTo());
+        Log.d("From: ",message.getFrom().getEmail());
+        Log.d("To: ",message.getTo().getEmail());
+        entry.put(ReviewerSQLiteHelper.COLUMN_FROM, message.getFrom().getEmail());
+        entry.put(ReviewerSQLiteHelper.COLUMN_TO, message.getTo().getEmail());
         entry.put(ReviewerSQLiteHelper.COLUMN_CC, message.getCc());
         entry.put(ReviewerSQLiteHelper.COLUMN_BCC, message.getBcc());
         entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, message.getDateTime());

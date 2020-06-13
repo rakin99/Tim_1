@@ -14,14 +14,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
+import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentEmail;
+import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
+
+import java.io.Console;
 
 public class EmailActivity extends AppCompatActivity {
 
+    private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
+    private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
     private Uri todoUri;
+    private Message message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +43,13 @@ public class EmailActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
 
-        todoUri = extras. getParcelable("id");
-        fillData(todoUri);
+        Long id = extras. getLong("id");
+        fillData(id);
 
     }
 
-    private void fillData(Uri todoUri) {
-        String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
+    private void fillData(Long id) {
+       /* String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
                 ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
                 ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT };
 
@@ -49,24 +57,28 @@ public class EmailActivity extends AppCompatActivity {
                 null);
 
         cursor.moveToFirst();
-        Message message = createMessage(cursor);
+        Message message = createMessage(cursor);*/
+
+        todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
+        message=Data.getMessageById(id,this);
 
         TextView tvFrom = (TextView)findViewById(R.id.tvFrom);
         TextView tvSubject = (TextView)findViewById(R.id.tvSubject);
         TextView tvContent = (TextView)findViewById(R.id.tvContent);
 
-        tvFrom.setText(message.getFrom());
+        tvFrom.setText(message.getFrom().getEmail());
         tvSubject.setText(message.getSubject());
         tvContent.setText(message.getContent());
 
-        cursor.close();
+
+        //cursor.close();
     }
 
     public static Message createMessage(Cursor cursor) {
         Message message = new Message();
         message.setId(cursor.getLong(0));
-        message.setFrom(cursor.getString(1));
-        message.setTo(cursor.getString(2));
+        message.setFrom(c1);
+        message.setTo(c2);
         message.setCc(cursor.getString(3));
         message.setBcc(cursor.getString(4));
         message.setDateTime(cursor.getString(5));
@@ -86,12 +98,15 @@ public class EmailActivity extends AppCompatActivity {
             case R.id.action_back:
                 Intent intent = new Intent(EmailActivity.this, EmailsActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.action_delete:
+                Data.getMessages(this).remove(message);
                 int deleted = getContentResolver().delete(todoUri,null, null);
                 Log.d("Broj obrisanih redova",String.valueOf(deleted));
                 Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);
                 startActivity(intent1);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,29 +116,24 @@ public class EmailActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
     }
     @Override
     protected  void onResume(){
         super.onResume();
-        Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        Toast.makeText(this, "onPause()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        Toast.makeText(this,"onStop()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        Toast.makeText(this,"onDestroy()", Toast.LENGTH_SHORT).show();
     }
 }

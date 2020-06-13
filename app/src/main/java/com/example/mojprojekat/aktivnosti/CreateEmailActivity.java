@@ -17,11 +17,16 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.fragmenti.FragmentCreateEmail;
+import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.Util;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class CreateEmailActivity extends AppCompatActivity {
 
@@ -59,22 +64,29 @@ public class CreateEmailActivity extends AppCompatActivity {
                 return true;
             case R.id.action_send:
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                Message message=new Message();
                 EditText etFrom=findViewById(R.id.etFrom);
                 EditText etTo=findViewById(R.id.etTo);
                 EditText etSubject=findViewById(R.id.etSubject);
                 EditText etContent=findViewById(R.id.etContent);
-                message.setFrom(etFrom.getText().toString());
-                message.setTo(etTo.getText().toString());
+                Message message=new Message();
+                Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
+                Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
+                message.setFrom(c1);
+                message.setTo(c2);
                 message.setSubject(etSubject.getText().toString());
-                message.setContent(etFrom.getText().toString());
-                message.setFrom(etFrom.getText().toString());
-                message.setDateTime(String.valueOf(new Date().getTime()));
-                Log.d("Vreme slanja poruke: ",message.getDateTime());
+                message.setContent(etContent.getText().toString());
+                TimeZone tz = TimeZone.getTimeZone("GMT+9:00");
+                Locale loc = new Locale("ja", "JP", "JP");
+                Calendar calendar = Calendar.getInstance(loc);
+                GregorianCalendar gc = (GregorianCalendar) calendar;
+                message.setDateTime(String.valueOf(gc.getTime().getYear()+1900)+"-"+String.valueOf(gc.getTime().getMonth()+1)+"-"+String.valueOf(gc.getTime().getDay()+7)+" "+
+                        String.valueOf(gc.getTime().getHours())+":"+String.valueOf(gc.getTime().getMinutes()));
+                Log.d("\n\nVreme slanja poruke: ",message.getDateTime());
                 message.setCc("cc");
                 message.setBcc("bcc");
                 Uri retVal = getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, Util.createContentValues(this, message));
                 Toast.makeText(this, "Uspešno ste poslali poruku!",Toast.LENGTH_SHORT).show();
+                Data.getMessages(this).add(message);
                 Intent intent3 = new Intent(CreateEmailActivity.this, EmailsActivity.class);
                 startActivity(intent3);
                 finish();
