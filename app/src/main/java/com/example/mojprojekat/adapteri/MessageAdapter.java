@@ -30,7 +30,7 @@ public class MessageAdapter extends BaseAdapter{
     * */
     @Override
     public int getCount() {
-        return Data.getMessages(activity).size();
+        return Data.messages.size();
     }
 
     /*
@@ -38,7 +38,7 @@ public class MessageAdapter extends BaseAdapter{
      * */
     @Override
     public Object getItem(int position) {
-        return Data.getMessages(activity).get(position);
+        return Data.messages.get(position);
     }
 
 
@@ -65,7 +65,7 @@ public class MessageAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        Message message = Data.getMessages(activity).get(position);
+        Message message = Data.messages.get(position);
 
         if(convertView==null)
             vi = activity.getLayoutInflater().inflate(R.layout.messages_list, null);
@@ -75,14 +75,14 @@ public class MessageAdapter extends BaseAdapter{
         TextView content = (TextView)vi.findViewById(R.id.content);
         TextView date = (TextView)vi.findViewById(R.id.date);
 
-        from.setText(message.getFrom().getEmail());
+        from.setText(message.getFrom());
         subject.setText(message.getSubject());
-        if(message.getContent().length()>50){
-            content.setText(message.getContent().substring(0,50)+"...");
+        if(message.getContent().length()>30){
+            content.setText(message.getContent().toString().substring(0,30)+"...");
         }else {
             content.setText(message.getContent());
         }
-        date.setText(message.getDateTime());
+        date.setText(String.valueOf(message.getDateTime().getTime()));
 
         return  vi;
     }

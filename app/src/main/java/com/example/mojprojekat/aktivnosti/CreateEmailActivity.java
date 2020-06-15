@@ -20,13 +20,11 @@ import com.example.mojprojekat.fragmenti.FragmentCreateEmail;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
+import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.Util;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.text.ParseException;
 
 public class CreateEmailActivity extends AppCompatActivity {
 
@@ -71,22 +69,29 @@ public class CreateEmailActivity extends AppCompatActivity {
                 Message message=new Message();
                 Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
                 Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
-                message.setFrom(c1);
-                message.setTo(c2);
+                message.setFrom(c1.getEmail());
+                message.setTo(c2.getEmail());
                 message.setSubject(etSubject.getText().toString());
                 message.setContent(etContent.getText().toString());
-                TimeZone tz = TimeZone.getTimeZone("GMT+9:00");
-                Locale loc = new Locale("ja", "JP", "JP");
-                Calendar calendar = Calendar.getInstance(loc);
-                GregorianCalendar gc = (GregorianCalendar) calendar;
-                message.setDateTime(String.valueOf(gc.getTime().getYear()+1900)+"-"+String.valueOf(gc.getTime().getMonth()+1)+"-"+String.valueOf(gc.getTime().getDay()+7)+" "+
-                        String.valueOf(gc.getTime().getHours())+":"+String.valueOf(gc.getTime().getMinutes()));
-                Log.d("\n\nVreme slanja poruke: ",message.getDateTime());
+                try {
+                    message.setDateTime(DateUtil.getNow());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Log.d("\n\nVreme slanja poruke: ",String.valueOf(message.getDateTime().getTime()));
                 message.setCc("cc");
                 message.setBcc("bcc");
-                Uri retVal = getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, Util.createContentValues(this, message));
+                try {
+                    Uri retVal = getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, Util.createContentValues(this, message));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(this, "Uspešno ste poslali poruku!",Toast.LENGTH_SHORT).show();
-                Data.getMessages(this).add(message);
+                try {
+                    Data.getMessages(this).add(message);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 Intent intent3 = new Intent(CreateEmailActivity.this, EmailsActivity.class);
                 startActivity(intent3);
                 finish();

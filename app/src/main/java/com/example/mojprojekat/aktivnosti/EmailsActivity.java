@@ -36,7 +36,6 @@ import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.ReviewerTools;
-import com.example.mojprojekat.tools.Util;
 
 import java.util.ArrayList;
 
@@ -275,7 +274,7 @@ public class EmailsActivity extends AppCompatActivity {
          * vrednost nazad, i to nam je signal da nista nije sacuvano pod tim kljucem.
          * */
         synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");// pola minuta
-        allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), false);
+        allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), true);
         sort = sharedPreferences.getString(getString(R.string.sortiranje), "Opadajuce");
     }
 

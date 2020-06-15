@@ -17,10 +17,10 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CONTENT = "content";
 
     public static final String TABLE_USERS = "users";
-    public static final String COLUMN_FIRST = "first";
-    public static final String COLUMN_LAST = "last";
+    public static final String COLUMN_SMTP = "first";
+    public static final String COLUMN_POP3_IMAP = "last";
     public static final String COLUMN_DISPLAY = "display";
-    public static final String COLUMN_EMAIL = "email";
+    public static final String COLUMN_USERNAME = "email";
     public static final String COLUMN_PASSWORD = "password";
 
 
@@ -40,13 +40,13 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_CONTENT + " text"
             + ")";
 
-    private static final String DB_CREATE_USERS = "create table "
+    private static final String DB_CREATE_ACCOUNT = "create table "
             + TABLE_USERS + "("
             + COLUMN_ID  + " integer primary key autoincrement , "
-            + COLUMN_FIRST + " text, "
-            + COLUMN_LAST + " text, "
+            + COLUMN_SMTP + " text, "
+            + COLUMN_POP3_IMAP + " text, "
             + COLUMN_DISPLAY + " text,"
-            + COLUMN_EMAIL + " text,"
+            + COLUMN_USERNAME + " text,"
             + COLUMN_PASSWORD + " text"
             + ")";
 
@@ -60,7 +60,7 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DB_CREATE_EMAILS);
-        db.execSQL(DB_CREATE_USERS);
+        db.execSQL(DB_CREATE_ACCOUNT);
     }
 
     //kada zelimo da izmenomo tabele, moramo pozvati drop table za sve tabele koje imamo

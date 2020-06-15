@@ -1,29 +1,56 @@
 package com.example.mojprojekat.model;
 
-import android.util.Log;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-public class Message {
+import java.io.Serializable;
+import java.util.GregorianCalendar;
+
+public class Message implements Serializable {
+    @SerializedName("id")
+    @Expose
     private long id;
-    private Contact from;
-    private Contact to;
+
+    @SerializedName("_from")
+    @Expose
+    private String from;
+
+    @SerializedName("_to")
+    @Expose
+    private String to;
+
+    @SerializedName("_cc")
+    @Expose
     private String cc;
+
+    @SerializedName("_bcc")
+    @Expose
     private String bcc;
-    private String dateTime;
+
+    @SerializedName("dateTime")
+    @Expose
+    private GregorianCalendar dateTime;
+
+    @SerializedName("subject")
+    @Expose
     private String subject;
+
+    @SerializedName("content")
+    @Expose
     private String content;
 
     public Message(){
         this.id=0;
-        this.from=new Contact();
-        this.to=new Contact();
+        this.from="";
+        this.to="";
         this.cc="";
         this.bcc="";
-        this.dateTime="";
+        this.dateTime=new GregorianCalendar();
         this.subject="";
         this.content="";
     }
 
-    public Message(long id, Contact from, Contact to,String cc,String bcc,String dateTime,String subject,String content) {
+    public Message(long id, String from, String to,String cc,String bcc,GregorianCalendar dateTime,String subject,String content) {
         this.id = id;
         this.from=from;
         this.to=to;
@@ -33,6 +60,7 @@ public class Message {
         this.subject=subject;
         this.content=content;
     }
+
     public long getId() {
         return id;
     }
@@ -49,20 +77,19 @@ public class Message {
         this.id = id;
     }
 
-    public Contact getFrom() {
+    public String getFrom() {
         return from;
     }
 
-    public void setFrom(Contact from) {
-        Log.d("Tu sam","Tu sam:");
+    public void setFrom(String from) {
         this.from = from;
     }
 
-    public Contact getTo() {
+    public String getTo() {
         return to;
     }
 
-    public void setTo(Contact to) {
+    public void setTo(String to) {
         this.to = to;
     }
 
@@ -82,11 +109,11 @@ public class Message {
         this.bcc = bcc;
     }
 
-    public String getDateTime() {
+    public GregorianCalendar getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(String dateTime) {
+    public void setDateTime(GregorianCalendar dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -105,5 +132,6 @@ public class Message {
     public void setContent(String content) {
         this.content = content;
     }
+
 
 }

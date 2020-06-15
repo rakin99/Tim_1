@@ -8,21 +8,20 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderEmail;
-import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentEmail;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
+import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.FragmentTransition;
 
-import java.io.Console;
+import java.text.ParseException;
 
 public class EmailActivity extends AppCompatActivity {
 
@@ -44,11 +43,15 @@ public class EmailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         Long id = extras. getLong("id");
-        fillData(id);
+        try {
+            fillData(id);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    private void fillData(Long id) {
+    private void fillData(Long id) throws ParseException {
        /* String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
                 ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
                 ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT };
@@ -66,7 +69,7 @@ public class EmailActivity extends AppCompatActivity {
         TextView tvSubject = (TextView)findViewById(R.id.tvSubject);
         TextView tvContent = (TextView)findViewById(R.id.tvContent);
 
-        tvFrom.setText(message.getFrom().getEmail());
+        tvFrom.setText(message.getFrom());
         tvSubject.setText(message.getSubject());
         tvContent.setText(message.getContent());
 
@@ -74,14 +77,14 @@ public class EmailActivity extends AppCompatActivity {
         //cursor.close();
     }
 
-    public static Message createMessage(Cursor cursor) {
+    public static Message createMessage(Cursor cursor) throws ParseException {
         Message message = new Message();
         message.setId(cursor.getLong(0));
-        message.setFrom(c1);
-        message.setTo(c2);
+        message.setFrom(c1.getEmail());
+        message.setTo(c2.getEmail());
         message.setCc(cursor.getString(3));
         message.setBcc(cursor.getString(4));
-        message.setDateTime(cursor.getString(5));
+        message.setDateTime(DateUtil.convertFromDMYHMS(cursor.getString(5)));
         message.setSubject(cursor.getString(6));
         message.setContent(cursor.getString(7));
         return message;
@@ -101,7 +104,11 @@ public class EmailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_delete:
-                Data.getMessages(this).remove(message);
+                try {
+                    Data.getMessages(this).remove(message);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 int deleted = getContentResolver().delete(todoUri,null, null);
                 Log.d("Broj obrisanih redova",String.valueOf(deleted));
                 Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);

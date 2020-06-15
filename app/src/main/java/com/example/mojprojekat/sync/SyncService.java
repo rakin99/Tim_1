@@ -6,11 +6,13 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
-import com.example.mojprojekat.model.TagToSend;
+import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.service.ServiceUtils;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.ReviewerTools;
 
-import okhttp3.ResponseBody;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,15 +24,12 @@ public class SyncService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        Intent ints = new Intent(EmailsActivity.SYNC_DATA);
+        final Intent ints = new Intent(EmailsActivity.SYNC_DATA);
         int status = ReviewerTools.getConnectivityStatus(getApplicationContext());
         ints.putExtra(RESULT_CODE, status);
 
         //ima konekcije ka netu skini sta je potrebno i sinhronizuj bazu
         if(status == ReviewerTools.TYPE_WIFI || status == ReviewerTools.TYPE_MOBILE) {
-            TagToSend tts = new TagToSend();
-            tts.setName("Test tag");
-            tts.setDateModified("2017-05-09");
 
             /*
              * Poziv REST servisa se odvija u pozadini i mi ne moramo da vodimo racuna o tome
@@ -40,25 +39,28 @@ public class SyncService extends Service {
              * Servis koji pozivamo izgleda:
              * http://<service_ip_adress>:<service_port>/rs.ftn.reviewer.rest/rest/proizvodi/
              * */
-            Call<ResponseBody> call = ServiceUtils.reviewerService.add(tts);
-            call.enqueue(new Callback<ResponseBody>() {
+            Call<List<Message>> call = ServiceUtils.reviewerService.getMessages();
+            call.enqueue(new Callback<List<Message>>() {
                 @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                     if (response.code() == 200) {
-                        Log.d("REZ", "Meesage recieved");
+                        Log.d("REZ", "Meesages recieved, status 200");
+                        for (Message message:response.body()
+                             ) {
+                            Data.messages.add(message);
+                        }
                     } else {
-                        Log.d("REZ", "Meesage recieved: " + response.code());
+                        Log.d("EZ", "Meesages recieved: " + response.code());
                     }
+                    sendBroadcast(ints);
                 }
 
                 @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                public void onFailure(Call<List<Message>> call, Throwable t) {
                     Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                 }
             });
         }
-        sendBroadcast(ints);
-
         stopSelf();
 
         return START_NOT_STICKY;

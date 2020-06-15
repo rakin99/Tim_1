@@ -1,5 +1,8 @@
 package com.example.mojprojekat.service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -10,8 +13,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ServiceUtils {
 
     //EXAMPLE: http://192.168.43.73:8080/rs.ftn.reviewer.rest/rest/proizvodi/
-    public static final String SERVICE_API_PATH = "http://<service_ip_adress>:<service_port>/rs.ftn.reviewer.rest/rest/proizvodi/";
-    public static final String ADD = "add";
+    public static final String SERVICE_API_PATH = "http://192.168.1.7:8080/api/";
+    public static final String MESSAGES = "messages";
 
     /*
      * Ovo ce nam sluziti za debug, da vidimo da li zahtevi i odgovoru idu
@@ -30,6 +33,9 @@ public class ServiceUtils {
         return client;
     }
 
+    public static Gson gson = new GsonBuilder()
+            .setLenient()
+            .create();
     /*
      * Prvo je potrebno da definisemo retrofit instancu preko koje ce komunikacija ici
      * */
@@ -43,6 +49,6 @@ public class ServiceUtils {
      * Definisemo konkretnu instancu servisa na intnerntu sa kojim
      * vrsimo komunikaciju
      * */
-    public static MeilService reviewerService = retrofit.create(MeilService.class);
+    public static MailService reviewerService = retrofit.create(MailService.class);
 
 }

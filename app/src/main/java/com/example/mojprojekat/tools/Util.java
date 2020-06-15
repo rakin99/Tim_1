@@ -10,6 +10,8 @@ import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Message;
 
+import java.text.ParseException;
+
 public class Util {
 
     public static void initDBEmails(Activity activity) {
@@ -46,19 +48,19 @@ public class Util {
         SQLiteDatabase dbUser=dbHelperUser.getWritableDatabase();
         {
             ContentValues entryUser=new ContentValues();
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_FIRST,"Mika");
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_LAST,"Mikic");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_SMTP,"Mika");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_POP3_IMAP,"Mikic");
             entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"Slika lepog Mike");
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_EMAIL,"m");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_USERNAME,"m");
             entryUser.put(ReviewerSQLiteHelper.COLUMN_PASSWORD,"m");
 
             activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
 
             entryUser=new ContentValues();
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_FIRST,"Mile");
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_LAST,"Milic");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_SMTP,"Mile");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_POP3_IMAP,"Milic");
             entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"Slika lepog Mileta");
-            entryUser.put(ReviewerSQLiteHelper.COLUMN_EMAIL,"lepimile@gmail.com");
+            entryUser.put(ReviewerSQLiteHelper.COLUMN_USERNAME,"lepimile@gmail.com");
             entryUser.put(ReviewerSQLiteHelper.COLUMN_DISPLAY,"0000");
 
             activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
@@ -66,16 +68,16 @@ public class Util {
         dbUser.close();
     }
 
-    public static ContentValues createContentValues(Activity activity, Message message){
+    public static ContentValues createContentValues(Activity activity, Message message) throws ParseException {
         ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(activity);
         ContentValues entry = new ContentValues();
-        Log.d("From: ",message.getFrom().getEmail());
-        Log.d("To: ",message.getTo().getEmail());
-        entry.put(ReviewerSQLiteHelper.COLUMN_FROM, message.getFrom().getEmail());
-        entry.put(ReviewerSQLiteHelper.COLUMN_TO, message.getTo().getEmail());
+        Log.d("From: ",message.getFrom());
+        Log.d("To: ",message.getTo());
+        entry.put(ReviewerSQLiteHelper.COLUMN_FROM, message.getFrom());
+        entry.put(ReviewerSQLiteHelper.COLUMN_TO, message.getTo());
         entry.put(ReviewerSQLiteHelper.COLUMN_CC, message.getCc());
         entry.put(ReviewerSQLiteHelper.COLUMN_BCC, message.getBcc());
-        entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, message.getDateTime());
+        entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, DateUtil.formatTimeWithSecond(message.getDateTime()));
         entry.put(ReviewerSQLiteHelper.COLUMN_SUBJECT, message.getSubject());
         entry.put(ReviewerSQLiteHelper.COLUMN_CONTENT, message.getContent());
 

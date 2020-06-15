@@ -1,24 +1,24 @@
 package com.example.mojprojekat.service;
 
-import com.example.mojprojekat.model.TagToSend;
+import com.example.mojprojekat.model.Message;
 
-import okhttp3.ResponseBody;
+import java.util.List;
+
 import retrofit2.Call;
-import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.POST;
 
 /*
  * Klasa koja opisuje koji tj mapira putanju servisa
  * opisuje koji metod koristimo ali i sta ocekujemo kao rezultat
  * */
 
-public interface MeilService {
+public interface MailService {
 
     @Headers({
             "User-Agent: Mobile-Android",
             "Content-Type:application/json"
     })
-    @POST(ServiceUtils.ADD)
-    Call<ResponseBody> add(@Body TagToSend tag);
+    @GET(ServiceUtils.MESSAGES)
+    Call<List<Message>> getMessages();
 }

@@ -1,7 +1,6 @@
 package com.example.mojprojekat.fragmenti;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import androidx.fragment.app.ListFragment;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.adapteri.MessageAdapter;
 import com.example.mojprojekat.aktivnosti.EmailActivity;
-import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
@@ -41,7 +39,7 @@ public class FragmentEmails extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
 
-        Message message = Data.getMessages(getActivity()).get(position);
+        Message message = Data.messages.get(position);
 
         /*
         * Ako nasoj aktivnosti zelimo da posaljemo nekakve podatke
