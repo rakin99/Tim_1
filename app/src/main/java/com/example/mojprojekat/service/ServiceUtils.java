@@ -1,8 +1,5 @@
 package com.example.mojprojekat.service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -32,10 +29,6 @@ public class ServiceUtils {
 
         return client;
     }
-
-    public static Gson gson = new GsonBuilder()
-            .setLenient()
-            .create();
     /*
      * Prvo je potrebno da definisemo retrofit instancu preko koje ce komunikacija ici
      * */

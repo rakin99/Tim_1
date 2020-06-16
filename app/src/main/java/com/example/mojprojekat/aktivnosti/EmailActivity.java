@@ -18,7 +18,6 @@ import com.example.mojprojekat.fragmenti.FragmentEmail;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
-import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.FragmentTransition;
 
 import java.text.ParseException;
@@ -84,7 +83,7 @@ public class EmailActivity extends AppCompatActivity {
         message.setTo(c2.getEmail());
         message.setCc(cursor.getString(3));
         message.setBcc(cursor.getString(4));
-        message.setDateTime(DateUtil.convertFromDMYHMS(cursor.getString(5)));
+        message.setDateTime(cursor.getString(5));
         message.setSubject(cursor.getString(6));
         message.setContent(cursor.getString(7));
         return message;
@@ -104,11 +103,7 @@ public class EmailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_delete:
-                try {
-                    Data.getMessages(this).remove(message);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Data.messages.remove(message);
                 int deleted = getContentResolver().delete(todoUri,null, null);
                 Log.d("Broj obrisanih redova",String.valueOf(deleted));
                 Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);

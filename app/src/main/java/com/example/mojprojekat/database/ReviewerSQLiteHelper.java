@@ -30,7 +30,7 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
 
     private static final String DB_CREATE_EMAILS = "create table "
             + TABLE_EMAILS + "("
-            + COLUMN_ID  + " integer primary key autoincrement , "
+            + COLUMN_ID  + " integer primary key, "
             + COLUMN_FROM + " text, "
             + COLUMN_TO + " text, "
             + COLUMN_CC + " text,"

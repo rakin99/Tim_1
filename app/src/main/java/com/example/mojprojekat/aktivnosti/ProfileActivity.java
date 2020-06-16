@@ -8,9 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -86,6 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
             case R.id.action_back:
                 Intent intent = new Intent(ProfileActivity.this, EmailsActivity.class);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.action_save: {
                 String[] allColumns = {ReviewerSQLiteHelper.COLUMN_ID,

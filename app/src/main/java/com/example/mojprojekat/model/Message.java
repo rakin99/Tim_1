@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.GregorianCalendar;
+import java.text.ParseException;
 
 public class Message implements Serializable {
     @SerializedName("id")
@@ -29,7 +29,7 @@ public class Message implements Serializable {
 
     @SerializedName("dateTime")
     @Expose
-    private GregorianCalendar dateTime;
+    private String dateTime;
 
     @SerializedName("subject")
     @Expose
@@ -45,12 +45,12 @@ public class Message implements Serializable {
         this.to="";
         this.cc="";
         this.bcc="";
-        this.dateTime=new GregorianCalendar();
+        this.dateTime="";
         this.subject="";
         this.content="";
     }
 
-    public Message(long id, String from, String to,String cc,String bcc,GregorianCalendar dateTime,String subject,String content) {
+    public Message(long id, String from, String to, String cc, String bcc, String dateTime, String subject, String content) {
         this.id = id;
         this.from=from;
         this.to=to;
@@ -109,12 +109,12 @@ public class Message implements Serializable {
         this.bcc = bcc;
     }
 
-    public GregorianCalendar getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(GregorianCalendar dateTime) {
-        this.dateTime = dateTime;
+    public void setDateTime(String date_Time) throws ParseException {
+        this.dateTime = date_Time;
     }
 
     public String getSubject() {
@@ -132,6 +132,4 @@ public class Message implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
-
-
 }

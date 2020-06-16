@@ -82,7 +82,7 @@ public class MessageAdapter extends BaseAdapter{
         }else {
             content.setText(message.getContent());
         }
-        date.setText(String.valueOf(message.getDateTime().getTime()));
+        date.setText(String.valueOf(message.getDateTime()));
 
         return  vi;
     }

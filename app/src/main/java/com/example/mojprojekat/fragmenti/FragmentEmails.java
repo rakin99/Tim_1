@@ -2,7 +2,6 @@ package com.example.mojprojekat.fragmenti;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,14 +15,13 @@ import androidx.fragment.app.ListFragment;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.adapteri.MessageAdapter;
 import com.example.mojprojekat.aktivnosti.EmailActivity;
-import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
 
 public class FragmentEmails extends ListFragment {
 
     public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
-    private MessageAdapter adapter;
+    public MessageAdapter adapter;
 
 	public static FragmentEmails newInstance() {
         return new FragmentEmails();
@@ -66,14 +64,6 @@ public class FragmentEmails extends ListFragment {
         int[] to = new int[] {R.id.from, R.id.subject,R.id.date};*/
         adapter = new MessageAdapter(getActivity());
         setListAdapter(adapter);
-    }
-
-    public String proveriDuzinu(String s){
-	    if (s.length()>20){
-	        return s.substring(0,20);
-        }
-        Log.d("Content: ",ReviewerSQLiteHelper.COLUMN_CONTENT);
-	    return  s;
     }
 
     /*

@@ -74,11 +74,11 @@ public class CreateEmailActivity extends AppCompatActivity {
                 message.setSubject(etSubject.getText().toString());
                 message.setContent(etContent.getText().toString());
                 try {
-                    message.setDateTime(DateUtil.getNow());
+                    message.setDateTime(DateUtil.formatTimeWithSecond(DateUtil.getNow()));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Log.d("\n\nVreme slanja poruke: ",String.valueOf(message.getDateTime().getTime()));
+                Log.d("\n\nVreme slanja poruke: ",String.valueOf(message.getDateTime()));
                 message.setCc("cc");
                 message.setBcc("bcc");
                 try {
@@ -87,11 +87,7 @@ public class CreateEmailActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Toast.makeText(this, "Uspešno ste poslali poruku!",Toast.LENGTH_SHORT).show();
-                try {
-                    Data.getMessages(this).add(message);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                Data.messages.add(message);
                 Intent intent3 = new Intent(CreateEmailActivity.this, EmailsActivity.class);
                 startActivity(intent3);
                 finish();

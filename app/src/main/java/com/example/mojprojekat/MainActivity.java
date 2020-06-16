@@ -6,6 +6,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mojprojekat.aktivnosti.SplashActivity;
+import com.example.mojprojekat.sync.SyncService;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,5 +26,12 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         }, SPLASH_TIME_OUT);
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        Intent i=new Intent(MainActivity.this, SyncService.class);
+        startService(i);
     }
 }

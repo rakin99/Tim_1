@@ -20,7 +20,6 @@ import retrofit2.Response;
 public class SyncService extends Service {
 
     public static String RESULT_CODE = "RESULT_CODE";
-
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -45,9 +44,30 @@ public class SyncService extends Service {
                 public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
                     if (response.code() == 200) {
                         Log.d("REZ", "Meesages recieved, status 200");
-                        for (Message message:response.body()
-                             ) {
-                            Data.messages.add(message);
+                        int lastInResponse=response.body().size();
+                        Log.d("lastInResponse: ",String.valueOf(lastInResponse));
+                        int lastInDataMessages=Data.messages.size();
+                        Log.d("lastInDataMessages: ",String.valueOf(lastInDataMessages));
+                        int start=0;
+                        if(lastInDataMessages==0){
+                            start=lastInDataMessages;
+                            System.out.println("lastInDataMessages == 0 <---------------------------------------------");
+                        }
+                        else if(lastInDataMessages<lastInResponse) {
+                            System.out.println("lastInDataMessages != lastInResponse <---------------------------------------------");
+                            start=lastInResponse - lastInDataMessages;
+                            System.out.println(start);
+                        }else{
+                            start=lastInResponse;
+                            System.out.println("lastInDataMessages == lastInResponse <---------------------------------------------");
+                        }
+                        System.out.println("Start: "+start);
+                        for (int i=start; i<response.body().size(); i++
+                        ) {
+                            System.out.println("Upisujem "+i+" poruku!<-----------------------------------");
+                            Message message = response.body().get(i);
+                            System.out.println("Id poruke: "+message.getId());
+                            Data.addMessage(SyncService.this, message);
                         }
                     } else {
                         Log.d("EZ", "Meesages recieved: " + response.code());
@@ -61,9 +81,8 @@ public class SyncService extends Service {
                 }
             });
         }
-        stopSelf();
 
-        return START_NOT_STICKY;
+        return START_STICKY;
     }
 
     @Override

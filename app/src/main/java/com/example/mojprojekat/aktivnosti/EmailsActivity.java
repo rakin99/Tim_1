@@ -34,9 +34,11 @@ import com.example.mojprojekat.fragmenti.FragmentEmails;
 import com.example.mojprojekat.model.NavItem;
 import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.ReviewerTools;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 
 public class EmailsActivity extends AppCompatActivity {
@@ -56,6 +58,7 @@ public class EmailsActivity extends AppCompatActivity {
     private SyncReceiver sync;
 
     private PendingIntent pendingIntent;
+
     private AlarmManager manager;
 
     private boolean allowSync;
@@ -151,6 +154,7 @@ public class EmailsActivity extends AppCompatActivity {
 
         // Retrieve a PendingIntent that will perform a broadcast
         Intent alarmIntent = new Intent(this, SyncService.class);
+        Intent refresh=new Intent(this, EmailsActivity.class);
         pendingIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
         manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
     }
@@ -237,6 +241,15 @@ public class EmailsActivity extends AppCompatActivity {
     protected  void onResume(){
         super.onResume();
 
+        try {
+            Data.readMessages(this);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
+
         //Za slucaj da referenca nije postavljena da se izbegne problem sa androidom!
         if (manager == null) {
             setUpReceiver();
@@ -280,14 +293,14 @@ public class EmailsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause(){
-        if (manager != null) {
+        /*if (manager != null) {
             manager.cancel(pendingIntent);
         }
 
         //osloboditi resurse
         if(sync != null){
             unregisterReceiver(sync);
-        }
+        }*/
 
         super.onPause();
     }
