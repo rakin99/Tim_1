@@ -23,6 +23,12 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USERNAME = "email";
     public static final String COLUMN_PASSWORD = "password";
 
+    public static final String TABLE_CONTACTS = "contact";
+    public static final String COLUMN_Id = "_id";
+    public static final String COLUMN_FIRST = "_first";
+    public static final String COLUMN_LAST = "_last";
+    public static final String COLUMN_EMAIL = "email";
+
 
     private static final String DATABASE_NAME = "emails.db";
     //i pocetnu verziju baze. Obicno krece od 1
@@ -50,6 +56,14 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_PASSWORD + " text"
             + ")";
 
+    private static final String DB_CREATE_CONTACTS = "create table "
+            + TABLE_CONTACTS + "("
+            + COLUMN_Id  + " integer primary key autoincrement , "
+            + COLUMN_FIRST + " text, "
+            + COLUMN_LAST + " text, "
+            + COLUMN_EMAIL + " text"
+            + ")";
+
     //Potrebno je dodati konstruktor zbog pravilne inicijalizacije
     public ReviewerSQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,12 +75,13 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(DB_CREATE_EMAILS);
         db.execSQL(DB_CREATE_ACCOUNT);
+        db.execSQL(DB_CREATE_CONTACTS);
     }
 
     //kada zelimo da izmenomo tabele, moramo pozvati drop table za sve tabele koje imamo
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EMAILS+TABLE_USERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EMAILS+TABLE_USERS+TABLE_CONTACTS);
         onCreate(db);
     }
 }
