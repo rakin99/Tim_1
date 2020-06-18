@@ -66,9 +66,10 @@ public class EmailsActivity extends AppCompatActivity {
 
     private boolean allowSync;
 
+    private String sort;
     private SharedPreferences sharedPreferences;
     private String synctime;
-    private String sort;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

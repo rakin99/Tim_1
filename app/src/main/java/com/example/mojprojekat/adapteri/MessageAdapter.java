@@ -76,7 +76,7 @@ public class MessageAdapter extends BaseAdapter{
         TextView date = (TextView)vi.findViewById(R.id.date);
 
         from.setText(message.getFrom());
-        subject.setText(message.getSubject());
+        subject.setText(String.valueOf(message.getId()));
         if(message.getContent().length()>30){
             content.setText(message.getContent().toString().substring(0,30)+"...");
         }else {

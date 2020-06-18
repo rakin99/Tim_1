@@ -15,6 +15,7 @@ import java.util.List;
 public class Data {
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static List<Message> messages=new ArrayList<Message>();
+    public static long maxId=0;
 
     public static void readMessages(Activity activity,String keyword) throws ParseException {
         messages.clear();
@@ -30,6 +31,9 @@ public class Data {
 
         while(cursor.moveToNext()){
             Message message = createMessage(cursor);
+            if(message.getId()>maxId){
+                maxId=message.getId();
+            }
             if(message.isActive()){
                 messages.add(message);
             }
@@ -74,6 +78,7 @@ public class Data {
     public static void addMessage(Service service,Message message){
         if(!(isInMessages(message))){
             messages.add(message);
+            System.out.println("\nUpisivanje u bazu poslate poruke!<---------------------------\n");
             Util.insertMessage(service,message);
         }
     }

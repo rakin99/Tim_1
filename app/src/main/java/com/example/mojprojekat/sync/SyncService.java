@@ -48,21 +48,7 @@ public class SyncService extends Service {
                         Log.d("lastInResponse: ",String.valueOf(lastInResponse));
                         int lastInDataMessages=Data.messages.size();
                         Log.d("lastInDataMessages: ",String.valueOf(lastInDataMessages));
-                        int start=0;
-                        if(lastInDataMessages==0){
-                            start=lastInDataMessages;
-                            System.out.println("lastInDataMessages == 0 <---------------------------------------------");
-                        }
-                        else if(lastInDataMessages<lastInResponse) {
-                            System.out.println("lastInDataMessages != lastInResponse <---------------------------------------------");
-                            start=lastInResponse - lastInDataMessages;
-                            System.out.println(start);
-                        }else{
-                            start=lastInResponse;
-                            System.out.println("lastInDataMessages == lastInResponse <---------------------------------------------");
-                        }
-                        System.out.println("Start: "+start);
-                        for (int i=start; i<response.body().size(); i++
+                        for (int i=0; i<response.body().size(); i++
                         ) {
                             System.out.println("Upisujem "+i+" poruku!<-----------------------------------");
                             Message message = response.body().get(i);

@@ -6,7 +6,11 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
+import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.ReviewerTools;
+
+import java.text.ParseException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -60,9 +64,38 @@ public class MessageService extends Service {
                             Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                         }
                     });
+                    break;
                 }
                 case "send":{
+                    System.out.println("Id: "+intent.getLongExtra("id",0)+"<---------------");
+                    long id=intent.getLongExtra("id",0);
+                    try {
+                        Message message= Data.getMessageById(id);
+                        Data.messages.clear();
+                        System.out.println("\nCC je: "+message.getCc()+"<--------------------------");
+                        Call<Message> call = ServiceUtils.reviewerService.send(message);
+                        call.enqueue(new Callback<Message>() {
+                            @Override
+                            public void onResponse(Call<Message> call, Response<Message> response) {
+                                if (response.code() == 201) {
+                                    Log.d("REZ", "Meesage send");
+                                    Message message1=response.body();
+                                    Data.addMessage(MessageService.this,message1);
+                                } else {
+                                    Log.d("REZ", "Meesage send: " + response.code());
+                                }
+                                sendBroadcast(ints);
+                            }
 
+                            @Override
+                            public void onFailure(Call<Message> call, Throwable t) {
+                                Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                            }
+                        });
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 }
             }
         }

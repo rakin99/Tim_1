@@ -2,10 +2,8 @@ package com.example.mojprojekat.aktivnosti;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -15,7 +13,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
-import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.fragmenti.FragmentCreateEmail;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
@@ -23,7 +20,6 @@ import com.example.mojprojekat.service.MessageService;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.FragmentTransition;
-import com.example.mojprojekat.tools.Util;
 
 import java.text.ParseException;
 
@@ -68,24 +64,13 @@ public class CreateEmailActivity extends AppCompatActivity {
                 EditText etSubject=findViewById(R.id.etSubject);
                 EditText etContent=findViewById(R.id.etContent);
                 Message message=new Message();
-                message.setId(Data.messages.get(Data.messages.size()).getId());
-                System.out.println("\nNovi ID je: "+message.getId()+"<-----------------------------------\n");
                 Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
-                Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
                 message.setFrom(c1.getEmail());
-                message.setTo(c2.getEmail());
+                message.setTo(etTo.getText().toString());
                 message.setSubject(etSubject.getText().toString());
                 message.setContent(etContent.getText().toString());
                 try {
                     message.setDateTime(DateUtil.formatTimeWithSecond(DateUtil.getNow()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                Log.d("\n\nVreme slanja poruke: ",String.valueOf(message.getDateTime()));
-                message.setCc("cc");
-                message.setBcc("bcc");
-                try {
-                    Uri retVal = getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, Util.createContentValues(this, message));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

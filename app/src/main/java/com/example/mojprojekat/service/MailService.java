@@ -31,5 +31,5 @@ public interface MailService {
     Call<ResponseBody> delete(@Path("id") Long id);
 
     @POST(ServiceUtils.MESSAGES)
-    Call<ResponseBody> send(@Body Message message);
+    Call<Message> send(@Body Message message);
 }
