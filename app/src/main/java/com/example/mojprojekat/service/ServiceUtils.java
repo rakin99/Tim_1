@@ -12,6 +12,7 @@ public class ServiceUtils {
     //EXAMPLE: http://192.168.43.73:8080/rs.ftn.reviewer.rest/rest/proizvodi/
     public static final String SERVICE_API_PATH = "http://192.168.1.7:8080/api/";
     public static final String MESSAGES = "messages";
+    public static final String DELETE=MESSAGES+"/{id}";
 
     /*
      * Ovo ce nam sluziti za debug, da vidimo da li zahtevi i odgovoru idu
@@ -28,6 +29,10 @@ public class ServiceUtils {
                 .addInterceptor(interceptor).build();
 
         return client;
+    }
+
+    private static int getId(int id){
+        return id;
     }
     /*
      * Prvo je potrebno da definisemo retrofit instancu preko koje ce komunikacija ici

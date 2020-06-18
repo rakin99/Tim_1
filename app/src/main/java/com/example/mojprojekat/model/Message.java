@@ -39,6 +39,14 @@ public class Message implements Serializable {
     @Expose
     private String content;
 
+    @SerializedName("unread")
+    @Expose
+    private boolean unread;
+
+    @SerializedName("active")
+    @Expose
+    private boolean active;
+
     public Message(){
         this.id=0;
         this.from="";
@@ -48,6 +56,7 @@ public class Message implements Serializable {
         this.dateTime="";
         this.subject="";
         this.content="";
+        this.active=true;
     }
 
     public Message(long id, String from, String to, String cc, String bcc, String dateTime, String subject, String content) {
@@ -59,6 +68,7 @@ public class Message implements Serializable {
         this.dateTime=dateTime;
         this.subject=subject;
         this.content=content;
+        this.active=true;
     }
 
     public long getId() {
@@ -131,5 +141,21 @@ public class Message implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isUnread() {
+        return unread;
+    }
+
+    public void setUnread(boolean unread) {
+        this.unread = unread;
     }
 }

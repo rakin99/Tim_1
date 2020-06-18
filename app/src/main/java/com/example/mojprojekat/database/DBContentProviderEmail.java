@@ -141,16 +141,17 @@ public class DBContentProviderEmail extends ContentProvider {
                         selectionArgs);
                 break;
             case EMAIL_ID:
-                String idCinema = uri.getLastPathSegment();
+                String idMessage = uri.getLastPathSegment();
+                System.out.println("\nidMessage je: "+idMessage+"<-------------------------------------------\n");
                 if (TextUtils.isEmpty(selection)) {
                     rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_EMAILS,
                             values,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idCinema,
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idMessage,
                             null);
                 } else {
                     rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_EMAILS,
                             values,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idCinema
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idMessage
                                     + " and "
                                     + selection,
                             selectionArgs);

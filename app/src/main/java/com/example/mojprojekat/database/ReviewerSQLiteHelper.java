@@ -15,6 +15,8 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_DATE_TIME = "dateTime";
     public static final String COLUMN_SUBJECT = "subject";
     public static final String COLUMN_CONTENT = "content";
+    public static final String COLUMN_UNREAD = "unread";
+    public static final String COLUMN_ACTIVE = "active";
 
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_SMTP = "first";
@@ -43,7 +45,9 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_BCC + " text,"
             + COLUMN_DATE_TIME + " datetime,"
             + COLUMN_SUBJECT + " text,"
-            + COLUMN_CONTENT + " text"
+            + COLUMN_CONTENT + " text,"
+            + COLUMN_UNREAD + " boolean,"
+            + COLUMN_ACTIVE + " boolean"
             + ")";
 
     private static final String DB_CREATE_ACCOUNT = "create table "

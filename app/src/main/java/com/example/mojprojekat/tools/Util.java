@@ -27,6 +27,8 @@ public class Util {
             entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, message.getDateTime());
             entry.put(ReviewerSQLiteHelper.COLUMN_SUBJECT, message.getSubject());
             entry.put(ReviewerSQLiteHelper.COLUMN_CONTENT, message.getContent());
+            entry.put(ReviewerSQLiteHelper.COLUMN_UNREAD, message.isUnread());
+            entry.put(ReviewerSQLiteHelper.COLUMN_ACTIVE, message.isActive());
 
             service.getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, entry);
         }
@@ -70,6 +72,8 @@ public class Util {
         entry.put(ReviewerSQLiteHelper.COLUMN_DATE_TIME, message.getDateTime());
         entry.put(ReviewerSQLiteHelper.COLUMN_SUBJECT, message.getSubject());
         entry.put(ReviewerSQLiteHelper.COLUMN_CONTENT, message.getContent());
+        entry.put(ReviewerSQLiteHelper.COLUMN_CONTENT, message.isUnread());
+        entry.put(ReviewerSQLiteHelper.COLUMN_CONTENT, message.isUnread());
 
         return entry;
     }

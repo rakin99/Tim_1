@@ -1,26 +1,31 @@
 package com.example.mojprojekat.aktivnosti;
 
+import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderEmail;
+import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentEmail;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
-import com.example.mojprojekat.tools.Data;
+import com.example.mojprojekat.service.MessageService;
 import com.example.mojprojekat.tools.FragmentTransition;
 
 import java.text.ParseException;
+
+import static com.example.mojprojekat.tools.Data.getMessageById;
+import static com.example.mojprojekat.tools.Data.messages;
 
 public class EmailActivity extends AppCompatActivity {
 
@@ -38,7 +43,6 @@ public class EmailActivity extends AppCompatActivity {
 
         Toolbar toolbar=findViewById(R.id.tbEmail);
         setSupportActionBar(toolbar);
-
         Bundle extras = getIntent().getExtras();
 
         Long id = extras. getLong("id");
@@ -62,7 +66,7 @@ public class EmailActivity extends AppCompatActivity {
         Message message = createMessage(cursor);*/
 
         todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
-        message=Data.getMessageById(id,this);
+        message= getMessageById(id);
 
         TextView tvFrom = (TextView)findViewById(R.id.tvFrom);
         TextView tvSubject = (TextView)findViewById(R.id.tvSubject);
@@ -74,19 +78,6 @@ public class EmailActivity extends AppCompatActivity {
 
 
         //cursor.close();
-    }
-
-    public static Message createMessage(Cursor cursor) throws ParseException {
-        Message message = new Message();
-        message.setId(cursor.getLong(0));
-        message.setFrom(c1.getEmail());
-        message.setTo(c2.getEmail());
-        message.setCc(cursor.getString(3));
-        message.setBcc(cursor.getString(4));
-        message.setDateTime(cursor.getString(5));
-        message.setSubject(cursor.getString(6));
-        message.setContent(cursor.getString(7));
-        return message;
     }
 
     @Override
@@ -103,9 +94,17 @@ public class EmailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_delete:
-                Data.messages.remove(message);
-                int deleted = getContentResolver().delete(todoUri,null, null);
-                Log.d("Broj obrisanih redova",String.valueOf(deleted));
+                Intent intent2 = new Intent(this, MessageService.class);
+                intent2.putExtra("id",message.getId());
+                intent2.putExtra("option","delete");
+                startService(intent2);
+                message.setActive(false);
+                messages.remove(message);
+                ContentValues entryUser=new ContentValues();
+                entryUser.put(ReviewerSQLiteHelper.COLUMN_ACTIVE,message.isActive());
+                int update = getContentResolver().update(todoUri,entryUser, null, null);
+                Log.d("\nBroj azuriranih redova",String.valueOf(update)+"\n");
+                Toast.makeText(this, "Uspesno ste obrisali poruku!",Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);
                 startActivity(intent1);
                 finish();

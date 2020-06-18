@@ -20,6 +20,7 @@
 
         <receiver android:name=".sync.SyncReceiver" />
         <service android:name=".sync.SyncService" />
+        <service android:name=".service.MessageService" />
 
         <activity android:name=".aktivnosti.DetailActivity"></activity>
         <activity android:name=".aktivnosti.LoginActivity" />

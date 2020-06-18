@@ -1,9 +1,14 @@
 package com.example.mojprojekat.aktivnosti;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.example.mojprojekat.R;
@@ -35,6 +40,29 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         FragmentTransition.to(PrefsFragment.newInstance(), this,true, R.id.settingsContent);
+
+        Toolbar tbCreateEmail=findViewById(R.id.tbSettings);
+        setSupportActionBar(tbCreateEmail);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch(item.getItemId()){
+            case R.id.action_back_settings:
+                Intent intent = new Intent(SettingsActivity.this, EmailsActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.activity_item_settings, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

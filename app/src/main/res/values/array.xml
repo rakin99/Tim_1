@@ -22,4 +22,9 @@
         <item>600</item>
     </string-array>
 
+    <string-array name="sortiranje_vrednosti">
+        <item>DESC</item>
+        <item>ASC</item>
+    </string-array>
+
 </resources>

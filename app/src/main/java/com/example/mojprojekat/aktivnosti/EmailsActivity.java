@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -41,6 +40,9 @@ import com.example.mojprojekat.tools.ReviewerTools;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import static java.lang.Integer.*;
+import static java.lang.System.*;
+
 public class EmailsActivity extends AppCompatActivity {
 
     private ImageView profile;
@@ -53,6 +55,7 @@ public class EmailsActivity extends AppCompatActivity {
     private RelativeLayout mDrawerPane;
     private CharSequence mTitle;
     private AlertDialog dialog;
+
 
     public static String SYNC_DATA = "SYNC_DATA";
     private SyncReceiver sync;
@@ -149,16 +152,6 @@ public class EmailsActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpReceiver(){
-        sync = new SyncReceiver();
-
-        // Retrieve a PendingIntent that will perform a broadcast
-        Intent alarmIntent = new Intent(this, SyncService.class);
-        Intent refresh=new Intent(this, EmailsActivity.class);
-        pendingIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
-        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-    }
-
     private void selectItemFromDrawer(int position) {
         if(position == 0){
             FragmentTransition.to(FragmentEmails.newInstance(), this, false, R.id.mainContent);
@@ -237,18 +230,28 @@ public class EmailsActivity extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
     }
+
+    private void setUpReceiver(){
+        sync = new SyncReceiver();
+
+        // Retrieve a PendingIntent that will perform a broadcast
+        Intent alarmIntent = new Intent(this, SyncService.class);
+        pendingIntent = PendingIntent.getService(this, 0, alarmIntent, 0);
+        manager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+    }
+
     @Override
     protected  void onResume(){
         super.onResume();
 
         try {
-            Data.readMessages(this);
+            Data.readMessages(this,sort);
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
 
-        System.out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
+        out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
 
         //Za slucaj da referenca nije postavljena da se izbegne problem sa androidom!
         if (manager == null) {
@@ -256,9 +259,10 @@ public class EmailsActivity extends AppCompatActivity {
         }
 
         if(allowSync){
-            int interval = ReviewerTools.calculateTimeTillNextSync(Integer.parseInt(synctime));
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
-            Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
+            int interval = ReviewerTools.calculateTimeTillNextSync(parseInt(synctime));
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, currentTimeMillis(), interval, pendingIntent);
+            /*Intent alarmIntent = new Intent(this, SyncService.class);
+            startService(alarmIntent);*/
         }
 
         IntentFilter filter = new IntentFilter();
@@ -286,21 +290,23 @@ public class EmailsActivity extends AppCompatActivity {
          * ako nesto pod tim kljucem se ne nalazi u storage-u, da dobijemo podrazumevanu
          * vrednost nazad, i to nam je signal da nista nije sacuvano pod tim kljucem.
          * */
-        synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");// pola minuta
+        synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");
+        System.out.println("\nsynctime: "+synctime+"<-----------------------------------\n");// pola minuta
         allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), true);
-        sort = sharedPreferences.getString(getString(R.string.sortiranje), "Opadajuce");
+        sort = sharedPreferences.getString(getString(R.string.sort), "DESC");
+        System.out.println("\nsort: "+sort+"<-----------------------------------\n");
     }
 
     @Override
     protected void onPause(){
-        /*if (manager != null) {
+        if (manager != null) {
             manager.cancel(pendingIntent);
         }
 
         //osloboditi resurse
         if(sync != null){
             unregisterReceiver(sync);
-        }*/
+        }
 
         super.onPause();
     }

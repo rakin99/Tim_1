@@ -19,6 +19,7 @@ import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.fragmenti.FragmentCreateEmail;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.service.MessageService;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.FragmentTransition;
@@ -56,8 +57,8 @@ public class CreateEmailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_cancel:
-                Intent intent2 = new Intent(CreateEmailActivity.this, EmailsActivity.class);
-                startActivity(intent2);
+                Intent intent1 = new Intent(CreateEmailActivity.this, EmailsActivity.class);
+                startActivity(intent1);
                 finish();
                 return true;
             case R.id.action_send:
@@ -67,6 +68,8 @@ public class CreateEmailActivity extends AppCompatActivity {
                 EditText etSubject=findViewById(R.id.etSubject);
                 EditText etContent=findViewById(R.id.etContent);
                 Message message=new Message();
+                message.setId(Data.messages.get(Data.messages.size()).getId());
+                System.out.println("\nNovi ID je: "+message.getId()+"<-----------------------------------\n");
                 Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
                 Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
                 message.setFrom(c1.getEmail());
@@ -86,8 +89,12 @@ public class CreateEmailActivity extends AppCompatActivity {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(this, "Uspešno ste poslali poruku!",Toast.LENGTH_SHORT).show();
                 Data.messages.add(message);
+                Intent intent2 = new Intent(this, MessageService.class);
+                intent2.putExtra("id",message.getId());
+                intent2.putExtra("option","send");
+                startService(intent2);
+                Toast.makeText(this, "Uspešno ste poslali poruku!",Toast.LENGTH_SHORT).show();
                 Intent intent3 = new Intent(CreateEmailActivity.this, EmailsActivity.class);
                 startActivity(intent3);
                 finish();

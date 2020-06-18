@@ -17,7 +17,7 @@
         <ListPreference
             android:dialogTitle="@string/sortiranje"
             android:entries="@array/sortiranje"
-            android:entryValues="@array/sortiranje"
+            android:entryValues="@array/sortiranje_vrednosti"
             android:key="@string/sort"
             android:title="@string/sortiranje"
             android:summary="@string/opis_sortiranja"

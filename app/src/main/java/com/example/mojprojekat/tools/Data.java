@@ -16,20 +16,23 @@ public class Data {
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static List<Message> messages=new ArrayList<Message>();
 
-    public static void readMessages(Activity activity) throws ParseException {
+    public static void readMessages(Activity activity,String keyword) throws ParseException {
         messages.clear();
         System.out.println("Poceo ucitavanje poruka iz baze!<---------------------------------------");
         String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
                 ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
-                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT };
+                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE };
+
+        String sort=ReviewerSQLiteHelper.COLUMN_DATE_TIME+" "+keyword;
 
         Cursor cursor = activity.getContentResolver().query(dbContentProviderEmail.CONTENT_URI_EMAIL, allColumns, null, null,
-                null);
+                sort);
 
         while(cursor.moveToNext()){
             Message message = createMessage(cursor);
-
-            messages.add(message);
+            if(message.isActive()){
+                messages.add(message);
+            }
         }
         System.out.println("Zavrsio ucitavanje iz baze!<-------------------------------------------------");
     }
@@ -45,10 +48,20 @@ public class Data {
         message.setDateTime(cursor.getString(5));
         message.setSubject(cursor.getString(6));
         message.setContent(cursor.getString(7));
+        if(Integer.parseInt(cursor.getString(8))==1){
+            message.setUnread(true);
+        }else if (Integer.parseInt(cursor.getString(8))==0){
+            message.setUnread(false);
+        }
+        if(Integer.parseInt(cursor.getString(9))==1){
+            message.setActive(true);
+        }else if (Integer.parseInt(cursor.getString(9))==0){
+            message.setActive(false);
+        }
         return message;
     }
 
-    public static Message getMessageById(Long id,Activity activity) throws ParseException {
+    public static Message getMessageById(Long id) throws ParseException {
         for (Message message:messages
              ) {
             if(message.getId()==id){
@@ -59,7 +72,19 @@ public class Data {
     }
 
     public static void addMessage(Service service,Message message){
-        messages.add(message);
-        Util.insertMessage(service,message);
+        if(!(isInMessages(message))){
+            messages.add(message);
+            Util.insertMessage(service,message);
+        }
+    }
+
+    public static boolean isInMessages(Message message){
+        for (Message m:messages
+             ) {
+            if(m.getId()==message.getId()){
+                return true;
+            }
+        }
+        return false;
     }
 }
