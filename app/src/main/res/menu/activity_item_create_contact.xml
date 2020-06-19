@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item
+        android:id="@+id/action_save"
+        android:title="@string/action_send"
+        android:icon="@drawable/potvrda"
+        android:orderInCategory="300"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_cancel"
+        android:title="@string/action_cancel"
+        android:icon="@drawable/cancel"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_back"
+        android:title="@string/action_back"
+        android:icon="@drawable/back"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom"/>
 </menu>
