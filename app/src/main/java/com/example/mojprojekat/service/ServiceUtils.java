@@ -11,8 +11,10 @@ public class ServiceUtils {
 
     //EXAMPLE: http://192.168.43.73:8080/rs.ftn.reviewer.rest/rest/proizvodi/
     public static final String SERVICE_API_PATH = "http://192.168.1.7:8080/api/";
-    public static final String MESSAGES = "messages";
+    public static final String MESSAGES = "messages/{username}";
     public static final String DELETE=MESSAGES+"/{id}";
+    public static final String ACCOUNTS="accounts";
+    public static final String ACCOUNT=ACCOUNTS+"/{username}/{password}";
 
     /*
      * Ovo ce nam sluziti za debug, da vidimo da li zahtevi i odgovoru idu
@@ -47,6 +49,5 @@ public class ServiceUtils {
      * Definisemo konkretnu instancu servisa na intnerntu sa kojim
      * vrsimo komunikaciju
      * */
-    public static MailService reviewerService = retrofit.create(MailService.class);
-
+    public static MailService mailService = retrofit.create(MailService.class);
 }

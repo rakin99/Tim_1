@@ -1,6 +1,7 @@
 package com.example.mojprojekat.aktivnosti;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SplashActivity extends AppCompatActivity {
+
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

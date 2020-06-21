@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.mojprojekat">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
@@ -17,12 +17,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".aktivnosti.RegistrationActivity"
+            android:label="Registracija">
+
+        </activity>
 
         <receiver android:name=".sync.SyncReceiver" />
+
         <service android:name=".sync.SyncService" />
         <service android:name=".service.MessageService" />
+        <service android:name=".service.AccountService" />
 
-        <activity android:name=".aktivnosti.DetailActivity"></activity>
+        <activity android:name=".aktivnosti.DetailActivity" />
         <activity android:name=".aktivnosti.LoginActivity" />
         <activity android:name=".aktivnosti.ContactActivity" />
         <activity android:name=".aktivnosti.CreateContactActivity" />
@@ -31,12 +38,10 @@
         <activity
             android:name=".aktivnosti.SettingsActivity"
             android:label="@string/preferences"
-            android:parentActivityName=".aktivnosti.EmailsActivity"
-            >
+            android:parentActivityName=".aktivnosti.EmailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".aktivnosti.EmailsActivity" />
-
         </activity>
         <activity android:name=".aktivnosti.FolderActivity" />
         <activity android:name=".aktivnosti.FoldersActivity" />
@@ -61,12 +66,11 @@
         <activity android:name=".MainActivity" />
 
         <provider
-            android:name="com.example.mojprojekat.database.DBContentProviderEmail"
+            android:name=".database.DBContentProviderEmail"
             android:authorities="com.example.mojprojekat.emails"
             android:exported="false" />
-
         <provider
-            android:name="com.example.mojprojekat.database.DBContentProviderUser"
+            android:name=".database.DBContentProviderUser"
             android:authorities="com.example.mojprojekat.users"
             android:exported="false" />
     </application>

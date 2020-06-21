@@ -54,7 +54,7 @@
     <string name="pref_syncConnectionType">Interval sinhronizacije</string>
     <string name="sortiranje">Sortiranje</string>
     <string name="sort">pref_sort</string>
-    <string name="preferences">Podesavanja</string>
+    <string name="preferences">Podešavanja</string>
     <string name="message">Poruka</string>
     <string name="login"></string>
     <string name="action_save">Sačuvaj</string>

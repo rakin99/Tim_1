@@ -1,5 +1,6 @@
 package com.example.mojprojekat.service;
 
+import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.model.Message;
 
 import java.util.List;
@@ -25,7 +26,13 @@ public interface MailService {
             "Content-Type:application/json"
     })
     @GET(ServiceUtils.MESSAGES)
-    Call<List<Message>> getMessages();
+    Call<List<Message>> getMessages(@Path("username") String username);
+
+    @GET(ServiceUtils.ACCOUNT)
+    Call<Account> getAccount(@Path("username") String username,@Path("password") String password);
+
+    @POST(ServiceUtils.ACCOUNTS)
+    Call<Account> add(@Body Account account);
 
     @DELETE(ServiceUtils.DELETE)
     Call<ResponseBody> delete(@Path("id") Long id);

@@ -45,7 +45,7 @@ public class MessageService extends Service {
                     System.out.println("Id: "+intent.getLongExtra("id",0)+"<---------------");
                     long id=intent.getLongExtra("id",0);
                     System.out.println("Trazim poruku! <-------------------------------");
-                    Call<ResponseBody> call = ServiceUtils.reviewerService.delete(id);
+                    Call<ResponseBody> call = ServiceUtils.mailService.delete(id);
                     System.out.println("Pronasao poruku i saljem ju! Id poruke je: "+id+" <-------------------------------");
                     System.out.println("putanje: "+ServiceUtils.SERVICE_API_PATH+ServiceUtils.DELETE);
                     call.enqueue(new Callback<ResponseBody>() {
@@ -73,7 +73,7 @@ public class MessageService extends Service {
                         Message message= Data.getMessageById(id);
                         Data.messages.clear();
                         System.out.println("\nCC je: "+message.getCc()+"<--------------------------");
-                        Call<Message> call = ServiceUtils.reviewerService.send(message);
+                        Call<Message> call = ServiceUtils.mailService.send(message);
                         call.enqueue(new Callback<Message>() {
                             @Override
                             public void onResponse(Call<Message> call, Response<Message> response) {

@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".aktivnosti.LoginActivity"
     android:orientation="vertical"
-    tools:visibility="visible">
+    tools:context=".aktivnosti.RegistrationActivity">
 
     <com.google.android.material.appbar.AppBarLayout android:id="@+id/appbar"
         android:layout_width="match_parent" android:layout_height="wrap_content"
@@ -17,7 +16,7 @@
         Adding this view fixes (workaround) the problem -->
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tbLogin"
+            android:id="@+id/tbRegistration"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -26,6 +25,6 @@
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/content_login" />
+    <include layout="@layout/content_registration" />
 
 </LinearLayout>

@@ -2,9 +2,12 @@ package com.example.mojprojekat.sync;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.mojprojekat.R;
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.service.ServiceUtils;
@@ -20,6 +23,7 @@ import retrofit2.Response;
 public class SyncService extends Service {
 
     public static String RESULT_CODE = "RESULT_CODE";
+    private SharedPreferences sharedPreferences;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
@@ -38,7 +42,9 @@ public class SyncService extends Service {
              * Servis koji pozivamo izgleda:
              * http://<service_ip_adress>:<service_port>/rs.ftn.reviewer.rest/rest/proizvodi/
              * */
-            Call<List<Message>> call = ServiceUtils.reviewerService.getMessages();
+            sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
+            String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+            Call<List<Message>> call = ServiceUtils.mailService.getMessages(username);
             call.enqueue(new Callback<List<Message>>() {
                 @Override
                 public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {

@@ -3,25 +3,28 @@ package com.example.mojprojekat.model;
 public class Account {
 
     private long id;
-    private String smtp;
-    private String pop3_imap;
+    private String smtpAddress;
+    private String inServerAddress;
     private String username;
     private String password;
+    private boolean active;
 
     public Account(){
         this.id=0;
-        this.smtp ="";
-        this.pop3_imap ="";
+        this.smtpAddress ="";
+        this.inServerAddress ="";
         this.username ="";
         this.password="";
+        this.active=true;
     };
 
-    public Account(long id, String smtp, String pop3_imap, String username, String password){
+    public Account(long id, String smtp, String pop3_imap, String username, String password,boolean active){
         this.id=id;
-        this.smtp = smtp;
-        this.pop3_imap = pop3_imap;
+        this.smtpAddress = smtp;
+        this.inServerAddress = pop3_imap;
         this.username = username;
         this.password=password;
+        this.active=active;
     };
 
     public long getId(){
@@ -32,20 +35,20 @@ public class Account {
         this.id=id;
     }
 
-    public String getSmtp() {
-        return smtp;
+    public String getSmtpAddress() {
+        return smtpAddress;
     }
 
-    public void setSmtp(String smtp) {
-        this.smtp = smtp;
+    public void setSmtpAddress(String smtpAddress) {
+        this.smtpAddress = smtpAddress;
     }
 
-    public String getPop3_imap() {
-        return pop3_imap;
+    public String getInServerAddress() {
+        return inServerAddress;
     }
 
-    public void setPop3_imap(String pop3_imap) {
-        this.pop3_imap = pop3_imap;
+    public void setInServerAddress(String inServerAddress) {
+        this.inServerAddress = inServerAddress;
     }
 
     public String getUsername() {
@@ -64,7 +67,15 @@ public class Account {
         this.password = password;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     public String format(){
-        return "Id: "+id+" Smtp: "+ smtp +" pop3_imap: "+ pop3_imap +" username: "+ username +" Password: "+password;
+        return "Id: "+id+" smtpAddress: "+ smtpAddress +" pop3_imap: "+ inServerAddress +" username: "+ username +" Password: "+password;
     }
 }

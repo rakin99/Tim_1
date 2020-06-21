@@ -70,8 +70,8 @@ public class ProfileActivity extends AppCompatActivity {
             Account account = new Account();
             if(cursor.getCount()!=0){
                 account.setId(cursor.getLong(0));
-                account.setSmtp(cursor.getString(1));
-                account.setPop3_imap(cursor.getString(2));
+                account.setSmtpAddress(cursor.getString(1));
+                account.setInServerAddress(cursor.getString(2));
                 account.setUsername(cursor.getString(4));
                 account.setPassword(cursor.getString(5));
             }
@@ -109,8 +109,8 @@ public class ProfileActivity extends AppCompatActivity {
                 SQLiteDatabase dbUsers = dbHelperUser.getWritableDatabase();
                 {
                     ContentValues entryUser = new ContentValues();
-                    entryUser.put(ReviewerSQLiteHelper.COLUMN_SMTP, user.getSmtp());
-                    entryUser.put(ReviewerSQLiteHelper.COLUMN_POP3_IMAP, user.getPop3_imap());
+                    entryUser.put(ReviewerSQLiteHelper.COLUMN_SMTP, user.getSmtpAddress());
+                    entryUser.put(ReviewerSQLiteHelper.COLUMN_POP3_IMAP, user.getInServerAddress());
                     entryUser.put(ReviewerSQLiteHelper.COLUMN_USERNAME, user.getUsername());
                     entryUser.put(ReviewerSQLiteHelper.COLUMN_PASSWORD, user.getPassword());
 

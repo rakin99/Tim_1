@@ -17,9 +17,13 @@ import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Account;
+import com.example.mojprojekat.service.AccountService;
 import com.example.mojprojekat.tools.Util;
 
 public class LoginActivity extends AppCompatActivity {
+
+    private Button btnStartEmailsActivity;
+    private Button btnRegistration;
 
     DBContentProviderUser dbUser;
     private SharedPreferences sharedPreferences;
@@ -28,37 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        Util.initDBUsers(LoginActivity.this);
-        Button btnStartEmailsActivity = (Button) findViewById(R.id.btnStartEmailsActivity);
-        final String[] projection={ReviewerSQLiteHelper.COLUMN_ID, ReviewerSQLiteHelper.COLUMN_SMTP,
-                ReviewerSQLiteHelper.COLUMN_POP3_IMAP, ReviewerSQLiteHelper.COLUMN_DISPLAY, ReviewerSQLiteHelper.COLUMN_USERNAME,
-                ReviewerSQLiteHelper.COLUMN_PASSWORD};
-        final EditText etUserName=(EditText) findViewById(R.id.txtUserName);
-        final EditText etPassword=(EditText) findViewById(R.id.psPasword);
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
-        final SharedPreferences.Editor editor=sharedPreferences.edit();
-        btnStartEmailsActivity.setOnClickListener(new View.OnClickListener() {
+        btnStartEmailsActivity = (Button) findViewById(R.id.btnStartEmailsActivity);
+        btnRegistration=(Button) findViewById((R.id.btnRegistration));
+        btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String selectionClause=ReviewerSQLiteHelper.COLUMN_USERNAME +" LIKE ? AND "+ReviewerSQLiteHelper.COLUMN_PASSWORD+" LIKE ?";
-                String[] selectionArgs={etUserName.getText().toString(),etPassword.getText().toString()};
-                Cursor cursor=getContentResolver().query(dbUser.CONTENT_URI_USER,projection,selectionClause,selectionArgs,null);
-                cursor.moveToFirst();
-                Account account = createUser(cursor);
-                Log.d("-----","-----");
-                Log.d("Email1: ",account.getUsername());
-                Log.d("Password: ",account.getPassword());
-                if(account.getUsername().equals(etUserName.getText().toString()) && account.getPassword().equals(etPassword.getText().toString())){
-                    editor.putString(getString(R.string.login),account.getUsername());
-                    editor.commit();
-                    Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
-                    Intent intent = new Intent(LoginActivity.this, EmailsActivity.class);
-                    startActivity(intent);
-                    finish();
-                }else{
-                    Toast.makeText(LoginActivity.this, "Pogrešili ste korisničko ili lozinku! \n Pokušajte ponovo!",Toast.LENGTH_SHORT).show();
-                }
+                Intent i=new Intent(LoginActivity.this,RegistrationActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -67,8 +47,8 @@ public class LoginActivity extends AppCompatActivity {
         Account account = new Account();
         if(cursor.getCount()!=0){
             account.setId(cursor.getLong(0));
-            account.setSmtp(cursor.getString(1));
-            account.setPop3_imap(cursor.getString(2));
+            account.setSmtpAddress(cursor.getString(1));
+            account.setInServerAddress(cursor.getString(2));
             account.setUsername(cursor.getString(4));
             account.setPassword(cursor.getString(5));
         }
@@ -83,7 +63,36 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected  void onResume(){
         super.onResume();
-        Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
+        Util.initDBUsers(LoginActivity.this);
+        final String[] projection={ReviewerSQLiteHelper.COLUMN_ID, ReviewerSQLiteHelper.COLUMN_SMTP,
+                ReviewerSQLiteHelper.COLUMN_POP3_IMAP, ReviewerSQLiteHelper.COLUMN_DISPLAY, ReviewerSQLiteHelper.COLUMN_USERNAME,
+                ReviewerSQLiteHelper.COLUMN_PASSWORD};
+        final EditText etUserName=(EditText) findViewById(R.id.txtUserName);
+        final EditText etPassword=(EditText) findViewById(R.id.psPasword);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+        final SharedPreferences.Editor editor=sharedPreferences.edit();
+        btnStartEmailsActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(etPassword.getText().toString().equals("") && etUserName.getText().toString().equals("")){
+                    Toast.makeText(LoginActivity.this, "Unesite e-mail adresu i lozinku ime!",Toast.LENGTH_SHORT).show();
+                }
+                else if(etUserName.getText().toString().equals("")){
+                    Toast.makeText(LoginActivity.this, "Unesite korisničko ime!",Toast.LENGTH_SHORT).show();
+                }
+                else if(etPassword.getText().toString().equals("")){
+                    Toast.makeText(LoginActivity.this, "Unesite lozinku!",Toast.LENGTH_SHORT).show();
+                }
+                else if(!(etUserName.getText().toString().equals("")) && !(etPassword.getText().toString().equals(""))) {
+                    Intent intent2 = new Intent(LoginActivity.this, AccountService.class);
+                    intent2.putExtra("email_adress", etUserName.getText().toString());
+                    intent2.putExtra("password", etPassword.getText().toString());
+                    intent2.putExtra("option", "login");
+                    startService(intent2);
+                }
+            }
+        });
     }
 
     @Override
