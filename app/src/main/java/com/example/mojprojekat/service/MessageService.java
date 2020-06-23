@@ -7,7 +7,9 @@ import android.util.Log;
 
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.modelDTO.MessageDTO;
 import com.example.mojprojekat.tools.Data;
+import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.ReviewerTools;
 
 import java.text.ParseException;
@@ -73,14 +75,21 @@ public class MessageService extends Service {
                         Message message= Data.getMessageById(id);
                         Data.messages.clear();
                         System.out.println("\nCC je: "+message.getCc()+"<--------------------------");
-                        Call<Message> call = ServiceUtils.mailService.send(message);
-                        call.enqueue(new Callback<Message>() {
+                        MessageDTO messageDTO=new MessageDTO(message);
+                        Call<MessageDTO> call = ServiceUtils.mailService.send(messageDTO);
+                        call.enqueue(new Callback<MessageDTO>() {
                             @Override
-                            public void onResponse(Call<Message> call, Response<Message> response) {
+                            public void onResponse(Call<MessageDTO> call, Response<MessageDTO> response) {
                                 if (response.code() == 201) {
                                     Log.d("REZ", "Meesage send");
-                                    Message message1=response.body();
-                                    Data.addMessage(MessageService.this,message1);
+                                    MessageDTO messageDTO1=response.body();
+                                    try {
+                                        Message message1 = new Message(messageDTO1.getId(),messageDTO1.getFrom(),messageDTO1.getTo(),messageDTO1.getCc(),messageDTO1.getBcc(),
+                                            DateUtil.convertFromDMYHMS(messageDTO1.getDateTime()),messageDTO1.getSubject(),messageDTO1.getContent());
+                                        Data.addMessage(MessageService.this,message1);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
                                 } else {
                                     Log.d("REZ", "Meesage send: " + response.code());
                                 }
@@ -88,7 +97,7 @@ public class MessageService extends Service {
                             }
 
                             @Override
-                            public void onFailure(Call<Message> call, Throwable t) {
+                            public void onFailure(Call<MessageDTO> call, Throwable t) {
                                 Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                             }
                         });

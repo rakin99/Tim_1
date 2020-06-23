@@ -3,6 +3,7 @@ package com.example.mojprojekat.aktivnosti;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,12 +20,20 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash2);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+        System.out.println("\n\nUlogovani: "+username);
         int SPLASH_TIME_OUT=2000;
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                finish();
+                if(username.equals("") || username.equals("Nema ulogovanog")){
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    finish();
+                }else if(!username.equals("") && !username.equals("Nema ulogovanog")){
+                    startActivity(new Intent(SplashActivity.this, EmailsActivity.class));
+                    finish();
+                }
             }
         }, SPLASH_TIME_OUT);
     }

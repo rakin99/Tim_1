@@ -10,10 +10,13 @@ import android.util.Log;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.modelDTO.MessageDTO;
 import com.example.mojprojekat.service.ServiceUtils;
 import com.example.mojprojekat.tools.Data;
+import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.ReviewerTools;
 
+import java.text.ParseException;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,10 +47,11 @@ public class SyncService extends Service {
              * */
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
             String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
-            Call<List<Message>> call = ServiceUtils.mailService.getMessages(username);
-            call.enqueue(new Callback<List<Message>>() {
+            System.out.println("\nUsername: "+username+"<--------------------------------\n");
+            Call<List<MessageDTO>> call = ServiceUtils.mailService.getMessages(username);
+            call.enqueue(new Callback<List<MessageDTO>>() {
                 @Override
-                public void onResponse(Call<List<Message>> call, Response<List<Message>> response) {
+                public void onResponse(Call<List<MessageDTO>> call, Response<List<MessageDTO>> response) {
                     if (response.code() == 200) {
                         Log.d("REZ", "Meesages recieved, status 200");
                         int lastInResponse=response.body().size();
@@ -57,9 +61,14 @@ public class SyncService extends Service {
                         for (int i=0; i<response.body().size(); i++
                         ) {
                             System.out.println("Upisujem "+i+" poruku!<-----------------------------------");
-                            Message message = response.body().get(i);
-                            System.out.println("Id poruke: "+message.getId());
-                            Data.addMessage(SyncService.this, message);
+                            MessageDTO messageDTO = response.body().get(i);
+                            try {
+                                Message message = new Message(messageDTO.getId(),messageDTO.getFrom(),messageDTO.getTo(),messageDTO.getCc(),messageDTO.getBcc(),
+                                        DateUtil.convertFromDMYHMS(messageDTO.getDateTime()),messageDTO.getSubject(),messageDTO.getContent());
+                                Data.addMessage(SyncService.this, message);
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
                     } else {
                         Log.d("EZ", "Meesages recieved: " + response.code());
@@ -68,7 +77,7 @@ public class SyncService extends Service {
                 }
 
                 @Override
-                public void onFailure(Call<List<Message>> call, Throwable t) {
+                public void onFailure(Call<List<MessageDTO>> call, Throwable t) {
                     Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                 }
             });

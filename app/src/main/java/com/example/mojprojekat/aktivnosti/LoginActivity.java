@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -70,8 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etUserName=(EditText) findViewById(R.id.txtUserName);
         final EditText etPassword=(EditText) findViewById(R.id.psPasword);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
-        final SharedPreferences.Editor editor=sharedPreferences.edit();
+        System.out.println("Ulogovani: "+sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
         btnStartEmailsActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

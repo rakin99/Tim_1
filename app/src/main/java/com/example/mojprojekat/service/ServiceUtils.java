@@ -12,6 +12,7 @@ public class ServiceUtils {
     //EXAMPLE: http://192.168.43.73:8080/rs.ftn.reviewer.rest/rest/proizvodi/
     public static final String SERVICE_API_PATH = "http://192.168.1.7:8080/api/";
     public static final String MESSAGES = "messages/{username}";
+    public static final String SEND ="messages";
     public static final String DELETE=MESSAGES+"/{id}";
     public static final String ACCOUNTS="accounts";
     public static final String ACCOUNT=ACCOUNTS+"/{username}/{password}";

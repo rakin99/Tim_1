@@ -45,6 +45,7 @@ import static java.lang.System.*;
 
 public class EmailsActivity extends AppCompatActivity {
 
+    private String username;
     private ImageView profile;
     private TextView profileUserName;
     private RelativeLayout profileBox;
@@ -246,7 +247,7 @@ public class EmailsActivity extends AppCompatActivity {
         super.onResume();
 
         try {
-            Data.readMessages(this,sort);
+            Data.readMessages(this,sort,username);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -291,6 +292,7 @@ public class EmailsActivity extends AppCompatActivity {
          * ako nesto pod tim kljucem se ne nalazi u storage-u, da dobijemo podrazumevanu
          * vrednost nazad, i to nam je signal da nista nije sacuvano pod tim kljucem.
          * */
+        username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog!");
         synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");
         System.out.println("\nsynctime: "+synctime+"<-----------------------------------\n");// pola minuta
         allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), true);

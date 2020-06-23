@@ -9,6 +9,9 @@ import android.widget.TextView;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
+import com.example.mojprojekat.tools.DateUtil;
+
+import java.text.ParseException;
 
 /*
 * Adapteri unutar Android-a sluze da prikazu unapred nedefinisanu kolicinu podataka
@@ -82,7 +85,11 @@ public class MessageAdapter extends BaseAdapter{
         }else {
             content.setText(message.getContent());
         }
-        date.setText(String.valueOf(message.getDateTime()));
+        try {
+            date.setText(DateUtil.formatTimeWithSecond(message.getDateTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         return  vi;
     }

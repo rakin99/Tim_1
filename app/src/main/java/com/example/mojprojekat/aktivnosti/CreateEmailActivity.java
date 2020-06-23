@@ -14,7 +14,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.fragmenti.FragmentCreateEmail;
-import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.service.MessageService;
 import com.example.mojprojekat.tools.Data;
@@ -58,19 +57,17 @@ public class CreateEmailActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_send:
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
                 EditText etFrom=findViewById(R.id.etFrom);
                 EditText etTo=findViewById(R.id.etTo);
                 EditText etSubject=findViewById(R.id.etSubject);
                 EditText etContent=findViewById(R.id.etContent);
                 Message message=new Message();
-                Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
-                message.setFrom(c1.getEmail());
+                message.setFrom(etFrom.getText().toString());
                 message.setTo(etTo.getText().toString());
                 message.setSubject(etSubject.getText().toString());
                 message.setContent(etContent.getText().toString());
                 try {
-                    message.setDateTime(DateUtil.formatTimeWithSecond(DateUtil.getNow()));
+                    message.setDateTime(DateUtil.getNow());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }

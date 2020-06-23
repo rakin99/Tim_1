@@ -53,7 +53,11 @@ public class AccountService extends Service {
                     account.setPassword(password);
                     account.setSmtpAddress(domen);
                     account.setUsername(username);
-                    account.setInServerAddress("pop3");
+                    if(domen.equals("yahoo.mail")){
+                        account.setInServerAddress("mail.yahoo.mail");
+                    }else{
+                        account.setInServerAddress(domen);
+                    }
                     Call<Account> call = ServiceUtils.mailService.add(account);
                     call.enqueue(new Callback<Account>() {
                         @Override
@@ -95,7 +99,7 @@ public class AccountService extends Service {
                                 Log.d("-----","-----");
                                 Log.d("Email1: ",account.getUsername());
                                 Log.d("Password: ",account.getPassword());
-                                editor.putString(getString(R.string.login),account.getUsername());
+                                editor.putString(getString(R.string.login),account.getUsername()+"@"+account.getSmtpAddress());
                                 editor.commit();
                                 Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
                                 Intent i = new Intent(AccountService.this, EmailsActivity.class);

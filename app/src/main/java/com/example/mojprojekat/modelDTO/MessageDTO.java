@@ -1,52 +1,77 @@
-package com.example.mojprojekat.model;
+package com.example.mojprojekat.modelDTO;
 
+import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.DateUtil;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.text.ParseException;
-import java.util.GregorianCalendar;
 
-public class Message {
+public class MessageDTO implements Serializable {
 
+    @SerializedName("id")
+    @Expose
     private long id;
 
+    @SerializedName("_from")
+    @Expose
     private String from;
 
+    @SerializedName("_to")
+    @Expose
     private String to;
 
+    @SerializedName("_cc")
+    @Expose
     private String cc;
 
+    @SerializedName("_bcc")
+    @Expose
     private String bcc;
 
-    private GregorianCalendar dateTime;
+    @SerializedName("dateTime")
+    @Expose
+    private String dateTime;
 
+    @SerializedName("subject")
+    @Expose
     private String subject;
 
+    @SerializedName("content")
+    @Expose
     private String content;
 
+    @SerializedName("unread")
+    @Expose
     private boolean unread;
 
+    @SerializedName("active")
+    @Expose
     private boolean active;
 
-    public Message(){
+    public MessageDTO(){
         this.id=0;
         this.from="";
         this.to="";
         this.cc="";
         this.bcc="";
-        this.dateTime=new GregorianCalendar();
+        this.dateTime="";
         this.subject="";
         this.content="";
         this.unread=true;
         this.active=true;
     }
 
-    public Message(long id, String from, String to, String cc, String bcc, GregorianCalendar dateTime, String subject, String content) {
-        this.id = id;
-        this.from=from;
-        this.to=to;
-        this.cc=cc;
-        this.bcc=bcc;
-        this.dateTime=dateTime;
-        this.subject=subject;
-        this.content=content;
+    public MessageDTO(Message m) throws ParseException {
+        this.id = m.getId();
+        this.from=m.getFrom();
+        this.to=m.getTo();
+        this.cc=m.getCc();
+        this.bcc=m.getBcc();
+        this.dateTime= DateUtil.formatTimeWithSecond(m.getDateTime());
+        this.subject=m.getSubject();
+        this.content=m.getContent();
         this.active=true;
     }
 
@@ -55,6 +80,14 @@ public class Message {
     }
 
     public void setId(long id) {
+        this.id = id;
+    }
+
+    public long getName() {
+        return id;
+    }
+
+    public void setName(int id) {
         this.id = id;
     }
 
@@ -90,11 +123,11 @@ public class Message {
         this.bcc = bcc;
     }
 
-    public GregorianCalendar getDateTime() {
+    public String getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(GregorianCalendar date_Time) throws ParseException {
+    public void setDateTime(String date_Time) throws ParseException {
         this.dateTime = date_Time;
     }
 

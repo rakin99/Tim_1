@@ -10,8 +10,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.mojprojekat.R;
+import com.example.mojprojekat.fragmenti.PasswordDialog;
 import com.example.mojprojekat.service.AccountService;
 
 import javax.mail.internet.AddressException;
@@ -58,13 +60,18 @@ public class RegistrationActivity extends AppCompatActivity {
                     Toast.makeText(this, "Morate uneti lozinku!",Toast.LENGTH_SHORT).show();
                 }else if(!isValidEmailAddress(email)){
                     Toast.makeText(this, "Format e-mail adrese je pogrešan!\nPokušajte ponovo!",Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    Intent intent2 = new Intent(this, AccountService.class);
-                    intent2.putExtra("email_adress",email);
-                    intent2.putExtra("password",password);
-                    intent2.putExtra("option","add");
-                    startService(intent2);
+                }else{
+                    String e=email.split("@")[1];
+                    if(e.equals("gmail.com") || e.equals("yahoo.com")){
+                        DialogFragment newFragment = new PasswordDialog();
+                        newFragment.show(getSupportFragmentManager(), "password");
+                    }else{
+                        Intent intent2 = new Intent(this, AccountService.class);
+                        intent2.putExtra("email_adress",email);
+                        intent2.putExtra("password",password);
+                        intent2.putExtra("option","add");
+                        startService(intent2);
+                    }
                 }
                 return true;
             default:
