@@ -1,6 +1,7 @@
 package com.example.mojprojekat.adapteri;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -77,19 +78,49 @@ public class MessageAdapter extends BaseAdapter{
         TextView subject = (TextView)vi.findViewById(R.id.subject);
         TextView content = (TextView)vi.findViewById(R.id.content);
         TextView date = (TextView)vi.findViewById(R.id.date);
+        System.out.println("\n"+message.getId()+"Poruka je: ");
+        System.out.println(message.isActive());
+        if(message.isUnread()){
+            System.out.println("\n\nPoruka nije procitana!<-----------------\n\n");
+            from.setTypeface(null, Typeface.BOLD_ITALIC);
+            subject.setTypeface(null, Typeface.BOLD_ITALIC);
+            content.setTypeface(null, Typeface.BOLD_ITALIC);
+            date.setTypeface(null, Typeface.BOLD_ITALIC);
 
-        from.setText(message.getFrom());
-        subject.setText(String.valueOf(message.getSubject()));
-        if(message.getContent().length()>30){
-            content.setText(message.getContent().toString().substring(0,30)+"...");
-        }else {
-            content.setText(message.getContent());
+            from.setText(message.getFrom());
+            subject.setText(String.valueOf(message.getSubject()));
+            if(message.getContent().length()>30){
+                content.setText(message.getContent().toString().substring(0,30)+"...");
+            }else {
+                content.setText(message.getContent());
+            }
+            try {
+                date.setText(DateUtil.formatTimeWithSecond(message.getDateTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }else if(!message.isUnread()){
+            System.out.println("\n\nPoruka procitana!<-----------------\n\n");
+            from.setTypeface(null, Typeface.NORMAL);
+            subject.setTypeface(null, Typeface.NORMAL);
+            content.setTypeface(null, Typeface.NORMAL);
+            date.setTypeface(null, Typeface.NORMAL);
+
+            from.setText(message.getFrom());
+            subject.setText(String.valueOf(message.getSubject()));
+            if(message.getContent().length()>30){
+                content.setText(message.getContent().toString().substring(0,30)+"...");
+            }else {
+                content.setText(message.getContent());
+            }
+            try {
+                date.setText(DateUtil.formatTimeWithSecond(message.getDateTime()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            date.setText(DateUtil.formatTimeWithSecond(message.getDateTime()));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+
 
         return  vi;
     }

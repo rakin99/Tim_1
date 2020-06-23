@@ -15,6 +15,7 @@ import java.util.List;
 public class Data {
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static List<Message> messages=new ArrayList<Message>();
+    public static List<Message> newMessages=new ArrayList<Message>();
     public static long maxId=0;
 
     public static void readMessages(Activity activity,String keyword,String username) throws ParseException {
@@ -77,10 +78,12 @@ public class Data {
         return null;
     }
 
-    public static void addMessage(Service service,Message message) throws ParseException {
+    public static void addMessage(Service service, Message message) throws ParseException {
         if(!(isInMessages(message))){
+            newMessages.add(message);
             messages.add(message);
             System.out.println("\nUpisivanje u bazu poslate poruke!<---------------------------\n");
+            System.out.println("Id poruke: "+message.getId());
             Util.insertMessage(service,message);
         }
     }

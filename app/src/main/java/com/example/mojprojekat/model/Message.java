@@ -38,7 +38,7 @@ public class Message {
         this.active=true;
     }
 
-    public Message(long id, String from, String to, String cc, String bcc, GregorianCalendar dateTime, String subject, String content) {
+    public Message(long id, String from, String to, String cc, String bcc, GregorianCalendar dateTime, String subject, String content,boolean unread,boolean active) {
         this.id = id;
         this.from=from;
         this.to=to;
@@ -47,7 +47,8 @@ public class Message {
         this.dateTime=dateTime;
         this.subject=subject;
         this.content=content;
-        this.active=true;
+        this.unread=unread;
+        this.active=active;
     }
 
     public long getId() {

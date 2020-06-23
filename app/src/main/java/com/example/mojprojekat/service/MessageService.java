@@ -1,11 +1,15 @@
 package com.example.mojprojekat.service;
 
 import android.app.Service;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
 
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
+import com.example.mojprojekat.database.DBContentProviderEmail;
+import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.modelDTO.MessageDTO;
 import com.example.mojprojekat.tools.Data;
@@ -21,6 +25,7 @@ import retrofit2.Response;
 
 public class MessageService extends Service {
 
+    private Uri todoUri;
     public static String RESULT_CODE = "RESULT_CODE";
 
     @Override
@@ -43,6 +48,48 @@ public class MessageService extends Service {
              * http://<service_ip_adress>:<service_port>/rs.ftn.reviewer.rest/rest/proizvodi/
              * */
             switch (option){
+                case "update":{
+                    System.out.println("Id: "+intent.getLongExtra("id",0)+"<---------------");
+                    long id=intent.getLongExtra("id",0);
+                    todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
+                    try {
+                        final MessageDTO messageDTO=new MessageDTO(Data.getMessageById(id));
+                        System.out.println("Trazim poruku! <-------------------------------"+messageDTO.getId());
+                        Call<MessageDTO> call = ServiceUtils.mailService.update(messageDTO,id);
+                        System.out.println("Pronasao poruku i saljem ju! Id poruke je: "+id+" <-------------------------------");
+                        System.out.println("putanje: "+ServiceUtils.SERVICE_API_PATH+ServiceUtils.UPDATE);
+                        call.enqueue(new Callback<MessageDTO>() {
+                            @Override
+                            public void onResponse(Call<MessageDTO> call, Response<MessageDTO> response) {
+                                if (response.code() == 200) {
+                                    MessageDTO messageDTO1=response.body();
+                                    try {
+                                        Message message = new Message(messageDTO1.getId(),messageDTO1.getFrom(),messageDTO1.getTo(),messageDTO1.getCc(),messageDTO1.getBcc(),
+                                                DateUtil.convertFromDMYHMS(messageDTO1.getDateTime()),messageDTO1.getSubject(),messageDTO1.getContent(),messageDTO1.isUnread(),messageDTO1.isActive());
+                                        Log.d("REZ", "Meesage unread"+ response.code());
+                                        ContentValues entryMessage=new ContentValues();
+                                        entryMessage.put(ReviewerSQLiteHelper.COLUMN_UNREAD,message.isUnread());
+                                        int update = getContentResolver().update(todoUri,entryMessage, null, null);
+                                        Log.d("\nBroj azuriranih redova",String.valueOf(update)+"\n");
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+                                    Log.d("REZ", "Meesage unread: " + response.code());
+                                }
+                                sendBroadcast(ints);
+                            }
+
+                            @Override
+                            public void onFailure(Call<MessageDTO> call, Throwable t) {
+                                Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                            }
+                        });
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
                 case "delete":{
                     System.out.println("Id: "+intent.getLongExtra("id",0)+"<---------------");
                     long id=intent.getLongExtra("id",0);
@@ -85,7 +132,7 @@ public class MessageService extends Service {
                                     MessageDTO messageDTO1=response.body();
                                     try {
                                         Message message1 = new Message(messageDTO1.getId(),messageDTO1.getFrom(),messageDTO1.getTo(),messageDTO1.getCc(),messageDTO1.getBcc(),
-                                            DateUtil.convertFromDMYHMS(messageDTO1.getDateTime()),messageDTO1.getSubject(),messageDTO1.getContent());
+                                            DateUtil.convertFromDMYHMS(messageDTO1.getDateTime()),messageDTO1.getSubject(),messageDTO1.getContent(),messageDTO1.isUnread(),messageDTO1.isActive());
                                         Data.addMessage(MessageService.this,message1);
                                     } catch (ParseException e) {
                                         e.printStackTrace();

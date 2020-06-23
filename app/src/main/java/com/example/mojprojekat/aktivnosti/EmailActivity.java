@@ -100,9 +100,9 @@ public class EmailActivity extends AppCompatActivity {
                 startService(intent2);
                 message.setActive(false);
                 messages.remove(message);
-                ContentValues entryUser=new ContentValues();
-                entryUser.put(ReviewerSQLiteHelper.COLUMN_ACTIVE,message.isActive());
-                int update = getContentResolver().update(todoUri,entryUser, null, null);
+                ContentValues entryMessage=new ContentValues();
+                entryMessage.put(ReviewerSQLiteHelper.COLUMN_ACTIVE,message.isActive());
+                int update = getContentResolver().update(todoUri,entryMessage, null, null);
                 Log.d("\nBroj azuriranih redova",String.valueOf(update)+"\n");
                 Toast.makeText(this, "Uspesno ste obrisali poruku!",Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);
@@ -121,6 +121,13 @@ public class EmailActivity extends AppCompatActivity {
     @Override
     protected  void onResume(){
         super.onResume();
+        if(message.isUnread()){
+            Toast.makeText(this,"Poruka je otvorena!", Toast.LENGTH_SHORT).show();
+            Intent intent2 = new Intent(this, MessageService.class);
+            intent2.putExtra("id",message.getId());
+            intent2.putExtra("option","update");
+            startService(intent2);
+        }
     }
 
     @Override

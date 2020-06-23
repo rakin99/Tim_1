@@ -26,6 +26,6 @@ public class ReviewerTools {
     }
 
     public static int calculateTimeTillNextSync(int minutes){
-        return 1000 * 60 * minutes;
+        return minutes/10;
     }
 }

@@ -246,6 +246,7 @@ public class EmailsActivity extends AppCompatActivity {
     protected  void onResume(){
         super.onResume();
 
+        Data.newMessages.clear();
         try {
             Data.readMessages(this,sort,username);
         } catch (ParseException e) {

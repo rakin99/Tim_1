@@ -37,7 +37,6 @@ import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 import com.example.mojprojekat.tools.ReviewerTools;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 
 import static java.lang.Integer.parseInt;
@@ -241,11 +240,11 @@ public class ContactsActivity extends AppCompatActivity {
     @Override
     protected  void onResume(){
         super.onResume();
-        try {
+       /* try {
             Data.readMessages(this,sort);
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
         out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
