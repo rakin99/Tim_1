@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.ListFragment;
 
 import com.example.mojprojekat.R;
-import com.example.mojprojekat.adapteri.MessageAdapter;
+import com.example.mojprojekat.adapteri.ContactAdapter;
 import com.example.mojprojekat.aktivnosti.ContactActivity;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
@@ -21,7 +21,7 @@ import com.example.mojprojekat.tools.Data;
 public class FragmentContacts extends ListFragment
 {
     public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
-    public MessageAdapter adapter;
+    public ContactAdapter adapter;
 
     public static FragmentContacts newInstance() {
         return new FragmentContacts();
@@ -49,7 +49,8 @@ public class FragmentContacts extends ListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //adapter = new MessageAdapter(getActivity());
+        /*adapter = new ContactAdapter(getActivity(),Data.contacts);
+        adapter.updateResults(Data.contacts);*/
         setListAdapter(adapter);
     }
 

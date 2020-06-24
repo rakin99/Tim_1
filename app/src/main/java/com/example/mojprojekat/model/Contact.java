@@ -1,6 +1,8 @@
 package com.example.mojprojekat.model;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 public class Contact {
@@ -12,11 +14,18 @@ public class Contact {
     private String email;
     private String format;
 
-    public Contact(int id, String first, String last, String email) {
+    private boolean unread;
+    private GregorianCalendar dateTime;
+    private boolean active;
+
+    public Contact(int id, String first, String last, String email ,boolean unread,boolean active, GregorianCalendar dateTime) {
         this.id = id;
         this.first = first;
         this.last = last;
         this.email = email;
+        this.unread=unread;
+        this.active=active;
+        this.dateTime=dateTime;
     }
 
     public Contact() {
@@ -24,6 +33,9 @@ public class Contact {
         this.first = "";
         this.last = "";
         this.email = "";
+        this.unread=true;
+        this.active=true;
+        this.dateTime=new GregorianCalendar();
     }
 
     public int getId() {
@@ -80,5 +92,29 @@ public class Contact {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public GregorianCalendar getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(GregorianCalendar date_Time) throws ParseException {
+        this.dateTime = date_Time;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public boolean isUnread() {
+        return unread;
+    }
+
+    public void setUnread(boolean unread) {
+        this.unread = unread;
     }
 }
