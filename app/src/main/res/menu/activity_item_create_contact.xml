@@ -15,11 +15,4 @@
         android:icon="@drawable/cancel"
         android:orderInCategory="200"
         app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/action_back"
-        android:title="@string/action_back"
-        android:icon="@drawable/back"
-        android:orderInCategory="100"
-        app:showAsAction="ifRoom"/>
 </menu>

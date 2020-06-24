@@ -190,6 +190,7 @@ public class EmailsActivity extends AppCompatActivity {
 
     private void prepareMenu(ArrayList<NavItem> mNavItems){
         mNavItems.add(new NavItem(getString(R.string.poruke),R.drawable.email));
+        //mNavItems.add(new NavItem(getString(R.string.kontakti), R.drawable.contact));
         mNavItems.add(new NavItem(getString(R.string.settings),R.drawable.ic_settings_applications_black_24dp));
         mNavItems.add(new NavItem(getString(R.string.all_folders),R.drawable.folders));
         mNavItems.add(new NavItem(getString(R.string.logout),R.drawable.exit));

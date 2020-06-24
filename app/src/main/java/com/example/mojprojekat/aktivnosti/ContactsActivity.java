@@ -29,7 +29,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.adapteri.DrawerListAdapter;
-import com.example.mojprojekat.fragmenti.FragmentEmails;
+import com.example.mojprojekat.fragmenti.FragmentContacts;
 import com.example.mojprojekat.model.NavItem;
 import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
@@ -153,7 +153,7 @@ public class ContactsActivity extends AppCompatActivity {
 
     private void selectItemFromDrawer(int position) {
         if(position == 0){
-            FragmentTransition.to(FragmentEmails.newInstance(), this, false, R.id.mainContent);
+            FragmentTransition.to(FragmentContacts.newInstance(), this, false, R.id.mainContent);
         }else if(position == 1){
             Intent intent = new Intent(ContactsActivity.this, SettingsActivity.class);
             startActivity(intent);
