@@ -25,6 +25,7 @@
 
         <receiver android:name=".sync.SyncReceiver" />
 
+        <service android:name=".sync.ControllerService" />
         <service android:name=".sync.SyncService" />
         <service android:name=".service.MessageService" />
         <service android:name=".service.AccountService" />

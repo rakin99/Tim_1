@@ -1,6 +1,7 @@
 package com.example.mojprojekat.adapteri;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,10 @@ import android.widget.TextView;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.model.Message;
-import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.DateUtil;
 
 import java.text.ParseException;
+import java.util.List;
 
 /*
 * Adapteri unutar Android-a sluze da prikazu unapred nedefinisanu kolicinu podataka
@@ -24,9 +25,18 @@ import java.text.ParseException;
 * */
 public class MessageAdapter extends BaseAdapter{
     private Activity activity;
+    private List<Message> messages;
 
-    public MessageAdapter(Activity activity) {
+
+    public MessageAdapter(Activity activity,List<Message> messages) {
         this.activity = activity;
+        this.messages = messages;
+    }
+
+    public void updateResults(List<Message> results) {
+        messages = results;
+        //Triggers the list update
+        notifyDataSetChanged();
     }
 
     /*
@@ -34,7 +44,7 @@ public class MessageAdapter extends BaseAdapter{
     * */
     @Override
     public int getCount() {
-        return Data.messages.size();
+        return messages.size();
     }
 
     /*
@@ -42,7 +52,7 @@ public class MessageAdapter extends BaseAdapter{
      * */
     @Override
     public Object getItem(int position) {
-        return Data.messages.get(position);
+        return messages.get(position);
     }
 
 
@@ -69,7 +79,7 @@ public class MessageAdapter extends BaseAdapter{
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View vi=convertView;
-        Message message = Data.messages.get(position);
+        Message message = messages.get(position);
 
         if(convertView==null)
             vi = activity.getLayoutInflater().inflate(R.layout.messages_list, null);
@@ -82,10 +92,14 @@ public class MessageAdapter extends BaseAdapter{
         System.out.println(message.isActive());
         if(message.isUnread()){
             System.out.println("\n\nPoruka nije procitana!<-----------------\n\n");
-            from.setTypeface(null, Typeface.BOLD_ITALIC);
-            subject.setTypeface(null, Typeface.BOLD_ITALIC);
-            content.setTypeface(null, Typeface.BOLD_ITALIC);
-            date.setTypeface(null, Typeface.BOLD_ITALIC);
+            from.setTextColor(Color.BLUE);
+            from.setTypeface(null, Typeface.BOLD);
+            subject.setTypeface(null, Typeface.BOLD);
+            subject.setTextColor(Color.BLUE);
+            content.setTypeface(null, Typeface.BOLD);
+            content.setTextColor(Color.BLUE);
+            date.setTypeface(null, Typeface.BOLD);
+            date.setTextColor(Color.BLUE);
 
             from.setText(message.getFrom());
             subject.setText(String.valueOf(message.getSubject()));
@@ -101,10 +115,6 @@ public class MessageAdapter extends BaseAdapter{
             }
         }else if(!message.isUnread()){
             System.out.println("\n\nPoruka procitana!<-----------------\n\n");
-            from.setTypeface(null, Typeface.NORMAL);
-            subject.setTypeface(null, Typeface.NORMAL);
-            content.setTypeface(null, Typeface.NORMAL);
-            date.setTypeface(null, Typeface.NORMAL);
 
             from.setText(message.getFrom());
             subject.setText(String.valueOf(message.getSubject()));

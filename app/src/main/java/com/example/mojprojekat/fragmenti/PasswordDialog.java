@@ -5,8 +5,11 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.fragment.app.DialogFragment;
 
@@ -29,9 +32,9 @@ public class PasswordDialog extends DialogFragment {
             link="https://help.yahoo.com/kb/generate-third-party-passwords-sln15241.html";
         }
         builder.setTitle("Dodatna lozinka");
-        builder.setMessage("Generišite dodatnu lozinku za vašu e-mail adresu!" +
+        builder.setMessage(Html.fromHtml("Generišite dodatnu lozinku za vašu e-mail adresu!" +
                 "\nPrilikom svake prijave koristite standardnu lozinku za vašu e-mail adresu!" +
-                "\nPomoć za generisanje dodatne lozinke je na sledećem linku: "+"\n"+"->"+link);
+                "\n"+"<a href=\"" + link +"\">Pomoć za generisanje dodatne lozinke.</a>"));
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater.inflate(R.layout.text_input_password, null))
@@ -61,6 +64,10 @@ public class PasswordDialog extends DialogFragment {
                         PasswordDialog.this.getDialog().cancel();
                     }
                 });
-        return builder.create();
+        AlertDialog builderFinal = builder.create();
+        builderFinal.show();
+        ((TextView)builderFinal.findViewById(android.R.id.message)).setMovementMethod(LinkMovementMethod.getInstance());
+
+        return builderFinal;
     }
 }

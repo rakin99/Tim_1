@@ -62,7 +62,8 @@ public class FragmentEmails extends ListFragment {
        /* getLoaderManager().initLoader(0, null,  this);
         String[] from = new String[] { ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT,ReviewerSQLiteHelper.COLUMN_DATE_TIME};
         int[] to = new int[] {R.id.from, R.id.subject,R.id.date};*/
-        adapter = new MessageAdapter(getActivity());
+        adapter = new MessageAdapter(getActivity(),Data.messages);
+        adapter.updateResults(Data.messages);
         setListAdapter(adapter);
     }
 

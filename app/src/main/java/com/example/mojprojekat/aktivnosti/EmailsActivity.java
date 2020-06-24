@@ -4,7 +4,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -26,22 +25,22 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.adapteri.DrawerListAdapter;
 import com.example.mojprojekat.fragmenti.FragmentEmails;
 import com.example.mojprojekat.model.NavItem;
+import com.example.mojprojekat.sync.ControllerService;
 import com.example.mojprojekat.sync.SyncReceiver;
 import com.example.mojprojekat.sync.SyncService;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
-import com.example.mojprojekat.tools.ReviewerTools;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import static java.lang.Integer.*;
-import static java.lang.System.*;
+import static java.lang.System.out;
 
 public class EmailsActivity extends AppCompatActivity {
 
@@ -56,6 +55,8 @@ public class EmailsActivity extends AppCompatActivity {
     private RelativeLayout mDrawerPane;
     private CharSequence mTitle;
     private AlertDialog dialog;
+
+    LocalBroadcastManager localBroadcastManager;
 
 
     public static String SYNC_DATA = "SYNC_DATA";
@@ -72,11 +73,13 @@ public class EmailsActivity extends AppCompatActivity {
     private String synctime;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_emails);
         prepareMenu(mNavItems);
+
 
         mTitle=getTitle();
         mDrawerLayout=findViewById(R.id.drawerLayout);
@@ -143,7 +146,7 @@ public class EmailsActivity extends AppCompatActivity {
             selectItemFromDrawer(0);
         }
 
-        setUpReceiver();
+        //setUpReceiver();
         consultPreferences();
     }
 
@@ -258,21 +261,17 @@ public class EmailsActivity extends AppCompatActivity {
         out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
 
         //Za slucaj da referenca nije postavljena da se izbegne problem sa androidom!
-        if (manager == null) {
+        /*if (manager == null) {
             setUpReceiver();
-        }
+        }*/
 
-        if(allowSync){
-            int interval = ReviewerTools.calculateTimeTillNextSync(parseInt(synctime));
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, currentTimeMillis(), interval, pendingIntent);
-            /*Intent alarmIntent = new Intent(this, SyncService.class);
-            startService(alarmIntent);*/
-        }
+        Intent alarmIntent = new Intent(this, ControllerService.class);
+        startService(alarmIntent);
 
-        IntentFilter filter = new IntentFilter();
+       /* IntentFilter filter = new IntentFilter();
         filter.addAction(SYNC_DATA);
 
-        registerReceiver(sync, filter);
+        registerReceiver(sync, filter);*/
     }
 
     private void consultPreferences(){
@@ -304,14 +303,14 @@ public class EmailsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause(){
-        if (manager != null) {
+       /* if (manager != null) {
             manager.cancel(pendingIntent);
         }
 
         //osloboditi resurse
         if(sync != null){
             unregisterReceiver(sync);
-        }
+        }*/
 
         super.onPause();
     }

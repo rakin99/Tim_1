@@ -1,22 +1,20 @@
 package com.example.mojprojekat.sync;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.preference.PreferenceManager;
-import android.provider.Settings;
+import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
-import com.example.mojprojekat.aktivnosti.SettingsActivity;
-import com.example.mojprojekat.tools.ReviewerTools;
+import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.Data;
 
 public class SyncReceiver extends BroadcastReceiver {
 
@@ -25,52 +23,60 @@ public class SyncReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        NotificationManager mNotificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
-
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean allowSyncNotif = sharedPreferences.getBoolean(context.getString(R.string.notif_on_sync_key), false);
-
-        if(intent.getAction().equals(EmailsActivity.SYNC_DATA)){
-            if(allowSyncNotif){
-                int resultCode = intent.getExtras().getInt(SyncService.RESULT_CODE);
-
-                Bitmap bm = null;
-
-                Intent wiFiintent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                PendingIntent pIntent = PendingIntent.getActivity(context, 0, wiFiintent, 0);
-
-                Intent settingsIntent = new Intent(context, SettingsActivity.class);
-                PendingIntent pIntentSettings = PendingIntent.getActivity(context, 0, settingsIntent, 0);
-
-                if(resultCode == ReviewerTools.TYPE_NOT_CONNECTED){
-                    bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_network_wifi);
-                    mBuilder.setSmallIcon(R.drawable.ic_action_error);
-                    mBuilder.setContentTitle(context.getString(R.string.autosync_problem));
-                    mBuilder.setContentText(context.getString(R.string.no_internet));
-                    mBuilder.addAction(R.drawable.ic_action_network_wifi, context.getString(R.string.turn_wifi_on), pIntent);
-                    mBuilder.addAction(R.drawable.ic_action_settings, context.getString(R.string.turn_notif_on), pIntentSettings);
-                }else if(resultCode == ReviewerTools.TYPE_MOBILE){
-                    bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_action_network_cell);
-                    mBuilder.setSmallIcon(R.drawable.ic_action_warning);
-                    mBuilder.setContentTitle(context.getString(R.string.autosync_warning));
-                    mBuilder.setContentText(context.getString(R.string.connect_to_wifi));
-                    mBuilder.addAction(R.drawable.ic_action_network_wifi, context.getString(R.string.turn_wifi_on), pIntent);
-                    mBuilder.addAction(R.drawable.ic_action_settings, context.getString(R.string.turn_notif_on), pIntentSettings);
-                }else{
-                    bm = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-                    mBuilder.setSmallIcon(R.drawable.refresh);
-                    mBuilder.setContentTitle(context.getString(R.string.autosync));
-                    mBuilder.setContentText(context.getString(R.string.good_news_sync));
-                    mBuilder.addAction(R.drawable.ic_action_settings, context.getString(R.string.turn_notif_on), pIntentSettings);
+        if(intent.getAction().equals(EmailsActivity.SYNC_DATA)) {
+            for (Message m : Data.newMessages
+            ) {
+                System.out.println("Tu sam....<<<<<<<<<-------------!!!!!!!");
+                Intent intent1 = new Intent(context, EmailsActivity.class);
+                intent1.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent1, 0);
+                NotificationManager mNotificationManager =
+                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    CharSequence name = "Moje ime";// The user-visible name of the channel.
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
+                    NotificationChannel mChannel = new NotificationChannel(channelId, name, importance);
+                    Notification notification =
+                            new Notification.Builder(context)
+                                    .setSmallIcon(R.drawable.email)
+                                    .setContentTitle("Dobili ste novu poruku!")
+                                    .setContentText(Data.newMessages.size() + " " + vratiTekst(String.valueOf(Data.newMessages.size())))
+                                    .setContentIntent(pendingIntent)
+                                    .setAutoCancel(true)
+                                    .setChannelId(channelId).build();
+                    System.out.println("Sistem je veci od O<<<<----------------------------\n\n");
+                    mNotificationManager.createNotificationChannel(mChannel);
+                    mNotificationManager.notify(notificationID, notification);
+                } else {
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId);
+                    mBuilder.setContentTitle("Dobili ste novu poruku!");
+                    mBuilder.setContentText(Data.newMessages.size() + " " + vratiTekst(String.valueOf(Data.newMessages.size())));
+                    mBuilder.setSmallIcon(R.drawable.email);
+                    mBuilder.setChannelId(channelId);
+                    mBuilder.setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    mBuilder.setContentIntent(pendingIntent);
+                    mBuilder.setAutoCancel(true);
+                    mNotificationManager.notify(notificationID, mBuilder.build());
                 }
-
-
-                mBuilder.setLargeIcon(bm);
-                // notificationID allows you to update the notification later on.
-                mNotificationManager.notify(notificationID, mBuilder.build());
             }
         }
 
+    }
+
+    private static String vratiTekst(String br){
+        String poruka="";
+        int duzina=br.length();
+        String poslednjiBr=br.substring(duzina-1);
+        if(Integer.parseInt(br)>9 && Integer.parseInt(br)<101){
+            poruka = "nepročitanih poruka.";
+        }
+        else if(poslednjiBr.equals("1")){
+            poruka = "nepročitana poruka.";
+        }else if(poslednjiBr.equals("2") || poslednjiBr.equals("3") || poslednjiBr.equals("4")){
+            poruka = "nepročitane poruke.";
+        }else if(poslednjiBr.equals("5") || poslednjiBr.equals("6") || poslednjiBr.equals("7") || poslednjiBr.equals("8") || poslednjiBr.equals("9")){
+            poruka = "nepročitanih poruka.";
+        }
+        return poruka;
     }
 }

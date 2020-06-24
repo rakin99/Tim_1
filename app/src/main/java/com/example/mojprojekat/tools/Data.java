@@ -1,6 +1,7 @@
 package com.example.mojprojekat.tools;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.Service;
 import android.database.Cursor;
 
@@ -17,6 +18,7 @@ public class Data {
     public static List<Message> messages=new ArrayList<Message>();
     public static List<Message> newMessages=new ArrayList<Message>();
     public static long maxId=0;
+    public static AlarmManager alarmManager;
 
     public static void readMessages(Activity activity,String keyword,String username) throws ParseException {
         messages.clear();
@@ -25,8 +27,8 @@ public class Data {
                 ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
                 ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE };
 
-        String selectionClause=ReviewerSQLiteHelper.COLUMN_TO+" LIKE ?";
-        String[] selectionArgs={"%"+username+"%"};
+        String selectionClause=ReviewerSQLiteHelper.COLUMN_TO+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_CC+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_BCC+" LIKE ?";
+        String[] selectionArgs={"%"+username+"%","%"+username+"%","%"+username+"%"};
         String sort=ReviewerSQLiteHelper.COLUMN_DATE_TIME+" "+keyword;
 
         Cursor cursor = activity.getContentResolver().query(dbContentProviderEmail.CONTENT_URI_EMAIL, allColumns, selectionClause, selectionArgs,

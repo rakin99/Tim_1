@@ -49,7 +49,7 @@ public class FragmentContacts extends ListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        adapter = new MessageAdapter(getActivity());
+        //adapter = new MessageAdapter(getActivity());
         setListAdapter(adapter);
     }
 
