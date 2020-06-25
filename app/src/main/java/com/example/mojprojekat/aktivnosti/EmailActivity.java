@@ -17,7 +17,6 @@ import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentEmail;
-import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.service.MessageService;
 import com.example.mojprojekat.tools.FragmentTransition;
@@ -29,8 +28,8 @@ import static com.example.mojprojekat.tools.Data.messages;
 
 public class EmailActivity extends AppCompatActivity {
 
-    private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
-    private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
+    /*private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
+    private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");*/
     private Uri todoUri;
     private Message message;
 

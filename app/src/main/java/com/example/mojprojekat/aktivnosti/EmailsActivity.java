@@ -163,10 +163,15 @@ public class EmailsActivity extends AppCompatActivity {
         }else if(position == 1){
             Intent intent = new Intent(EmailsActivity.this, SettingsActivity.class);
             startActivity(intent);
-        }else if(position == 2){
+        }else if(position == 2) {
             Intent intent = new Intent(EmailsActivity.this, FoldersActivity.class);
             startActivity(intent);
-        }else if(position == 3){
+        }
+            else if(position == 3) {
+            Intent intent = new Intent(EmailsActivity.this, ContactsActivity.class);
+            startActivity(intent);
+            }
+        else if(position == 4){
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putString(getString(R.string.login),"");
@@ -174,7 +179,7 @@ public class EmailsActivity extends AppCompatActivity {
             Intent intent = new Intent(EmailsActivity.this, LoginActivity.class);
             startActivity(intent);
             finish();
-        }else{
+        } else{
             Log.e("DRAWER", "Nesto van opsega!");
         }
 
@@ -193,9 +198,9 @@ public class EmailsActivity extends AppCompatActivity {
 
     private void prepareMenu(ArrayList<NavItem> mNavItems){
         mNavItems.add(new NavItem(getString(R.string.poruke),R.drawable.email));
-        //mNavItems.add(new NavItem(getString(R.string.kontakti), R.drawable.contact));
         mNavItems.add(new NavItem(getString(R.string.settings),R.drawable.ic_settings_applications_black_24dp));
         mNavItems.add(new NavItem(getString(R.string.all_folders),R.drawable.folders));
+        mNavItems.add(new NavItem(getString(R.string.kontakti), R.drawable.contact));
         mNavItems.add(new NavItem(getString(R.string.logout),R.drawable.exit));
     }
 

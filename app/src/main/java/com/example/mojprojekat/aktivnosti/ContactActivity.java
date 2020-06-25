@@ -13,7 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderContact;
 import com.example.mojprojekat.fragmenti.FragmentContact;
-import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.FragmentTransition;
 
@@ -23,8 +22,8 @@ import static com.example.mojprojekat.tools.Data.getMessageById;
 
 public class ContactActivity extends AppCompatActivity {
 
-    private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
-    private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
+    /*private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
+    private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");*/
     private Uri todoUri;
     private Message message;
 

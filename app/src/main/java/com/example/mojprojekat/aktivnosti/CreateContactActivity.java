@@ -1,13 +1,10 @@
 package com.example.mojprojekat.aktivnosti;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -22,12 +19,12 @@ public class CreateContactActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_contact);
-        this.setTitle("Kreiraj_kontakt");
+        this.setTitle("Kreiraj kontakt");
         FragmentTransition.to(FragmentCreateContact.newInstance(), this, true, R.id.createContactContent);
 
-        EditText etUsername=findViewById(R.id.etUsername);
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        etUsername.setText(sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+        EditText etFirst=findViewById(R.id.etFirst);
+        EditText etLast=findViewById(R.id.etLast);
+        EditText etEmail=findViewById(R.id.etEmail);
         Toolbar tbCreateContact=findViewById(R.id.tbCreateContact);
         setSupportActionBar(tbCreateContact);
     }
@@ -40,18 +37,18 @@ public class CreateContactActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
-            case R.id.action_back:
+            case R.id.action_cancel:
                 Intent intent = new Intent(CreateContactActivity.this, ContactsActivity.class);
                 startActivity(intent);
                 finish();
                 return true;
-            case R.id.action_cancel:
-                Intent intent1 = new Intent(CreateContactActivity.this, ContactsActivity.class);
-                startActivity(intent1);
-                finish();
-                return true;
             case R.id.action_save:
-                Toast.makeText(this, "Uspešno sacuvano!",Toast.LENGTH_SHORT).show();
+                //sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                //Data.contacts.add(contact);
+                //Util.insertContact(contact);
+                Intent in = new Intent(CreateContactActivity.this, ContactsActivity.class);
+                startActivity(in);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }

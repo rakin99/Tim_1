@@ -27,13 +27,15 @@ public class SplashActivity extends AppCompatActivity {
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
-                if(username.equals("") || username.equals("Nema ulogovanog")){
+                /*if(username.equals("") || username.equals("Nema ulogovanog")){
                     startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     finish();
                 }else if(!username.equals("") && !username.equals("Nema ulogovanog")){
                     startActivity(new Intent(SplashActivity.this, EmailsActivity.class));
                     finish();
-                }
+                }*/
+                startActivity(new Intent(SplashActivity.this, EmailsActivity.class));
+                finish();
             }
         }, SPLASH_TIME_OUT);
     }

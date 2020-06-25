@@ -1,18 +1,16 @@
 package com.example.mojprojekat.model;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 public class Contact {
     private int id;
     private String first;
     private String last;
-    private List<Photo> photos=new ArrayList<Photo>();
-    private List<Message> messages=new ArrayList<Message>();
+    private String photos;
     private String email;
     private String format;
+    private Account account;
 
     private boolean unread;
     private GregorianCalendar dateTime;
@@ -50,12 +48,8 @@ public class Contact {
         return last;
     }
 
-    public List<Photo> getPhotos() {
+    public String getPhotos() {
         return photos;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
     }
 
     public String getFormat() {
@@ -74,12 +68,8 @@ public class Contact {
         this.last = last;
     }
 
-    public void setPhotos(List<Photo> photos) {
+    public void setPhotos(String photos) {
         this.photos = photos;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
     }
 
     public void setFormat(String format) {

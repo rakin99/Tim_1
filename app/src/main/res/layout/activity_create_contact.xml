@@ -1,43 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".aktivnosti.CreateContactActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/tbCreateContact"
-        android:layout_width="409dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnCancle"
-        android:layout_width="60dp"
-        android:layout_height="51dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="1dp"
-        android:drawableStart="@android:drawable/ic_menu_close_clear_cancel"
-        android:text=""
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btnSave"
-        android:layout_width="58dp"
-        android:layout_height="54dp"
-        android:drawableStart="?android:attr/textCheckMark"
-        android:text=""
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/btnCancle"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.Toolbar android:id="@+id/tbCreateContact"
+        android:layout_width="match_parent" android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:layout_scrollFlags="scroll|enterAlways">
+    </androidx.appcompat.widget.Toolbar>
 
     <!-- The main content view -->
     <RelativeLayout
@@ -48,18 +22,18 @@
 
 
             <TextView
-                android:id="@+id/tvUsername"
+                android:id="@+id/tvFirst"
                 android:layout_width="174dp"
                 android:layout_height="34dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="76dp"
-                android:text="@string/korisnicko_ime"
+                android:text="Ime:"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/etUsername"
+                android:id="@+id/etFirst"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -73,28 +47,51 @@
 
 
             <TextView
-                android:id="@+id/tvPassword"
+                android:id="@+id/tvLast"
                 android:layout_width="174dp"
                 android:layout_height="34dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="186dp"
-                android:text="@string/lozinka"
+                android:text="Prezime:"
                 android:textSize="24sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
-                android:id="@+id/etPassword"
+                android:id="@+id/etLast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="220dp"
                 android:ems="10"
-                android:inputType="textPassword"
+                android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:importantForAutofill="no" />
 
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="174dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="296dp"
+            android:text="Email:"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="330dp"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:importantForAutofill="no" />
+
     </RelativeLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

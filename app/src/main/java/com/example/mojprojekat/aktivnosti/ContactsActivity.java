@@ -154,13 +154,18 @@ public class ContactsActivity extends AppCompatActivity {
     private void selectItemFromDrawer(int position) {
         if(position == 0){
             FragmentTransition.to(FragmentContacts.newInstance(), this, false, R.id.mainContent);
-        }else if(position == 1){
+
+        }
+        else if(position == 1){
+            Intent intent = new Intent(ContactsActivity.this, EmailsActivity.class);
+            startActivity(intent);}
+        else if(position == 2){
             Intent intent = new Intent(ContactsActivity.this, SettingsActivity.class);
             startActivity(intent);
-        }else if(position == 2){
+        }else if(position == 3){
             Intent intent = new Intent(ContactsActivity.this, FoldersActivity.class);
             startActivity(intent);
-        }else if(position == 3){
+        }else if(position == 4){
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putString(getString(R.string.login),"");
@@ -186,6 +191,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     private void prepareMenu(ArrayList<NavItem> mNavItems){
+        mNavItems.add(new NavItem(getString(R.string.kontakti), R.drawable.contact));
         mNavItems.add(new NavItem(getString(R.string.poruke),R.drawable.email));
         mNavItems.add(new NavItem(getString(R.string.settings),R.drawable.ic_settings_applications_black_24dp));
         mNavItems.add(new NavItem(getString(R.string.all_folders),R.drawable.folders));
@@ -247,7 +253,7 @@ public class ContactsActivity extends AppCompatActivity {
         }*/
 
 
-        out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
+        out.println("Broj kontakata: "+ Data.contacts.size() +"<---------------------------------------------");
 
         //Za slucaj da referenca nije postavljena da se izbegne problem sa androidom!
         if (manager == null) {

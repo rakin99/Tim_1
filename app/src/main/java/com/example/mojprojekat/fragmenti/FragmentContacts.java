@@ -49,8 +49,8 @@ public class FragmentContacts extends ListFragment
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        /*adapter = new ContactAdapter(getActivity(),Data.contacts);
-        adapter.updateResults(Data.contacts);*/
+        adapter = new ContactAdapter(getActivity(), Data.contacts);
+        adapter.updateResults(Data.contacts);
         setListAdapter(adapter);
     }
 

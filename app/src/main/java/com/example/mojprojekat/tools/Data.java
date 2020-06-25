@@ -7,6 +7,7 @@ import android.database.Cursor;
 
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
+import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 
 import java.text.ParseException;
@@ -17,6 +18,7 @@ public class Data {
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static List<Message> messages=new ArrayList<Message>();
     public static List<Message> newMessages=new ArrayList<Message>();
+    public static List<Contact> contacts = new ArrayList<>();
     public static long maxId=0;
     public static AlarmManager alarmManager;
 

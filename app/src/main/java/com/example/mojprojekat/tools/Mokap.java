@@ -14,9 +14,9 @@ import java.util.List;
 public class Mokap {
 
     private static List<Contact> contacts=new ArrayList<Contact>();
-    private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
+    /*private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
     private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");
-    private static Contact c3=new Contact(3,"Jova","Jovic","mika@gmail.com");
+    private static Contact c3=new Contact(3,"Jova","Jovic","mika@gmail.com");*/
     private static List<Message> messages= new ArrayList<Message>();
     public static List<Message> getMesagges() throws ParseException {
         ArrayList<Message> messages = new ArrayList<Message>();
