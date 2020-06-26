@@ -16,7 +16,7 @@ public class Contact {
     private GregorianCalendar dateTime;
     private boolean active;
 
-    public Contact(int id, String first, String last, String email ,boolean unread,boolean active, GregorianCalendar dateTime) {
+    public Contact(int id, String first, String last, String email ,boolean unread,boolean active, GregorianCalendar dateTime, Account account) {
         this.id = id;
         this.first = first;
         this.last = last;
@@ -24,6 +24,7 @@ public class Contact {
         this.unread=unread;
         this.active=active;
         this.dateTime=dateTime;
+        this.account=account;
     }
 
     public Contact() {
@@ -34,6 +35,7 @@ public class Contact {
         this.unread=true;
         this.active=true;
         this.dateTime=new GregorianCalendar();
+        this.account=new Account();
     }
 
     public int getId() {
@@ -90,6 +92,12 @@ public class Contact {
 
     public void setDateTime(GregorianCalendar date_Time) throws ParseException {
         this.dateTime = date_Time;
+    }
+
+    public Account getAccount() {return account; }
+
+    public void setAccount(Account acc) throws ParseException{
+        this.account = acc;
     }
 
     public boolean isActive() {

@@ -6,9 +6,11 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.example.mojprojekat.database.DBContentProviderContact;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
+import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 
 import java.text.ParseException;
@@ -32,6 +34,21 @@ public class Util {
             entry.put(ReviewerSQLiteHelper.COLUMN_ACTIVE, message.isActive());
 
             service.getContentResolver().insert(DBContentProviderEmail.CONTENT_URI_EMAIL, entry);
+        }
+        db.close();
+    }
+
+    public static void insertContact(Service service, Contact contact) throws ParseException {
+        ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(service);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        {
+            ContentValues entry = new ContentValues();
+            entry.put(ReviewerSQLiteHelper.COLUMN_Id, contact.getId());
+            entry.put(ReviewerSQLiteHelper.COLUMN_FIRST, contact.getFirst());
+            entry.put(ReviewerSQLiteHelper.COLUMN_LAST, contact.getLast());
+            entry.put(ReviewerSQLiteHelper.COLUMN_EMAIL, contact.getEmail());
+
+            service.getContentResolver().insert(DBContentProviderContact.CONTENT_URI_CONTACT, entry);
         }
         db.close();
     }

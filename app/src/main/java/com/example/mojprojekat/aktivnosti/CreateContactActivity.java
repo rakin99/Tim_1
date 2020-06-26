@@ -11,6 +11,8 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.fragmenti.FragmentCreateContact;
+import com.example.mojprojekat.model.Contact;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 
 public class CreateContactActivity extends AppCompatActivity {
@@ -43,8 +45,15 @@ public class CreateContactActivity extends AppCompatActivity {
                 finish();
                 return true;
             case R.id.action_save:
+                EditText etFirst=findViewById(R.id.etFirst);
+                EditText etLast=findViewById(R.id.etLast);
+                EditText etEmail=findViewById(R.id.etEmail);
+                Contact contact = new Contact();
+                contact.setFirst(etFirst.getText().toString());
+                contact.setLast(etLast.getText().toString());
+                contact.setEmail(etEmail.getText().toString());
                 //sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
-                //Data.contacts.add(contact);
+                Data.contacts.add(contact);
                 //Util.insertContact(contact);
                 Intent in = new Intent(CreateContactActivity.this, ContactsActivity.class);
                 startActivity(in);
