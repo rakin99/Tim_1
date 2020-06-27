@@ -1,8 +1,11 @@
 package com.example.mojprojekat.adapteri;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +18,7 @@ import androidx.annotation.NonNull;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.DateUtil;
 
 import java.text.ParseException;
@@ -38,7 +42,7 @@ public class MessageAdapter extends ArrayAdapter {
     public MessageAdapter(@NonNull Context context, ArrayList<Message> messages) {
         super(context,0, messages);
         this.context=context;
-        this.messages=messages;
+        this.messages= messages;
         this.filterMessages= new ArrayList(messages);
     }
 
@@ -123,6 +127,11 @@ public class MessageAdapter extends ArrayAdapter {
         }else if(!message.isUnread()){
             //System.out.println("\n\nPoruka procitana!<-----------------\n\n");
 
+            from.setTextColor(Color.rgb(9,83,66));
+            subject.setTextColor(Color.DKGRAY);
+            content.setTextColor(Color.BLACK);
+            date.setTextColor(Color.LTGRAY);
+
             from.setText(message.getFrom());
             subject.setText(String.valueOf(message.getSubject()));
             if(message.getContent().length()>30){
@@ -161,6 +170,15 @@ public class MessageAdapter extends ArrayAdapter {
 
             if (prefix == null || prefix.length() == 0)
             {
+                Activity activity=(Activity) context;
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+                String username=sharedPreferences.getString(context.getString(R.string.login1),"Nema ulogovanog!");
+                String sort = sharedPreferences.getString(context.getString(R.string.sort), "DESC");
+                try {
+                    Data.readMessages(activity,sort,username);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 ArrayList<Message> list = new ArrayList<Message>(messages);
                 results.values = list;
                 results.count = list.size();
