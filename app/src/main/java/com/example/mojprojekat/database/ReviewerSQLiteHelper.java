@@ -17,6 +17,7 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_CONTENT = "content";
     public static final String COLUMN_UNREAD = "unread";
     public static final String COLUMN_ACTIVE = "active";
+    public static final String COLUMN_ID_FOLDER="idFolder";
 
     public static final String TABLE_USERS = "users";
     public static final String COLUMN_SMTP = "first";
@@ -47,7 +48,8 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_SUBJECT + " text,"
             + COLUMN_CONTENT + " text,"
             + COLUMN_UNREAD + " boolean,"
-            + COLUMN_ACTIVE + " boolean"
+            + COLUMN_ACTIVE + " boolean,"
+            + COLUMN_ID_FOLDER + " integer"
             + ")";
 
     private static final String DB_CREATE_ACCOUNT = "create table "

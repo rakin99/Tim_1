@@ -25,6 +25,8 @@ public class Message {
 
     private boolean active;
 
+    private long idFolder;
+
     public Message(){
         this.id=0;
         this.from="";
@@ -36,6 +38,7 @@ public class Message {
         this.content="";
         this.unread=true;
         this.active=true;
+        this.idFolder=0;
     }
 
     public Message(long id, String from, String to, String cc, String bcc, GregorianCalendar dateTime, String subject, String content,boolean unread,boolean active) {
@@ -49,6 +52,15 @@ public class Message {
         this.content=content;
         this.unread=unread;
         this.active=active;
+        this.idFolder=0;
+    }
+
+    public long getIdFolder() {
+        return idFolder;
+    }
+
+    public void setIdFolder(long idFolder) {
+        this.idFolder = idFolder;
     }
 
     public long getId() {

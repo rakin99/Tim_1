@@ -33,7 +33,7 @@ public class Data {
         System.out.println("Poceo ucitavanje poruka iz baze!<---------------------------------------");
         String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
                 ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
-                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE };
+                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE,ReviewerSQLiteHelper.COLUMN_ID_FOLDER };
 
         String selectionClause=ReviewerSQLiteHelper.COLUMN_TO+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_CC+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_BCC+" LIKE ?";
         String[] selectionArgs={"%"+username+"%","%"+username+"%","%"+username+"%"};

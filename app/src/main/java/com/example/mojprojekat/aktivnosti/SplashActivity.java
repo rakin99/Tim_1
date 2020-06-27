@@ -24,21 +24,11 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash2);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
-    }
-    @Override
-    protected void onStart(){
-        super.onStart();
-        //Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    protected  void onResume(){
-        super.onResume();
         final String username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
         int status = ReviewerTools.getConnectivityStatus(getApplicationContext());
 
         if(status == ReviewerTools.TYPE_WIFI || status == ReviewerTools.TYPE_MOBILE){
-            int SPLASH_TIME_OUT=2000;
+            int SPLASH_TIME_OUT=5000;
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
@@ -57,6 +47,16 @@ public class SplashActivity extends AppCompatActivity {
         }else{
             Toast.makeText(this, "Uređaj nije povezan na internet", Toast.LENGTH_SHORT).show();
         }
+
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+        //Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
+    }
+    @Override
+    protected  void onResume(){
+        super.onResume();
 
     }
 

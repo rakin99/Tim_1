@@ -27,15 +27,14 @@
     <androidx.core.widget.NestedScrollView
         android:id="@+id/drawerLayoutCreateMail"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <!-- The main content view -->
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/createEmailContent"
             android:layout_width="wrap_content"
-            android:orientation="vertical"
-            android:layout_height="wrap_content" >
+            android:layout_gravity="center_horizontal"
+            android:layout_height="match_parent" >
 
             <LinearLayout
                 android:id="@+id/linFrom"
@@ -170,8 +169,8 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/linSubject"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="15dp"
@@ -195,7 +194,7 @@
 
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
 
