@@ -26,8 +26,8 @@ public class ReviewerSQLiteHelper extends SQLiteOpenHelper {
     public static final String COLUMN_USERNAME = "email";
     public static final String COLUMN_PASSWORD = "password";
 
-    public static final String TABLE_CONTACTS = "contact";
-    public static final String COLUMN_Id = "_id";
+    public static final String TABLE_CONTACTS = "contacts";
+    public static final String COLUMN_Id = "contact_id";
     public static final String COLUMN_FIRST = "_first";
     public static final String COLUMN_LAST = "_last";
     public static final String COLUMN_EMAIL = "email";

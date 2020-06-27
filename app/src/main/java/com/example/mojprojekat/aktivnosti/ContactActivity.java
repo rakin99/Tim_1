@@ -1,31 +1,33 @@
 package com.example.mojprojekat.aktivnosti;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderContact;
+import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentContact;
-import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.model.Contact;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 
 import java.text.ParseException;
-
-import static com.example.mojprojekat.tools.Data.getMessageById;
 
 public class ContactActivity extends AppCompatActivity {
 
     /*private static Contact c1=new Contact(1,"Mika","Mikic","mika@gmail.com");
     private static Contact c2=new Contact(2,"Zika","Zikic","mika@gmail.com");*/
     private Uri todoUri;
-    private Message message;
+    private Contact contact;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +60,15 @@ public class ContactActivity extends AppCompatActivity {
         Message message = createMessage(cursor);*/
 
         todoUri = Uri.parse(DBContentProviderContact.CONTENT_URI_CONTACT + "/" + id);
-        message= getMessageById(id);
+        contact= Data.getContactById(id);
 
         TextView tvFirstName = (TextView)findViewById(R.id.tvFirstName);
         TextView tvLastName = (TextView)findViewById(R.id.tvLastName);
         TextView tvEmail = (TextView)findViewById(R.id.tvEmail);
 
-        tvFirstName.setText(message.getFrom());
-        tvLastName.setText(message.getSubject());
-        tvEmail.setText(message.getContent());
+        tvFirstName.setText(contact.getFirst());
+        tvLastName.setText(contact.getLast());
+        tvEmail.setText(contact.getEmail());
 
 
         //cursor.close();
@@ -85,23 +87,35 @@ public class ContactActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
-            /*case R.id.action_delete:
-                Intent intent2 = new Intent(this, MessageService.class);
-                intent2.putExtra("id",message.getId());
-                intent2.putExtra("option","delete");
-                startService(intent2);
-                message.setActive(false);
-                messages.remove(message);
+            case R.id.action_delete:
+                contact.setActive(false);
+                Data.contacts.remove(contact);
                 ContentValues entryUser=new ContentValues();
-                entryUser.put(ReviewerSQLiteHelper.COLUMN_ACTIVE,message.isActive());
+                entryUser.put(ReviewerSQLiteHelper.COLUMN_ACTIVE,contact.isActive());
                 int update = getContentResolver().update(todoUri,entryUser, null, null);
-                Log.d("\nBroj azuriranih redova",String.valueOf(update)+"\n");
-                Toast.makeText(this, "Uspesno ste obrisali poruku!",Toast.LENGTH_SHORT).show();
-                Intent intent1 = new Intent(EmailActivity.this, EmailsActivity.class);
+                Toast.makeText(this, "Uspesno ste obrisali kontakt!",Toast.LENGTH_SHORT).show();
+                Intent intent1 = new Intent(ContactActivity.this, ContactsActivity.class);
                 startActivity(intent1);
                 finish();
-                return true;*/
+                return true;
             case R.id.action_save:
+                TextView tvFirstName = (TextView)findViewById(R.id.tvFirstName);
+                TextView tvLastName = (TextView)findViewById(R.id.tvLastName);
+                TextView tvEmail = (TextView)findViewById(R.id.tvEmail);
+
+                contact.setFirst(tvFirstName.getText().toString());
+                contact.setLast(tvLastName.getText().toString());
+                contact.setEmail(tvEmail.getText().toString());
+
+                contact.setActive(false);
+                Data.contacts.remove(contact);
+                ContentValues entryUser1=new ContentValues();
+                entryUser1.put(ReviewerSQLiteHelper.COLUMN_ACTIVE,contact.isActive());
+                int update1 = getContentResolver().update(todoUri,entryUser1, null, null);
+                Toast.makeText(this, "Uspesno ste azurirali kontakt!",Toast.LENGTH_SHORT).show();
+                Intent intent2 = new Intent(ContactActivity.this, ContactsActivity.class);
+                startActivity(intent2);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

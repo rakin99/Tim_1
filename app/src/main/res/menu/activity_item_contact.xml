@@ -10,6 +10,13 @@
         app:showAsAction="ifRoom" />
 
     <item
+        android:id="@+id/action_delete"
+        android:title="@string/action_delete"
+        android:icon="@drawable/delete"
+        android:orderInCategory="200"
+        app:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/action_save"
         android:icon="@drawable/potvrda"
         android:orderInCategory="300"

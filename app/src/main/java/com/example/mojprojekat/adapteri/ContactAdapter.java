@@ -1,8 +1,6 @@
 package com.example.mojprojekat.adapteri;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -10,9 +8,7 @@ import android.widget.TextView;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.model.Contact;
-import com.example.mojprojekat.tools.DateUtil;
 
-import java.text.ParseException;
 import java.util.List;
 
 /*
@@ -89,48 +85,14 @@ public class ContactAdapter extends BaseAdapter {
         TextView firstName = (TextView)view.findViewById(R.id.firstName);
         TextView lastName = (TextView)view.findViewById(R.id.lastName);
         TextView email = (TextView)view.findViewById(R.id.email);
-        TextView date = (TextView)view.findViewById(R.id.date);
         System.out.println("\n"+contact.getId()+"Kontakt je: ");
         System.out.println(contact.isActive());
-        if(contact.isUnread()){
-            System.out.println("\n\nKontakt nije procitan!<-----------------\n\n");
-            firstName.setTextColor(Color.BLUE);
-            firstName.setTypeface(null, Typeface.BOLD);
-            lastName.setTypeface(null, Typeface.BOLD);
-            lastName.setTextColor(Color.BLUE);
-            email.setTypeface(null, Typeface.BOLD);
-            email.setTextColor(Color.BLUE);
-            date.setTypeface(null, Typeface.BOLD);
-            date.setTextColor(Color.BLUE);
 
-            firstName.setText(contact.getFirst());
-            lastName.setText(String.valueOf(contact.getLast()));
-            if(contact.getEmail().length()>30){
-                email.setText(contact.getEmail().toString().substring(0,30)+"...");
-            }else {
-                email.setText(contact.getEmail());
-            }
-            try {
-                date.setText(DateUtil.formatTimeWithSecond(contact.getDateTime()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }else if(!contact.isUnread()){
             System.out.println("\n\nKontakt ucitan!<-----------------\n\n");
 
             firstName.setText(contact.getFirst());
-            lastName.setText(String.valueOf(contact.getLast()));
-            if(contact.getEmail().length()>30){
-                email.setText(contact.getEmail().toString().substring(0,30)+"...");
-            }else {
-                email.setText(contact.getEmail());
-            }
-            try {
-                date.setText(DateUtil.formatTimeWithSecond(contact.getDateTime()));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
+            lastName.setText(contact.getLast());
+            email.setText(contact.getEmail());
 
         return  view;
     }

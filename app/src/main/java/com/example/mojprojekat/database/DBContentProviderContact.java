@@ -15,12 +15,12 @@ public class DBContentProviderContact extends ContentProvider {
 
     private ReviewerSQLiteHelper database;
 
-    private static final int CONTACT = 5;
-    private static final int CONTACT_ID = 10;
+    private static final int CONTACT = 50;
+    private static final int CONTACT_Id = 60;
 
     private static final String AUTHORITY = "com.example.mojprojekat.contacts";
 
-    private static final String CONTACT_PATH = "contact";
+    private static final String CONTACT_PATH = "contacts";
 
     public static final Uri CONTENT_URI_CONTACT = Uri.parse("content://" + AUTHORITY + "/" + CONTACT_PATH);
 
@@ -28,7 +28,7 @@ public class DBContentProviderContact extends ContentProvider {
 
     static {
         sURIMatcher.addURI(AUTHORITY, CONTACT_PATH, CONTACT);
-        sURIMatcher.addURI(AUTHORITY, CONTACT_PATH + "/#", CONTACT_ID);
+        sURIMatcher.addURI(AUTHORITY, CONTACT_PATH + "/#", CONTACT_Id);
     }
 
     @Override
@@ -47,9 +47,9 @@ public class DBContentProviderContact extends ContentProvider {
         //checkColumns(projection);
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
-            case CONTACT_ID:
+            case CONTACT_Id:
                 // Adding the ID to the original query
-                queryBuilder.appendWhere(ReviewerSQLiteHelper.COLUMN_ID + "="
+                queryBuilder.appendWhere(ReviewerSQLiteHelper.COLUMN_Id + "="
                         + uri.getLastPathSegment());
                 //$FALL-THROUGH$
             case CONTACT:
@@ -106,7 +106,7 @@ public class DBContentProviderContact extends ContentProvider {
                         selection,
                         selectionArgs);
                 break;
-            case CONTACT_ID:
+            case CONTACT_Id:
                 String idContact = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
                     rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_CONTACTS,
@@ -140,7 +140,7 @@ public class DBContentProviderContact extends ContentProvider {
                         selection,
                         selectionArgs);
                 break;
-            case CONTACT_ID:
+            case CONTACT_Id:
                 String idCinema = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
                     rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_CONTACTS,

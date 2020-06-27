@@ -15,20 +15,20 @@ public class DBContentProviderUser extends ContentProvider{
 
     private ReviewerSQLiteHelper database;
 
-    private static final int USER = 30;
-    private static final int USER_ID = 40;
+    private static final int CONTACT = 30;
+    private static final int CONTACT_ID = 40;
 
-    private static final String AUTHORITY = "com.example.mojprojekat.users";
+    private static final String AUTHORITY = "com.example.mojprojekat.contacts";
 
-    private static final String USER_PATH = "users";
+    private static final String CONTACT_PATH = "contacts";
 
-    public static final Uri CONTENT_URI_USER = Uri.parse("content://" + AUTHORITY + "/" + USER_PATH);
+    public static final Uri CONTENT_URI_CONTACT = Uri.parse("content://" + AUTHORITY + "/" + CONTACT_PATH);
 
     private static final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        sURIMatcher.addURI(AUTHORITY, USER_PATH, USER);
-        sURIMatcher.addURI(AUTHORITY, USER_PATH + "/#", USER_ID);
+        sURIMatcher.addURI(AUTHORITY, CONTACT_PATH, CONTACT);
+        sURIMatcher.addURI(AUTHORITY, CONTACT_PATH + "/#", CONTACT_ID);
     }
 
     @Override
@@ -47,14 +47,14 @@ public class DBContentProviderUser extends ContentProvider{
         //checkColumns(projection);
         int uriType = sURIMatcher.match(uri);
         switch (uriType) {
-            case USER_ID:
+            case CONTACT_ID:
                 // Adding the ID to the original query
-                queryBuilder.appendWhere(ReviewerSQLiteHelper.COLUMN_ID + "="
+                queryBuilder.appendWhere(ReviewerSQLiteHelper.COLUMN_Id + "="
                         + uri.getLastPathSegment());
                 //$FALL-THROUGH$
-            case USER:
+            case CONTACT:
                 // Set the table
-                queryBuilder.setTables(ReviewerSQLiteHelper.TABLE_USERS);
+                queryBuilder.setTables(ReviewerSQLiteHelper.TABLE_CONTACTS);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -83,9 +83,9 @@ public class DBContentProviderUser extends ContentProvider{
         SQLiteDatabase sqlDB = database.getWritableDatabase();
         long id = 0;
         switch (uriType) {
-            case USER:
-                id = sqlDB.insert(ReviewerSQLiteHelper.TABLE_USERS, null, values);
-                retVal = Uri.parse(USER_PATH + "/" + id);
+            case CONTACT:
+                id = sqlDB.insert(ReviewerSQLiteHelper.TABLE_CONTACTS, null, values);
+                retVal = Uri.parse(CONTACT_PATH + "/" + id);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI: " + uri);
@@ -101,20 +101,20 @@ public class DBContentProviderUser extends ContentProvider{
         long id = 0;
         int rowsDeleted = 0;
         switch (uriType) {
-            case USER:
-                rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_USERS,
+            case CONTACT:
+                rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_CONTACTS,
                         selection,
                         selectionArgs);
                 break;
-            case USER_ID:
-                String idUser = uri.getLastPathSegment();
+            case CONTACT_ID:
+                String idContact = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_USERS,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser,
+                    rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_CONTACTS,
+                            ReviewerSQLiteHelper.COLUMN_Id + "=" + idContact,
                             null);
                 } else {
                     rowsDeleted = sqlDB.delete(ReviewerSQLiteHelper.TABLE_USERS,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idContact
                                     + " and "
                                     + selection,
                             selectionArgs);
@@ -134,23 +134,23 @@ public class DBContentProviderUser extends ContentProvider{
         long id = 0;
         int rowsUpdated = 0;
         switch (uriType) {
-            case USER:
-                rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_USERS,
+            case CONTACT:
+                rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_CONTACTS,
                         values,
                         selection,
                         selectionArgs);
                 break;
-            case USER_ID:
-                String idUser = uri.getLastPathSegment();
+            case CONTACT_ID:
+                String idContact = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) {
-                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_USERS,
+                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_CONTACTS,
                             values,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser,
+                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idContact,
                             null);
                 } else {
-                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_USERS,
+                    rowsUpdated = sqlDB.update(ReviewerSQLiteHelper.TABLE_CONTACTS,
                             values,
-                            ReviewerSQLiteHelper.COLUMN_ID + "=" + idUser
+                            ReviewerSQLiteHelper.COLUMN_Id + "=" + idContact
                                     + " and "
                                     + selection,
                             selectionArgs);

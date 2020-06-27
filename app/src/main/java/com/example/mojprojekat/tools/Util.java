@@ -6,7 +6,6 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.example.mojprojekat.database.DBContentProviderContact;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
@@ -38,8 +37,8 @@ public class Util {
         db.close();
     }
 
-    public static void insertContact(Service service, Contact contact) throws ParseException {
-        ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(service);
+    public static void insertContact(Activity activity, Contact contact) throws ParseException {
+        ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(activity);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         {
             ContentValues entry = new ContentValues();
@@ -48,12 +47,12 @@ public class Util {
             entry.put(ReviewerSQLiteHelper.COLUMN_LAST, contact.getLast());
             entry.put(ReviewerSQLiteHelper.COLUMN_EMAIL, contact.getEmail());
 
-            service.getContentResolver().insert(DBContentProviderContact.CONTENT_URI_CONTACT, entry);
+            activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_CONTACT, entry);
         }
         db.close();
     }
 
-    public static void initDBUsers(Activity activity){
+   /* public static void initDBUsers(Activity activity){
         ReviewerSQLiteHelper dbHelperUser=new ReviewerSQLiteHelper(activity);
         SQLiteDatabase dbUser=dbHelperUser.getWritableDatabase();
         {
@@ -76,7 +75,7 @@ public class Util {
             activity.getContentResolver().insert(DBContentProviderUser.CONTENT_URI_USER,entryUser);
         }
         dbUser.close();
-    }
+    }*/
 
     public static ContentValues createContentValues(Activity activity, Message message) throws ParseException {
         ReviewerSQLiteHelper dbHelper = new ReviewerSQLiteHelper(activity);

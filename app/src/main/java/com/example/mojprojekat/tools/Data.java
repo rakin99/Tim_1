@@ -103,6 +103,18 @@ public class Data {
         return null;
     }
 
+    public static Contact getContactById(Long id) throws ParseException {
+        for (Contact contact:contacts
+        ) {
+            System.out.println("Da li je: "+id+"=="+contact.getId());
+            if(contact.getId()==id){
+                return contact;
+            }
+        }
+        return null;
+    }
+
+
     public static void addMessage(Service service, Message message,String sort) throws ParseException {
         if(!(isInMessages(message))){
             if(message.isUnread()){
