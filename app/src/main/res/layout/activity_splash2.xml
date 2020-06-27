@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="330dp"
-        android:layout_height="596dp"
-        app:srcCompat="@drawable/mail" />
+        android:layout_width="309dp"
+        android:layout_height="358dp"
+        app:srcCompat="@drawable/android_message" />
 </RelativeLayout>
