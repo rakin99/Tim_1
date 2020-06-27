@@ -40,8 +40,6 @@ import com.example.mojprojekat.tools.FragmentTransition;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import static java.lang.System.out;
-
 public class EmailsActivity extends AppCompatActivity {
 
     private String username;
@@ -174,7 +172,7 @@ public class EmailsActivity extends AppCompatActivity {
         else if(position == 4){
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString(getString(R.string.login),"");
+            editor.putString(getString(R.string.login1),"");
             editor.commit();
             Intent intent = new Intent(EmailsActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -209,6 +207,7 @@ public class EmailsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_new:{
                 Intent intent = new Intent(EmailsActivity.this, CreateEmailActivity.class);
+                intent.putExtra("option","send");
                 startActivity(intent);
             }
                 return true;
@@ -262,9 +261,6 @@ public class EmailsActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-        out.println("Broj poruka: "+ Data.messages.size() +"<---------------------------------------------");
-
         //Za slucaj da referenca nije postavljena da se izbegne problem sa androidom!
         /*if (manager == null) {
             setUpReceiver();
@@ -298,7 +294,7 @@ public class EmailsActivity extends AppCompatActivity {
          * ako nesto pod tim kljucem se ne nalazi u storage-u, da dobijemo podrazumevanu
          * vrednost nazad, i to nam je signal da nista nije sacuvano pod tim kljucem.
          * */
-        username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog!");
+        username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog!");
         synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");
         System.out.println("\nsynctime: "+synctime+"<-----------------------------------\n");// pola minuta
         allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), true);

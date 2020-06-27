@@ -28,6 +28,9 @@ public class RegistrationActivity extends AppCompatActivity {
 
         Toolbar tbRegistration=findViewById(R.id.tbRegistration);
         setSupportActionBar(tbRegistration);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -40,11 +43,6 @@ public class RegistrationActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
-            case R.id.action_back:
-                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
             case R.id.action_save:
                 EditText txtEmail=(EditText) findViewById(R.id.txtRgUserName);
                 EditText txtPassword=(EditText) findViewById(R.id.psRgPasword);

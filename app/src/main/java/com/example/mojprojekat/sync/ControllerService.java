@@ -14,9 +14,6 @@ import android.widget.Toast;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.tools.ReviewerTools;
 
-import static java.lang.Integer.parseInt;
-import static java.lang.System.currentTimeMillis;
-
 public class ControllerService extends Service {
 
     private SyncReceiver sync;
@@ -28,7 +25,8 @@ public class ControllerService extends Service {
     private String synctime;
 
     @Override
-    public void onCreate(){
+    public int onStartCommand(final Intent intent, int flags, int startId){
+        System.out.println("U ControllerService sam");
         setUpReceiver();
         consultPreferences();
         if (manager == null) {
@@ -36,19 +34,14 @@ public class ControllerService extends Service {
         }
 
         if(allowSync){
-            System.out.println("U controlu sam");
-            int interval = ReviewerTools.calculateTimeTillNextSync(parseInt(synctime));
-            manager.setRepeating(AlarmManager.RTC_WAKEUP, currentTimeMillis(), interval, pendingIntent);
+            System.out.println("U ControllerService sam");
+            int interval = ReviewerTools.calculateTimeTillNextSync(Integer.parseInt(synctime));
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), interval, pendingIntent);
         }
         IntentFilter filter = new IntentFilter();
         filter.addAction(SYNC_DATA);
 
         registerReceiver(sync, filter);
-    }
-
-    @Override
-    public int onStartCommand(final Intent intent, int flags, int startId){
-        System.out.println("U controlu sam");
         return START_STICKY;
     }
 
@@ -67,8 +60,8 @@ public class ControllerService extends Service {
     }
 
     private void setUpReceiver(){
+        System.out.println("Pozvao se: setUpReceiver");
         sync = new SyncReceiver();
-
         // Retrieve a PendingIntent that will perform a broadcast
         Intent alarmIntent = new Intent(this, SyncService.class);
         pendingIntent = PendingIntent.getService(this, 0, alarmIntent, 0);

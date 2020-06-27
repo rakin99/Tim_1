@@ -1,11 +1,8 @@
 package com.example.mojprojekat.aktivnosti;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -43,19 +40,8 @@ public class SettingsActivity extends AppCompatActivity {
 
         Toolbar tbCreateEmail=findViewById(R.id.tbSettings);
         setSupportActionBar(tbCreateEmail);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch(item.getItemId()){
-            case R.id.action_back_settings:
-                Intent intent = new Intent(SettingsActivity.this, EmailsActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -68,30 +54,30 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-        Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onStart()",Toast.LENGTH_SHORT).show();
     }
     @Override
     protected  void onResume(){
         super.onResume();
-        Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onPause(){
         super.onPause();
-        Toast.makeText(this, "onPause()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "onPause()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onStop(){
         super.onStop();
-        Toast.makeText(this,"onStop()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"onStop()", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        Toast.makeText(this,"onDestroy()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"onDestroy()", Toast.LENGTH_SHORT).show();
     }
 
     public static class PrefsFragment extends PreferenceFragmentCompat {

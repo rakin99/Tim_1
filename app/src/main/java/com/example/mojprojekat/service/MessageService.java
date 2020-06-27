@@ -3,10 +3,13 @@ package com.example.mojprojekat.service;
 import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.mojprojekat.R;
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
@@ -15,6 +18,7 @@ import com.example.mojprojekat.modelDTO.MessageDTO;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.DateUtil;
 import com.example.mojprojekat.tools.ReviewerTools;
+import com.example.mojprojekat.tools.Util;
 
 import java.text.ParseException;
 
@@ -27,6 +31,8 @@ public class MessageService extends Service {
 
     private Uri todoUri;
     public static String RESULT_CODE = "RESULT_CODE";
+    private String sort;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -35,6 +41,8 @@ public class MessageService extends Service {
         final Intent ints = new Intent(EmailsActivity.SYNC_DATA);
         int status = ReviewerTools.getConnectivityStatus(getApplicationContext());
         ints.putExtra(RESULT_CODE, status);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sort = sharedPreferences.getString(getString(R.string.sort), "DESC");
 
         //ima konekcije ka netu skini sta je potrebno i sinhronizuj bazu
         if(status == ReviewerTools.TYPE_WIFI || status == ReviewerTools.TYPE_MOBILE) {
@@ -53,7 +61,9 @@ public class MessageService extends Service {
                     long id=intent.getLongExtra("id",0);
                     todoUri = Uri.parse(DBContentProviderEmail.CONTENT_URI_EMAIL + "/" + id);
                     try {
-                        final MessageDTO messageDTO=new MessageDTO(Data.getMessageById(id));
+                        Message message=Data.getMessageById(id);
+                        message.setUnread(false);
+                        final MessageDTO messageDTO=new MessageDTO(message);
                         System.out.println("Trazim poruku! <-------------------------------"+messageDTO.getId());
                         Call<MessageDTO> call = ServiceUtils.mailService.update(messageDTO,id);
                         System.out.println("Pronasao poruku i saljem ju! Id poruke je: "+id+" <-------------------------------");
@@ -71,6 +81,7 @@ public class MessageService extends Service {
                                         entryMessage.put(ReviewerSQLiteHelper.COLUMN_UNREAD,message.isUnread());
                                         int update = getContentResolver().update(todoUri,entryMessage, null, null);
                                         Log.d("\nBroj azuriranih redova",String.valueOf(update)+"\n");
+
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }
@@ -133,7 +144,7 @@ public class MessageService extends Service {
                                     try {
                                         Message message1 = new Message(messageDTO1.getId(),messageDTO1.getFrom(),messageDTO1.getTo(),messageDTO1.getCc(),messageDTO1.getBcc(),
                                             DateUtil.convertFromDMYHMS(messageDTO1.getDateTime()),messageDTO1.getSubject(),messageDTO1.getContent(),messageDTO1.isUnread(),messageDTO1.isActive());
-                                        Data.addMessage(MessageService.this,message1);
+                                        Util.insertMessage(MessageService.this,message1);
                                     } catch (ParseException e) {
                                         e.printStackTrace();
                                     }

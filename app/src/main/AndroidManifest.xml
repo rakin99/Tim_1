@@ -19,8 +19,11 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".aktivnosti.RegistrationActivity"
-            android:label="Registracija">
-
+            android:label="Registracija"
+            android:parentActivityName=".aktivnosti.EmailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".aktivnosti.EmailsActivity" />
         </activity>
 
         <receiver android:name=".sync.SyncReceiver" />
@@ -35,7 +38,12 @@
         <activity android:name=".aktivnosti.ContactActivity" />
         <activity android:name=".aktivnosti.CreateContactActivity" />
         <activity android:name=".aktivnosti.ContactsActivity" />
-        <activity android:name=".aktivnosti.ProfileActivity" />
+        <activity android:name=".aktivnosti.ProfileActivity"
+            android:parentActivityName=".aktivnosti.EmailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".aktivnosti.EmailsActivity" />
+        </activity>
         <activity
             android:name=".aktivnosti.SettingsActivity"
             android:label="@string/preferences"
@@ -56,7 +64,13 @@
         </activity>
         <activity android:name=".aktivnosti.EmailsActivity" />
         <activity android:name=".aktivnosti.CreateFolderActivity" />
-        <activity android:name=".aktivnosti.CreateEmailActivity" />
+        <activity android:name=".aktivnosti.CreateEmailActivity"
+            android:parentActivityName=".aktivnosti.EmailsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".aktivnosti.EmailsActivity" />
+                />
+        </activity>
         <activity android:name=".aktivnosti.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

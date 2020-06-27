@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,7 +27,7 @@ public class FragmentCreateEmail extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
     }
 
     @Override

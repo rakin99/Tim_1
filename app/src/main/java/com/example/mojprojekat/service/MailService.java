@@ -32,6 +32,9 @@ public interface MailService {
     @GET(ServiceUtils.ACCOUNT)
     Call<Account> getAccount(@Path("username") String username,@Path("password") String password);
 
+    @PUT(ServiceUtils.UPDATEACCOUNT)
+    Call<Account> getAccountByUsername(@Path("username") String username);
+
     @POST(ServiceUtils.ACCOUNTS)
     Call<Account> add(@Body Account account);
 

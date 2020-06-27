@@ -12,6 +12,7 @@ import com.example.mojprojekat.R;
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
 import com.example.mojprojekat.aktivnosti.LoginActivity;
 import com.example.mojprojekat.model.Account;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.ReviewerTools;
 
 import retrofit2.Call;
@@ -43,6 +44,33 @@ public class AccountService extends Service {
              * http://<service_ip_adress>:<service_port>/rs.ftn.reviewer.rest/rest/proizvodi/
              * */
             switch (option){
+                case "getAccountByUsername":{
+                    sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AccountService.this);
+                    String email=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
+                    String username=email.split("@")[0];
+                    Call<Account> call = ServiceUtils.mailService.getAccountByUsername(username);
+                    call.enqueue(new Callback<Account>() {
+                        @Override
+                        public void onResponse(Call<Account> call, Response<Account> response) {
+                            if (response.code() == 200) {
+                                Log.d("REZ", "Get account: "+response.code());
+                                Account account = response.body();
+                                Data.account=account;
+                            } else {
+                                Log.d("REZ", "Get account: " + response.code());
+                                Toast.makeText(AccountService.this,"E-mail adresa ili lozinka su pogrešni!\nPokušajte ponovo!", Toast.LENGTH_SHORT).show();
+
+                            }
+                            sendBroadcast(ints);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Account> call, Throwable t) {
+                            Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                        }
+                    });
+                    break;
+                }
                 case "add":{
                     String email=intent.getStringExtra("email_adress");
                     String password=intent.getStringExtra("password");
@@ -93,15 +121,16 @@ public class AccountService extends Service {
                             if (response.code() == 200) {
                                 Log.d("REZ", "Get account: ");
                                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AccountService.this);
-                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
                                 SharedPreferences.Editor editor=sharedPreferences.edit();
                                 Account account = response.body();
+                                Data.account=account;
                                 Log.d("-----","-----");
                                 Log.d("Email1: ",account.getUsername());
                                 Log.d("Password: ",account.getPassword());
-                                editor.putString(getString(R.string.login),account.getUsername()+"@"+account.getSmtpAddress());
+                                editor.putString(getString(R.string.login1),account.getUsername()+"@"+account.getSmtpAddress());
                                 editor.commit();
-                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
                                 Intent i = new Intent(AccountService.this, EmailsActivity.class);
                                 startActivity(i);
                             } else {

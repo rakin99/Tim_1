@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Moj projekat</string>
+    <string name="app_name">Moj mejl</string>
     <string name="button">Button</string>
     <string name="vreme_osvezavanja">Vreme osvezavanja</string>
     <string name="sortiraj_poruke">Sortiraj poruke:</string>
@@ -56,7 +56,7 @@
     <string name="sort">pref_sort</string>
     <string name="preferences">Podešavanja</string>
     <string name="message">Poruka</string>
-    <string name="login"></string>
+    <string name="login1"></string>
     <string name="action_save">Sačuvaj</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -72,4 +72,5 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="idList"></string>
 </resources>

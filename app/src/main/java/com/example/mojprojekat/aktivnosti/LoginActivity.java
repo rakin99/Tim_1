@@ -14,10 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderUser;
-import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.service.AccountService;
-import com.example.mojprojekat.tools.Util;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,14 +60,14 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected  void onResume(){
         super.onResume();
-        Util.initDBUsers(LoginActivity.this);
+       /* Util.initDBUsers(LoginActivity.this);
         final String[] projection={ReviewerSQLiteHelper.COLUMN_ID, ReviewerSQLiteHelper.COLUMN_SMTP,
                 ReviewerSQLiteHelper.COLUMN_POP3_IMAP, ReviewerSQLiteHelper.COLUMN_DISPLAY, ReviewerSQLiteHelper.COLUMN_USERNAME,
-                ReviewerSQLiteHelper.COLUMN_PASSWORD};
+                ReviewerSQLiteHelper.COLUMN_PASSWORD};*/
         final EditText etUserName=(EditText) findViewById(R.id.txtUserName);
         final EditText etPassword=(EditText) findViewById(R.id.psPasword);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        System.out.println("Ulogovani: "+sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+        System.out.println("Ulogovani: "+sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
         btnStartEmailsActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,18 +1,24 @@
 package com.example.mojprojekat.adapteri;
 
-import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.Filter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.DateUtil;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -23,20 +29,21 @@ import java.util.List;
 * Nasledjivanjem bilo kog adaptera, dobicemo
 * nekolkko metoda koje moramo da referinisemo da bi adapter ispravno radio.
 * */
-public class MessageAdapter extends BaseAdapter{
-    private Activity activity;
-    private List<Message> messages;
+public class MessageAdapter extends ArrayAdapter {
+    private Context context;
+    private ArrayList<Message> messages;
+    private Filter filter;
+    private ArrayList<Message> filterMessages;
 
-
-    public MessageAdapter(Activity activity,List<Message> messages) {
-        this.activity = activity;
-        this.messages = messages;
+    public MessageAdapter(@NonNull Context context, ArrayList<Message> messages) {
+        super(context,0, messages);
+        this.context=context;
+        this.messages=messages;
+        this.filterMessages= new ArrayList(messages);
     }
 
-    public void updateResults(List<Message> results) {
-        messages = results;
-        //Triggers the list update
-        notifyDataSetChanged();
+    public List<Message> getMessages() {
+        return messages;
     }
 
     /*
@@ -48,15 +55,6 @@ public class MessageAdapter extends BaseAdapter{
     }
 
     /*
-     * Ova metoda vraca pojedinacan element na osnovu pozicije
-     * */
-    @Override
-    public Object getItem(int position) {
-        return messages.get(position);
-    }
-
-
-    /*
      * Ova metoda vraca jedinstveni identifikator, za adaptere koji prikazuju
      * listu ili niz, pozicija je dovoljno dobra. Naravno mozemo iskoristiti i
      * jedinstveni identifikator objekta, ako on postoji.
@@ -64,6 +62,11 @@ public class MessageAdapter extends BaseAdapter{
     @Override
     public long getItemId(int position) {
         return position;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return messages.get(position);
     }
 
     /*
@@ -78,20 +81,24 @@ public class MessageAdapter extends BaseAdapter{
     * */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        Log.d("U messageAdapteru sam","<----------------------------------------");
+        Log.d("Broj poruka: ",String.valueOf(getCount())
+        );
         View vi=convertView;
         Message message = messages.get(position);
 
         if(convertView==null)
-            vi = activity.getLayoutInflater().inflate(R.layout.messages_list, null);
+            vi = LayoutInflater.from(context).inflate(R.layout.messages_list,parent,false);
 
         TextView from = (TextView)vi.findViewById(R.id.from);
         TextView subject = (TextView)vi.findViewById(R.id.subject);
         TextView content = (TextView)vi.findViewById(R.id.content);
         TextView date = (TextView)vi.findViewById(R.id.date);
-        System.out.println("\n"+message.getId()+"Poruka je: ");
-        System.out.println(message.isActive());
+        //System.out.println("------------------------------------------------------------------------------------\n");
+        //System.out.println("\n"+message.getId()+"Poruka je: ");
+        //System.out.println(message.isUnread()+"u messageAdapter");
         if(message.isUnread()){
-            System.out.println("\n\nPoruka nije procitana!<-----------------\n\n");
+            // System.out.println("\n\nPoruka nije procitana!<-----------------\n\n");
             from.setTextColor(Color.BLUE);
             from.setTypeface(null, Typeface.BOLD);
             subject.setTypeface(null, Typeface.BOLD);
@@ -104,7 +111,7 @@ public class MessageAdapter extends BaseAdapter{
             from.setText(message.getFrom());
             subject.setText(String.valueOf(message.getSubject()));
             if(message.getContent().length()>30){
-                content.setText(message.getContent().toString().substring(0,30)+"...");
+                content.setText(message.getContent().substring(0,30)+"...");
             }else {
                 content.setText(message.getContent());
             }
@@ -114,12 +121,12 @@ public class MessageAdapter extends BaseAdapter{
                 e.printStackTrace();
             }
         }else if(!message.isUnread()){
-            System.out.println("\n\nPoruka procitana!<-----------------\n\n");
+            //System.out.println("\n\nPoruka procitana!<-----------------\n\n");
 
             from.setText(message.getFrom());
             subject.setText(String.valueOf(message.getSubject()));
             if(message.getContent().length()>30){
-                content.setText(message.getContent().toString().substring(0,30)+"...");
+                content.setText(message.getContent().substring(0,30)+"...");
             }else {
                 content.setText(message.getContent());
             }
@@ -133,5 +140,70 @@ public class MessageAdapter extends BaseAdapter{
 
 
         return  vi;
+    }
+
+    @Override
+    public Filter getFilter()
+    {
+        if (filter == null)
+            filter = new MessageFilter();
+
+        return filter;
+    }
+
+    private class MessageFilter extends Filter
+    {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint)
+        {
+            FilterResults results = new FilterResults();
+            String prefix = constraint.toString().toLowerCase();
+
+            if (prefix == null || prefix.length() == 0)
+            {
+                ArrayList<Message> list = new ArrayList<Message>(messages);
+                results.values = list;
+                results.count = list.size();
+            }
+            else
+            {
+                final ArrayList<Message> list = new ArrayList<Message>(messages);
+                final ArrayList<Message> nlist = new ArrayList<Message>();
+                int count = list.size();
+
+                for (int i=0; i<count; i++)
+                {
+                    final Message m = list.get(i);
+
+                    if (m.getContent().contains(constraint) || m.getSubject().contains(constraint) || m.getFrom().contains(constraint) ||
+                            m.getTo().contains(constraint) || m.getCc().contains(constraint) || m.getCc().contains(constraint)) {
+                        System.out.println("Nasao sam poruku, stavljam je u listu!");
+                        nlist.add(m);
+                    }
+                }
+                results.values = nlist;
+                results.count = nlist.size();
+            }
+            return results;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            filterMessages = (ArrayList<Message>)results.values;
+
+            clear();
+            int count = filterMessages.size();
+            for (int i=0; i<count; i++)
+            {
+                Message message = (Message)filterMessages.get(i);
+                add(message);
+            }
+            if (filterMessages.size() > 0)
+                notifyDataSetChanged();
+            else
+                notifyDataSetInvalidated();
+        }
+
     }
 }

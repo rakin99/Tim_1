@@ -1,15 +1,12 @@
 package com.example.mojprojekat.aktivnosti;
 
-import android.content.ContentValues;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +17,7 @@ import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentProfile;
 import com.example.mojprojekat.model.Account;
+import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -38,6 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
 
         Toolbar tbCreateEmail=findViewById(R.id.tbProfile);
         setSupportActionBar(tbCreateEmail);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         fillData();
     }
@@ -48,22 +48,27 @@ public class ProfileActivity extends AppCompatActivity {
                 ReviewerSQLiteHelper.COLUMN_PASSWORD};
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
-        String login=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+        String login=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
         String selectionClause=ReviewerSQLiteHelper.COLUMN_USERNAME +" LIKE ?";
         String[] selectionArgs={login};
-        Cursor cursor=getContentResolver().query(dbUser.CONTENT_URI_USER,allColumns,selectionClause,selectionArgs,null);
+       /* Cursor cursor=getContentResolver().query(dbUser.CONTENT_URI_USER,allColumns,selectionClause,selectionArgs,null);
 
         cursor.moveToFirst();
-        Account account = createUser(cursor);
+        Account account = createUser(cursor);*/
 
-        TextView email = (TextView)findViewById(R.id.etEmail);
-        TextView password = (TextView)findViewById(R.id.etPass);
+        EditText etUsername=findViewById(R.id.etEmail);
+        EditText etPassword=findViewById(R.id.etPass);
+        EditText etSmtp=findViewById(R.id.etSmtp);
+        EditText etEmail=findViewById(R.id.etEmail_address);
 
-        email.setText(account.getUsername());
-        password.setText(account.getPassword());
+        Account a=Data.account;
+        etUsername.setText(a.getUsername());
+        etPassword.setText(a.getPassword());
+        etSmtp.setText(a.getSmtpAddress());
+        etEmail.setText(a.getUsername()+"@"+a.getSmtpAddress());
 
-        cursor.close();
+        //cursor.close();
     }
 
         public static Account createUser(Cursor cursor) {
@@ -81,20 +86,15 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
-            case R.id.action_back:
-                Intent intent = new Intent(ProfileActivity.this, EmailsActivity.class);
-                startActivity(intent);
-                finish();
-                return true;
             case R.id.action_save: {
                 String[] allColumns = {ReviewerSQLiteHelper.COLUMN_ID,
                         ReviewerSQLiteHelper.COLUMN_SMTP, ReviewerSQLiteHelper.COLUMN_POP3_IMAP, ReviewerSQLiteHelper.COLUMN_DISPLAY, ReviewerSQLiteHelper.COLUMN_USERNAME,
                         ReviewerSQLiteHelper.COLUMN_PASSWORD};
 
                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                Log.d("Ulogovani: ", sharedPreferences.getString(getString(R.string.login), "Nema ulogovanog"));
-                String login = sharedPreferences.getString(getString(R.string.login), "Nema ulogovanog");
-                String selectionClause = ReviewerSQLiteHelper.COLUMN_USERNAME + " LIKE ?";
+                Log.d("Ulogovani: ", sharedPreferences.getString(getString(R.string.login1), "Nema ulogovanog"));
+                String login = sharedPreferences.getString(getString(R.string.login1), "Nema ulogovanog");
+                /*String selectionClause = ReviewerSQLiteHelper.COLUMN_USERNAME + " LIKE ?";
                 String[] selectionArgs = {login};
                 Cursor cursor = getContentResolver().query(dbUser.CONTENT_URI_USER, allColumns, selectionClause, selectionArgs, null);
 
@@ -116,7 +116,7 @@ public class ProfileActivity extends AppCompatActivity {
 
                     this.getContentResolver().update(dbUser.CONTENT_URI_USER, entryUser, selectionClause, selectionArgs);
                 }
-                dbUsers.close();
+                dbUsers.close();*/
                 Toast.makeText(this, "Sačuvane su izmene", Toast.LENGTH_SHORT).show();
                 return true;
             }

@@ -168,7 +168,7 @@ public class ContactsActivity extends AppCompatActivity {
         }else if(position == 4){
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString(getString(R.string.login),"");
+            editor.putString(getString(R.string.login1),"");
             editor.commit();
             Intent intent = new Intent(ContactsActivity.this, LoginActivity.class);
             startActivity(intent);

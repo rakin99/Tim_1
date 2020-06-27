@@ -27,6 +27,7 @@ public class SyncService extends Service {
 
     public static String RESULT_CODE = "RESULT_CODE";
     private SharedPreferences sharedPreferences;
+    private String sort;
 
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
@@ -53,7 +54,8 @@ public class SyncService extends Service {
              * http://<service_ip_adress>:<service_port>/rs.ftn.reviewer.rest/rest/proizvodi/
              * */
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
-            String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+            sort = sharedPreferences.getString(getString(R.string.sort), "DESC");
+            String username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
             System.out.println("\nUsername: "+username+"<--------------------------------\n");
             Call<List<MessageDTO>> call = ServiceUtils.mailService.getMessages(username);
             call.enqueue(new Callback<List<MessageDTO>>() {
@@ -61,18 +63,16 @@ public class SyncService extends Service {
                 public void onResponse(Call<List<MessageDTO>> call, Response<List<MessageDTO>> response) {
                     if (response.code() == 200) {
                         Log.d("REZ", "Meesages recieved, status 200");
-                        int lastInResponse=response.body().size();
-                        Log.d("lastInResponse: ",String.valueOf(lastInResponse));
-                        int lastInDataMessages=Data.messages.size();
-                        Log.d("lastInDataMessages: ",String.valueOf(lastInDataMessages));
 
                         for (int i=0; i<response.body().size(); i++
                         ) {
                             MessageDTO messageDTO = response.body().get(i);
+
                             try {
                                 Message message = new Message(messageDTO.getId(),messageDTO.getFrom(),messageDTO.getTo(),messageDTO.getCc(),messageDTO.getBcc(),
                                         DateUtil.convertFromDMYHMS(messageDTO.getDateTime()),messageDTO.getSubject(),messageDTO.getContent(),messageDTO.isUnread(),messageDTO.isActive());
-                                Data.addMessage(SyncService.this, message);
+
+                                Data.addMessage(SyncService.this, message,sort);
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
@@ -89,6 +89,7 @@ public class SyncService extends Service {
                 }
             });
         }
+
         return START_STICKY;
     }
 

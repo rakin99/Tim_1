@@ -1,26 +1,32 @@
 package com.example.mojprojekat.tools;
 
 import android.app.Activity;
-import android.app.AlarmManager;
 import android.app.Service;
 import android.database.Cursor;
+import android.widget.ListView;
 
+import com.example.mojprojekat.adapteri.MessageAdapter;
 import com.example.mojprojekat.database.DBContentProviderEmail;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
+import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class Data {
+
     private  static DBContentProviderEmail dbContentProviderEmail;
-    public static List<Message> messages=new ArrayList<Message>();
+    public static ArrayList<Message> messages=new ArrayList<Message>();
     public static List<Message> newMessages=new ArrayList<Message>();
-    public static List<Contact> contacts = new ArrayList<>();
     public static long maxId=0;
-    public static AlarmManager alarmManager;
+    public static Account account;
+    public static MessageAdapter messageAdapter;
+    public static ListView listView;
+    public static List<Contact> contacts=new ArrayList<Contact>();
 
     public static void readMessages(Activity activity,String keyword,String username) throws ParseException {
         messages.clear();
@@ -46,6 +52,20 @@ public class Data {
             }
         }
         System.out.println("Zavrsio ucitavanje iz baze!<-------------------------------------------------");
+    }
+
+    public static List<Message> search(String s){
+        List<Message> listFilter=new ArrayList<Message>();
+        System.out.println("-------------------Trazim poruke!-------------------");
+        for (Message m:messages
+             ) {
+            if(m.getContent().contains(s) || m.getSubject().contains(s) || m.getFrom().contains(s) ||
+                    m.getTo().contains(s) || m.getCc().contains(s) || m.getCc().contains(s)){
+                System.out.println("Nasao sam poruku, stavljam je u listu!");
+                listFilter.add(m);
+            }
+        }
+        return listFilter;
     }
 
     public static Message createMessage(Cursor cursor) throws ParseException {
@@ -75,6 +95,7 @@ public class Data {
     public static Message getMessageById(Long id) throws ParseException {
         for (Message message:messages
              ) {
+            System.out.println("Da li je: "+id+"=="+message.getId());
             if(message.getId()==id){
                 return message;
             }
@@ -82,10 +103,27 @@ public class Data {
         return null;
     }
 
-    public static void addMessage(Service service, Message message) throws ParseException {
+    public static void addMessage(Service service, Message message,String sort) throws ParseException {
         if(!(isInMessages(message))){
-            newMessages.add(message);
+            if(message.isUnread()){
+                newMessages.add(message);
+            }
             messages.add(message);
+            if(sort.equals("DESC")){
+                messageAdapter.sort(new Comparator<Message>() {
+                    @Override
+                    public int compare(Message a, Message b) {
+                        return (b.getDateTime()).compareTo(a.getDateTime());
+                    }
+                });
+            }else if(sort.equals("ASC")){
+                messageAdapter.sort(new Comparator<Message>() {
+                    @Override
+                    public int compare(Message a, Message b) {
+                        return (a.getDateTime()).compareTo(b.getDateTime());
+                    }
+                });
+            }
             System.out.println("\nUpisivanje u bazu poslate poruke!<---------------------------\n");
             System.out.println("Id poruke: "+message.getId());
             Util.insertMessage(service,message);

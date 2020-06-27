@@ -1,7 +1,10 @@
 package com.example.mojprojekat.fragmenti;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -10,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.SearchView.OnQueryTextListener;
 import androidx.fragment.app.ListFragment;
 
 import com.example.mojprojekat.R;
@@ -18,10 +23,14 @@ import com.example.mojprojekat.aktivnosti.EmailActivity;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
 
+import java.util.Comparator;
+
 public class FragmentEmails extends ListFragment {
 
     public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
     public MessageAdapter adapter;
+    private String sort;
+    private SharedPreferences sharedPreferences;
 
 	public static FragmentEmails newInstance() {
         return new FragmentEmails();
@@ -56,6 +65,8 @@ public class FragmentEmails extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sort = sharedPreferences.getString(getString(R.string.sort), "DESC");
         //Toast.makeText(getActivity(), "onActivityCreated()", Toast.LENGTH_SHORT).show();
 
         //Dodaje se adapter
@@ -63,8 +74,25 @@ public class FragmentEmails extends ListFragment {
         String[] from = new String[] { ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT,ReviewerSQLiteHelper.COLUMN_DATE_TIME};
         int[] to = new int[] {R.id.from, R.id.subject,R.id.date};*/
         adapter = new MessageAdapter(getActivity(),Data.messages);
-        adapter.updateResults(Data.messages);
         setListAdapter(adapter);
+        adapter.setNotifyOnChange(true);
+        if(sort.equals("DESC")){
+            adapter.sort(new Comparator<Message>() {
+                @Override
+                public int compare(Message a, Message b) {
+                    return (b.getDateTime()).compareTo(a.getDateTime());
+                }
+            });
+        }else if(sort.equals("ASC")){
+            adapter.sort(new Comparator<Message>() {
+                @Override
+                public int compare(Message a, Message b) {
+                    return (a.getDateTime()).compareTo(b.getDateTime());
+                }
+            });
+        }
+        Data.listView=getListView();
+        Data.messageAdapter=adapter;
     }
 
     /*
@@ -82,6 +110,19 @@ public class FragmentEmails extends ListFragment {
         // i vise fragmentaa gde svaki od njih ima svoj menu unutar toolbar-a
         menu.clear();
         inflater.inflate(R.menu.activity_itememails, menu);
+        SearchView searchView=(SearchView) menu.findItem(R.id.action_search).getActionView();
+        searchView.setOnQueryTextListener(new OnQueryTextListener(){
+            @Override
+            public boolean onQueryTextChange(String newText){
+                Data.messageAdapter.getFilter().filter(newText);
+                return false;
+            }
+            @Override
+            public boolean onQueryTextSubmit(String query){
+                Log.d("Final text: ",query);
+                return false;
+            }
+        });
     }
 
     /*
