@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.model.Account;
-import com.example.mojprojekat.service.AccountService;
+import com.example.mojprojekat.service.UserService;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText etUserName=(EditText) findViewById(R.id.txtUserName);
         final EditText etPassword=(EditText) findViewById(R.id.psPasword);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        System.out.println("Ulogovani: "+sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+        System.out.println("Ulogovani: "+sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
         btnStartEmailsActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,8 +81,8 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "Unesite lozinku!",Toast.LENGTH_SHORT).show();
                 }
                 else if(!(etUserName.getText().toString().equals("")) && !(etPassword.getText().toString().equals(""))) {
-                    Intent intent2 = new Intent(LoginActivity.this, AccountService.class);
-                    intent2.putExtra("email_adress", etUserName.getText().toString());
+                    Intent intent2 = new Intent(LoginActivity.this, UserService.class);
+                    intent2.putExtra("username", etUserName.getText().toString());
                     intent2.putExtra("password", etPassword.getText().toString());
                     intent2.putExtra("option", "login");
                     startService(intent2);

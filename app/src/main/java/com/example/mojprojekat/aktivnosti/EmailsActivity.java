@@ -100,6 +100,7 @@ public class EmailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EmailsActivity.this, ProfileActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
         // drawer-u postavljamo unapred definisan adapter
@@ -172,7 +173,7 @@ public class EmailsActivity extends AppCompatActivity {
         else if(position == 4){
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor=sharedPreferences.edit();
-            editor.putString(getString(R.string.login1),"");
+            editor.putString(getString(R.string.login),"");
             editor.commit();
             Intent intent = new Intent(EmailsActivity.this, LoginActivity.class);
             startActivity(intent);
@@ -294,7 +295,7 @@ public class EmailsActivity extends AppCompatActivity {
          * ako nesto pod tim kljucem se ne nalazi u storage-u, da dobijemo podrazumevanu
          * vrednost nazad, i to nam je signal da nista nije sacuvano pod tim kljucem.
          * */
-        username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog!");
+        username=Data.userAccount("email",(sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog!")));
         synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");
         System.out.println("\nsynctime: "+synctime+"<-----------------------------------\n");// pola minuta
         allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), true);

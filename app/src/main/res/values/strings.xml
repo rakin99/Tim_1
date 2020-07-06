@@ -56,7 +56,7 @@
     <string name="sort">pref_sort</string>
     <string name="preferences">Podešavanja</string>
     <string name="message">Poruka</string>
-    <string name="login1"></string>
+    <string name="login"></string>
     <string name="action_save">Sačuvaj</string>
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>

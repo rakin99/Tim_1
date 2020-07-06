@@ -17,14 +17,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".aktivnosti.RegistrationUserActivity"></activity>
-        <activity
-            android:name=".aktivnosti.RegistrationActivity"
+        <activity android:name=".aktivnosti.RegistrationUserActivity"
             android:label="Registracija"
-            android:parentActivityName=".aktivnosti.EmailsActivity">
+            android:parentActivityName=".aktivnosti.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".aktivnosti.EmailsActivity" />
+                android:value=".aktivnosti.LoginActivity" />
+        </activity>
+        <activity
+            android:name=".aktivnosti.RegistrationActivity"
+            android:label="Kreiranje naloga"
+            android:parentActivityName=".aktivnosti.ProfileActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".aktivnosti.ProfileActivity" />
         </activity>
 
         <receiver android:name=".sync.SyncReceiver" />

@@ -72,7 +72,8 @@ public class CreateContactActivity extends AppCompatActivity {
                 }else {
                     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
-                    String username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog!");
+                    String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog!");
+                    username=Data.userAccount("email",username);
                     //String username = "Golub Nemanja";
 
                     Data.contacts.add(contact);

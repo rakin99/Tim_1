@@ -55,7 +55,8 @@ public class SyncService extends Service {
              * */
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(SyncService.this);
             sort = sharedPreferences.getString(getString(R.string.sort), "DESC");
-            String username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
+            String ulogovani=Data.userAccount("email",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+            String username=ulogovani;
             System.out.println("\nUsername: "+username+"<--------------------------------\n");
             Call<List<MessageDTO>> call = ServiceUtils.mailService.getMessages(username);
             call.enqueue(new Callback<List<MessageDTO>>() {

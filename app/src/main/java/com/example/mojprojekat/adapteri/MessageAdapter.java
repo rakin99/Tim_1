@@ -172,7 +172,8 @@ public class MessageAdapter extends ArrayAdapter {
             {
                 Activity activity=(Activity) context;
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-                String username=sharedPreferences.getString(context.getString(R.string.login1),"Nema ulogovanog!");
+                String username=sharedPreferences.getString(context.getString(R.string.login),"Nema ulogovanog!");
+                username=Data.userAccount("email",username);
                 String sort = sharedPreferences.getString(context.getString(R.string.sort), "DESC");
                 try {
                     Data.readMessages(activity,sort,username);

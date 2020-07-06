@@ -99,6 +99,7 @@
                     android:layout_marginLeft="20dp"
                     android:id="@+id/etUsername"
                     android:layout_width="200dp"
+                    android:editable="false"
                     android:textSize="16dp"
                     android:layout_height="wrap_content" />
 
@@ -133,26 +134,37 @@
             <LinearLayout
                 android:id="@+id/linSpinner"
                 android:layout_marginTop="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
                 android:layout_below="@+id/linPass">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:text="Izaberite nalog:"
+                        android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:id="@+id/spinnerAccount"
+                        />
+
+                </LinearLayout>
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Kreiraj novi account"
+                    android:text="Kreiraj novi nalog"
                     android:layout_below="@+id/linPass"
                     android:layout_marginLeft="10dp"
                     android:id="@+id/btnNewAccount"/>
-
-                <Spiner
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:layout_marginLeft="50dp"
-                    android:id="@+id/spinnerAccount"
-                    />
             </LinearLayout>
 
         </RelativeLayout>

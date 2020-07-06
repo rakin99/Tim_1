@@ -24,6 +24,7 @@ public class Data {
     public static ArrayList<Account> accounts=new ArrayList<>();
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static ArrayList<Message> messages=new ArrayList<Message>();
+    private static ArrayList<Message> globalMessage=new ArrayList<Message>();
     public static List<Message> newMessages=new ArrayList<Message>();
     public static long maxId=0;
     public static User user;
@@ -31,27 +32,44 @@ public class Data {
     public static ListView listView;
     public static List<Contact> contacts=new ArrayList<Contact>();
 
+    public static String userAccount(String parm,String ulogovani){
+        int pos=ulogovani.indexOf("|");
+        if(pos>0){
+            if(parm.equals("username")){
+                System.out.println("Vracam: "+ulogovani.substring(0,pos));
+                return ulogovani.substring(0,pos);
+            }else if(parm.equals("email")){
+                System.out.println("Vracam: "+ulogovani.substring(pos+1,ulogovani.length()));
+                return ulogovani.substring(pos+1,ulogovani.length());
+            }
+        }
+        return "";
+    }
+
     public static void readMessages(Activity activity,String keyword,String username) throws ParseException {
         messages.clear();
-        System.out.println("Poceo ucitavanje poruka iz baze!<---------------------------------------");
-        String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
-                ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
-                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE,ReviewerSQLiteHelper.COLUMN_ID_FOLDER };
+        if(!username.equals("")){
+            System.out.println("Poceo ucitavanje poruka iz baze!<---------------------------------------");
+            String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
+                    ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
+                    ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE,ReviewerSQLiteHelper.COLUMN_ID_FOLDER };
 
-        String selectionClause=ReviewerSQLiteHelper.COLUMN_TO+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_CC+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_BCC+" LIKE ?";
-        String[] selectionArgs={"%"+username+"%","%"+username+"%","%"+username+"%"};
-        String sort=ReviewerSQLiteHelper.COLUMN_DATE_TIME+" "+keyword;
+            String selectionClause=ReviewerSQLiteHelper.COLUMN_TO+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_CC+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_BCC+" LIKE ?";
+            String[] selectionArgs={"%"+username+"%","%"+username+"%","%"+username+"%"};
+            String sort=ReviewerSQLiteHelper.COLUMN_DATE_TIME+" "+keyword;
 
-        Cursor cursor = activity.getContentResolver().query(dbContentProviderEmail.CONTENT_URI_EMAIL, allColumns, selectionClause, selectionArgs,
-                sort);
+            Cursor cursor = activity.getContentResolver().query(dbContentProviderEmail.CONTENT_URI_EMAIL, allColumns, selectionClause, selectionArgs,
+                    sort);
 
-        while(cursor.moveToNext()){
-            Message message = createMessage(cursor);
-            if(message.getId()>maxId){
-                maxId=message.getId();
-            }
-            if(message.isActive()){
-                messages.add(message);
+            while(cursor.moveToNext()){
+                Message message = createMessage(cursor);
+                if(message.getId()>maxId){
+                    maxId=message.getId();
+                }
+                if(message.isActive()){
+                    messages.add(message);
+                    globalMessage.add(message);
+                }
             }
         }
         System.out.println("Zavrsio ucitavanje iz baze!<-------------------------------------------------");
@@ -129,10 +147,11 @@ public class Data {
 
 
     public static void addMessage(Service service, Message message,String sort) throws ParseException {
-        if(!(isInMessages(message))){
+        if(!(isInMessages(message,service))){
             if(message.isUnread()){
                 newMessages.add(message);
             }
+            globalMessage.add(message);
             messages.add(message);
             if(sort.equals("DESC")){
                 messageAdapter.sort(new Comparator<Message>() {
@@ -155,12 +174,24 @@ public class Data {
         }
     }
 
-    public static boolean isInMessages(Message message){
-        for (Message m:messages
-             ) {
-            if(m.getId()==message.getId()){
-                return true;
-            }
+    public static boolean isInMessages(Message message,Service service) throws ParseException {
+        System.out.println("Poceo ucitavanje poruka iz baze!<---------------------------------------");
+        String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
+                ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
+                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT, ReviewerSQLiteHelper.COLUMN_UNREAD, ReviewerSQLiteHelper.COLUMN_ACTIVE,ReviewerSQLiteHelper.COLUMN_ID_FOLDER };
+
+        String selectionClause=ReviewerSQLiteHelper.COLUMN_ID+" = ?";
+        String[] selectionArgs={String.valueOf(message.getId())};
+
+        Message mess=null;
+        Cursor cursor = service.getContentResolver().query(dbContentProviderEmail.CONTENT_URI_EMAIL, allColumns, selectionClause, selectionArgs,
+                null);
+
+        while(cursor.moveToNext()){
+            mess = createMessage(cursor);
+        }
+        if(mess!=null){
+            return true;
         }
         return false;
     }

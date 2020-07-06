@@ -1,11 +1,16 @@
 package com.example.mojprojekat.aktivnosti;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -14,19 +19,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
-import com.example.mojprojekat.adapteri.SpinerAdapter;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentProfile;
 import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.model.User;
+import com.example.mojprojekat.service.UserService;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
+
+import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
     DBContentProviderUser dbUser;
     private SharedPreferences sharedPreferences;
+    private Button btnNewAccount;
+    private Spinner spiner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +48,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         Toolbar tbCreateEmail=findViewById(R.id.tbProfile);
         setSupportActionBar(tbCreateEmail);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        btnNewAccount=findViewById(R.id.btnNewAccount);
 
         fillData();
     }
@@ -51,10 +59,11 @@ public class ProfileActivity extends AppCompatActivity {
                 ReviewerSQLiteHelper.COLUMN_PASSWORD};
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
-        String login=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
-        String selectionClause=ReviewerSQLiteHelper.COLUMN_USERNAME +" LIKE ?";
-        String[] selectionArgs={login};
+        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+        String login=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+        login=Data.userAccount("email",login);
+        //String selectionClause=ReviewerSQLiteHelper.COLUMN_USERNAME +" LIKE ?";
+       // String[] selectionArgs={login};
        /* Cursor cursor=getContentResolver().query(dbUser.CONTENT_URI_USER,allColumns,selectionClause,selectionArgs,null);
 
         cursor.moveToFirst();
@@ -64,9 +73,16 @@ public class ProfileActivity extends AppCompatActivity {
         EditText etPassword=findViewById(R.id.etPass);
         EditText etFirst=findViewById(R.id.etFirstname);
         EditText etLast=findViewById(R.id.etLastname);
-        SpinerAdapter spinerAdapter=new SpinerAdapter(ProfileActivity.this,Data.accounts);
-        Spinner spiner=(Spinner) findViewById(R.id.spinnerAccount);
-        spiner.setAdapter(spinerAdapter);
+        spiner=(Spinner) findViewById(R.id.spinnerAccount);
+        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, getEmailsFromAccounts());
+        adp1.clear();
+        adp1.addAll(getEmailsFromAccounts());
+        adp1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spiner.setAdapter(adp1);
+
+
+        spiner.setSelection(adp1.getPosition(login));
         User u=Data.user;
         etUsername.setText(u.getUsername());
         etPassword.setText(u.getPassword());
@@ -74,6 +90,15 @@ public class ProfileActivity extends AppCompatActivity {
         etLast.setText(u.getLast());
 
         //cursor.close();
+    }
+
+    public static ArrayList<String> getEmailsFromAccounts(){
+        ArrayList<String> emails=new ArrayList<String>();
+        for (Account a:Data.accounts
+             ) {
+            emails.add(a.getUsername()+"@"+a.getSmtpAddress());
+        }
+        return emails;
     }
 
         public static Account createUser(Cursor cursor) {
@@ -92,37 +117,19 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch(item.getItemId()){
             case R.id.action_save: {
-                String[] allColumns = {ReviewerSQLiteHelper.COLUMN_ID,
-                        ReviewerSQLiteHelper.COLUMN_SMTP, ReviewerSQLiteHelper.COLUMN_POP3_IMAP, ReviewerSQLiteHelper.COLUMN_DISPLAY, ReviewerSQLiteHelper.COLUMN_USERNAME,
-                        ReviewerSQLiteHelper.COLUMN_PASSWORD};
-
-                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                Log.d("Ulogovani: ", sharedPreferences.getString(getString(R.string.login1), "Nema ulogovanog"));
-                String login = sharedPreferences.getString(getString(R.string.login1), "Nema ulogovanog");
-                /*String selectionClause = ReviewerSQLiteHelper.COLUMN_USERNAME + " LIKE ?";
-                String[] selectionArgs = {login};
-                Cursor cursor = getContentResolver().query(dbUser.CONTENT_URI_USER, allColumns, selectionClause, selectionArgs, null);
-
-                cursor.moveToFirst();
-                Account user = createUser(cursor);
-
-                TextView password = (TextView) findViewById(R.id.etPass);
-
-                user.setPassword(password.getText().toString());
-
-                ReviewerSQLiteHelper dbHelperUser = new ReviewerSQLiteHelper(this);
-                SQLiteDatabase dbUsers = dbHelperUser.getWritableDatabase();
-                {
-                    ContentValues entryUser = new ContentValues();
-                    entryUser.put(ReviewerSQLiteHelper.COLUMN_SMTP, user.getSmtpAddress());
-                    entryUser.put(ReviewerSQLiteHelper.COLUMN_POP3_IMAP, user.getInServerAddress());
-                    entryUser.put(ReviewerSQLiteHelper.COLUMN_USERNAME, user.getUsername());
-                    entryUser.put(ReviewerSQLiteHelper.COLUMN_PASSWORD, user.getPassword());
-
-                    this.getContentResolver().update(dbUser.CONTENT_URI_USER, entryUser, selectionClause, selectionArgs);
-                }
-                dbUsers.close();*/
+                Intent i=new Intent(ProfileActivity.this, UserService.class);
+                i.putExtra("option","update");
+                EditText etUsername=findViewById(R.id.etUsername);
+                EditText etPassword=findViewById(R.id.etPass);
+                EditText etFirst=findViewById(R.id.etFirstname);
+                EditText etLast=findViewById(R.id.etLastname);
+                Data.user.setFirst(etFirst.getText().toString());
+                Data.user.setLast(etLast.getText().toString());
+                Data.user.setPassword(etPassword.getText().toString());
+                startService(i);
                 Toast.makeText(this, "Sačuvane su izmene", Toast.LENGTH_SHORT).show();
+                Intent i2=new Intent(ProfileActivity.this,EmailsActivity.class);
+                startActivity(i2);
                 return true;
             }
             default:
@@ -138,7 +145,31 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected  void onResume(){
         super.onResume();
-        //Toast.makeText(this, "onResume()",Toast.LENGTH_SHORT).show();
+        btnNewAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(ProfileActivity.this, RegistrationActivity.class);
+                startActivity(i);
+            }
+        });
+        spiner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ProfileActivity.this);
+                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                String ulogovani=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+                ulogovani=Data.userAccount("username",ulogovani);
+                SharedPreferences.Editor editor=sharedPreferences.edit();
+                editor.putString(getString(R.string.login),ulogovani+"|"+spiner.getSelectedItem().toString());
+                editor.commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
     }
 
     @Override

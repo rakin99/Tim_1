@@ -16,12 +16,11 @@ public class ServiceUtils {
     public static final String SEND ="messages";
     public static final String UPDATE="messages/{id}";
     public static final String DELETE="messages/{id}";
-    public static final String ACCOUNTS="accounts";
+    public static final String ACCOUNTS="accounts/{username}";
     public static final String UPDATEACCOUNT="accounts/{username}";
-    public static final String ACCOUNT=ACCOUNTS+"/{username}/{password}";
     public static final String USER="users/{username}/{password}";
     public static final String USERS="users";
-    public static final String UPDATEUSER="users/{username}";
+    public static final String GETUSER="users/{username}";
 
     /*
      * Ovo ce nam sluziti za debug, da vidimo da li zahtevi i odgovoru idu

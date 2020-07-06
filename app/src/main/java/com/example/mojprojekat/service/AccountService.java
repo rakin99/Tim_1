@@ -10,10 +10,12 @@ import android.widget.Toast;
 
 import com.example.mojprojekat.R;
 import com.example.mojprojekat.aktivnosti.EmailsActivity;
-import com.example.mojprojekat.aktivnosti.LoginActivity;
+import com.example.mojprojekat.aktivnosti.ProfileActivity;
 import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.ReviewerTools;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,8 +48,12 @@ public class AccountService extends Service {
             switch (option){
                 case "getAccountByUsername":{
                     sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AccountService.this);
-                    String email=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
-                    String username=email.split("@")[0];
+                    String email=Data.userAccount("email",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                    String username="";
+                    if(!email.equals("")){
+                        username=email.split("@")[0];
+                    }
+                    System.out.println("Ussername je: "+username);
                     Call<Account> call = ServiceUtils.mailService.getAccountByUsername(username);
                     call.enqueue(new Callback<Account>() {
                         @Override
@@ -58,7 +64,7 @@ public class AccountService extends Service {
                                 Data.account=account;
                             } else {
                                 Log.d("REZ", "Get account: " + response.code());
-                                Toast.makeText(AccountService.this,"E-mail adresa ili lozinka su pogrešni!\nPokušajte ponovo!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AccountService.this,"Za sada nemate ni jedan kreirani e-mail nalog!", Toast.LENGTH_SHORT).show();
 
                             }
                             sendBroadcast(ints);
@@ -81,19 +87,23 @@ public class AccountService extends Service {
                     account.setPassword(password);
                     account.setSmtpAddress(domen);
                     account.setUsername(username);
+                    account.setUser(Data.user);
+                    System.out.println("First: "+account.getUser().getFirst());
                     if(domen.equals("yahoo.mail")){
                         account.setInServerAddress("mail.yahoo.mail");
                     }else{
                         account.setInServerAddress(domen);
                     }
-                    Call<Account> call = ServiceUtils.mailService.add(account);
+                    Call<Account> call = ServiceUtils.mailService.add(account,Data.user.getUsername());
                     call.enqueue(new Callback<Account>() {
                         @Override
                         public void onResponse(Call<Account> call, Response<Account> response) {
                             if (response.code() == 201) {
+                                Account account1=response.body();
+                                Data.accounts.add(account1);
                                 Log.d("REZ", "Account created");
-                                Toast.makeText(AccountService.this,"Uspešno ste se registrovali!", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(AccountService.this, LoginActivity.class);
+                                Toast.makeText(AccountService.this,"Uspešno ste kreirali e-mail nalog!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(AccountService.this, ProfileActivity.class);
                                 startActivity(i);
                             }else if(response.code() == 204){
                                 Toast.makeText(AccountService.this,"Korisnik sa ovom e-mail adresom vec postoji!\nPokušajte ponovo!", Toast.LENGTH_SHORT).show();
@@ -111,38 +121,50 @@ public class AccountService extends Service {
                     break;
                 }
                 case "login":{
-                    String email=intent.getStringExtra("email_adress");
-                    String password=intent.getStringExtra("password");
-                    String username=email.split("@")[0];
-                    Call<Account> call = ServiceUtils.mailService.getAccount(username,password);
-                    call.enqueue(new Callback<Account>() {
+                    String username=intent.getStringExtra("username");
+                    Call<List<Account>> call = ServiceUtils.mailService.getAccountsByUsernameUser(username);
+                    call.enqueue(new Callback<List<Account>>() {
                         @Override
-                        public void onResponse(Call<Account> call, Response<Account> response) {
+                        public void onResponse(Call<List<Account>> call, Response<List<Account>> response) {
                             if (response.code() == 200) {
+                                Data.accounts.clear();
                                 Log.d("REZ", "Get account: ");
                                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AccountService.this);
-                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                                String email=Data.userAccount("email",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                                System.out.println("\n\nEmial kada ne postoji: "+email);
                                 SharedPreferences.Editor editor=sharedPreferences.edit();
-                                Account account = response.body();
-                                Data.account=account;
-                                Log.d("-----","-----");
-                                Log.d("Email1: ",account.getUsername());
-                                Log.d("Password: ",account.getPassword());
-                                editor.putString(getString(R.string.login1),account.getUsername()+"@"+account.getSmtpAddress());
-                                editor.commit();
-                                Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+                                List<Account> accounts=response.body();
+                                for (Account a:accounts
+                                     ) {
+                                    Data.accounts.add(a);
+                                }
+                                if(email.equals("")){
+                                    System.out.println("Trazim novi account");
+                                    Account account = response.body().get(0);
+                                    if(account!=null){
+                                        Data.account=account;
+                                        Log.d("-----","-----");
+                                        Log.d("Email1: ",account.getUsername());
+                                        Log.d("Password: ",account.getPassword());
+                                        String username=Data.userAccount("username",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                                        editor.putString(getString(R.string.login),username+"|"+account.getUsername()+"@"+account.getSmtpAddress());
+                                        editor.commit();
+                                        Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
+                                    }
+                                }
                                 Intent i = new Intent(AccountService.this, EmailsActivity.class);
                                 startActivity(i);
                             } else {
-                                Log.d("REZ", "Get account: " + response.code());
-                                Toast.makeText(AccountService.this,"E-mail adresa ili lozinka su pogrešni!\nPokušajte ponovo!", Toast.LENGTH_SHORT).show();
+                                Log.d("REZ", "Get account u accountService: " + response.code());
+                                Toast.makeText(AccountService.this,"Za sada nemate ni jedan kreirani e-mail nalog!", Toast.LENGTH_SHORT).show();
 
                             }
                             sendBroadcast(ints);
                         }
 
                         @Override
-                        public void onFailure(Call<Account> call, Throwable t) {
+                        public void onFailure(Call<List<Account>> call, Throwable t) {
                             Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                         }
                     });

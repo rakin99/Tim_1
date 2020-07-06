@@ -38,7 +38,9 @@ public class CreateEmailActivity extends AppCompatActivity {
             case "send":{
                 EditText etFrom=findViewById(R.id.etFrom);
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                etFrom.setText(sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+                String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+                username=Data.userAccount("email",username);
+                etFrom.setText(username);
                 break;
             }
             case "replay":{
@@ -50,7 +52,9 @@ public class CreateEmailActivity extends AppCompatActivity {
                 String subjectReplay=getIntent().getStringExtra("subjectReplay");
                 EditText etFrom=findViewById(R.id.etFrom);
                 SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                etFrom.setText(sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+                String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+                username=Data.userAccount("email",username);
+                etFrom.setText(username);
                 EditText etTo=findViewById(R.id.etTo);
                 etTo.setText(emailTo);
                 EditText subjet=findViewById(R.id.etSubject);
@@ -64,7 +68,9 @@ public class CreateEmailActivity extends AppCompatActivity {
                     Message message=Data.getMessageById(Long.valueOf(idMessage));
                     EditText etFrom=findViewById(R.id.etFrom);
                     SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-                    etFrom.setText(sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+                    String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+                    username=Data.userAccount("email",username);
+                    etFrom.setText(username);
                     EditText subjet=findViewById(R.id.etSubject);
                     subjet.setText(message.getSubject());
                     EditText content=findViewById(R.id.etContent);
@@ -96,7 +102,7 @@ public class CreateEmailActivity extends AppCompatActivity {
                         String[] emails=message.getCc().split(",");
                         String email="";
                         for(int i=0; i<emails.length; i++){
-                            if(!sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog").equals(emails[i])){
+                            if(!(sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog").split("|")[1]).equals(emails[i])){
                                     email=email+emails[i]+",";
                             }
                         }if(email.equals("")){
@@ -115,7 +121,7 @@ public class CreateEmailActivity extends AppCompatActivity {
                         String[] emails=message.getBcc().split(",");
                         String email="";
                         for(int i=0; i<emails.length; i++){
-                            if(!sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog").equals(emails[i])){
+                            if(!(sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog").split("|")[1]).equals(emails[i])){
                                     email=email+emails[i]+",";
                             }
                         }
@@ -129,7 +135,9 @@ public class CreateEmailActivity extends AppCompatActivity {
                         LinearLayout linBcc=findViewById(R.id.linBcc);
                         ((ViewGroup) linBcc.getParent()).removeView(linBcc);
                     }
-                    etFrom.setText(sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog"));
+                    String username=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+                    username=Data.userAccount("email",username);
+                    etFrom.setText(username);
                     EditText subjet=findViewById(R.id.etSubject);
                     subjet.setText(message.getSubject());
                     break;

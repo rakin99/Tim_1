@@ -9,7 +9,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.mojprojekat.R;
-import com.example.mojprojekat.service.AccountService;
+import com.example.mojprojekat.service.UserService;
 import com.example.mojprojekat.tools.ReviewerTools;
 
 import java.util.Timer;
@@ -24,7 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash2);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        final String username=sharedPreferences.getString(getString(R.string.login1),"Nema ulogovanog");
+        final String username= sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
         int status = ReviewerTools.getConnectivityStatus(getApplicationContext());
 
         if(status == ReviewerTools.TYPE_WIFI || status == ReviewerTools.TYPE_MOBILE){
@@ -36,11 +36,11 @@ public class SplashActivity extends AppCompatActivity {
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                         finish();
                     }else if(!username.equals("") && !username.equals("Nema ulogovanog")){
-                        Intent intent=new Intent(SplashActivity.this, AccountService.class);
-                        intent.putExtra("option","getAccountByUsername");
-                        startService(intent);
-                        startActivity(new Intent(SplashActivity.this, EmailsActivity.class));
-                        finish();
+                        Intent i = new Intent(SplashActivity.this, EmailsActivity.class);
+                        Intent intent2=new Intent(SplashActivity.this, UserService.class);
+                        intent2.putExtra("option","getUserByUsername");
+                        startService(intent2);
+                        startActivity(i);
                     }
                 }
             }, SPLASH_TIME_OUT);

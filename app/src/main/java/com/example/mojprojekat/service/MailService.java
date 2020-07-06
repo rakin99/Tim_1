@@ -33,20 +33,23 @@ public interface MailService {
     @GET(ServiceUtils.USER)
     Call<User> getUser(@Path("username") String username, @Path("password") String password);
 
-    @PUT(ServiceUtils.UPDATEUSER)
+    @GET(ServiceUtils.GETUSER)
     Call<User> getUserByUsername(@Path("username") String username);
 
-    @GET(ServiceUtils.ACCOUNT)
-    Call<Account> getAccount(@Path("username") String username,@Path("password") String password);
+    @PUT(ServiceUtils.GETUSER)
+    Call<User> updateUser(@Body User user,@Path("username") String username);
 
-    @PUT(ServiceUtils.UPDATEACCOUNT)
+    @GET(ServiceUtils.ACCOUNTS)
+    Call<List<Account>> getAccountsByUsernameUser(@Path("username") String username);
+
+    @GET(ServiceUtils.UPDATEACCOUNT)
     Call<Account> getAccountByUsername(@Path("username") String username);
 
     @POST(ServiceUtils.USERS)
     Call<User> addUser(@Body User user);
 
     @POST(ServiceUtils.ACCOUNTS)
-    Call<Account> add(@Body Account account);
+    Call<Account> add(@Body Account account,@Path("username") String username);
 
     @DELETE(ServiceUtils.DELETE)
     Call<ResponseBody> delete(@Path("id") Long id);
