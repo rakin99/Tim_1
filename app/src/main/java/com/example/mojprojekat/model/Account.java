@@ -8,6 +8,7 @@ public class Account {
     private String username;
     private String password;
     private boolean active;
+    private User user;
 
     public Account(){
         this.id=0;
@@ -73,6 +74,14 @@ public class Account {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String format(){

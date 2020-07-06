@@ -2,6 +2,7 @@ package com.example.mojprojekat.aktivnosti;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -49,15 +50,14 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     private void fillData(Long id) throws ParseException {
-       /* String[] allColumns = { ReviewerSQLiteHelper.COLUMN_ID,
-                ReviewerSQLiteHelper.COLUMN_FROM, ReviewerSQLiteHelper.COLUMN_TO, ReviewerSQLiteHelper.COLUMN_CC, ReviewerSQLiteHelper.COLUMN_BCC,
-                ReviewerSQLiteHelper.COLUMN_DATE_TIME,  ReviewerSQLiteHelper.COLUMN_SUBJECT, ReviewerSQLiteHelper.COLUMN_CONTENT };
+        String[] allColumns = { ReviewerSQLiteHelper.COLUMN_Id,
+                ReviewerSQLiteHelper.COLUMN_FIRST, ReviewerSQLiteHelper.COLUMN_LAST, ReviewerSQLiteHelper.COLUMN_EMAIL };
 
         Cursor cursor = getContentResolver().query(todoUri, allColumns, null, null,
                 null);
 
         cursor.moveToFirst();
-        Message message = createMessage(cursor);*/
+        Contact contact = Data.createContact(cursor);
 
         todoUri = Uri.parse(DBContentProviderContact.CONTENT_URI_CONTACT + "/" + id);
         contact= Data.getContactById(id);

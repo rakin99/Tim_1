@@ -11,7 +11,7 @@ public class ServiceUtils {
 
     //EXAMPLE: http://192.168.43.73:8080/rs.ftn.reviewer.rest/rest/proizvodi/
     //ipconfig ako se promeni ip adresa
-    public static final String SERVICE_API_PATH = "http://192.168.1.4:8080/api/";
+    public static final String SERVICE_API_PATH = "http://172.18.63.97:8080/api/";
     public static final String MESSAGES = "messages/{username}";
     public static final String SEND ="messages";
     public static final String UPDATE="messages/{id}";
@@ -19,6 +19,9 @@ public class ServiceUtils {
     public static final String ACCOUNTS="accounts";
     public static final String UPDATEACCOUNT="accounts/{username}";
     public static final String ACCOUNT=ACCOUNTS+"/{username}/{password}";
+    public static final String USER="users/{username}/{password}";
+    public static final String USERS="users";
+    public static final String UPDATEUSER="users/{username}";
 
     /*
      * Ovo ce nam sluziti za debug, da vidimo da li zahtevi i odgovoru idu

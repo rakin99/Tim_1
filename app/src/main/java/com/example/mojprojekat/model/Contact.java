@@ -3,7 +3,7 @@ package com.example.mojprojekat.model;
 import java.text.ParseException;
 
 public class Contact {
-    private int id;
+    private long id;
     private String first;
     private String last;
     private String photos;
@@ -12,7 +12,7 @@ public class Contact {
     private String account;
     private boolean active;
 
-    public Contact(int id, String first, String last, String email ,boolean active,  String account) {
+    public Contact(long id, String first, String last, String email ,boolean active,  String account) {
         this.id = id;
         this.first = first;
         this.last = last;
@@ -30,7 +30,7 @@ public class Contact {
         this.account= "";
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
@@ -50,7 +50,7 @@ public class Contact {
         return format;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -30,10 +30,10 @@
         android:layout_height="match_parent">
 
         <!-- The main content view -->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/createEmailContent"
             android:layout_width="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
             android:layout_height="match_parent" >
 
             <LinearLayout
@@ -194,7 +194,7 @@
 
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 

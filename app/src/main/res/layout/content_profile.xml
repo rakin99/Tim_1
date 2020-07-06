@@ -27,7 +27,7 @@
 
 
             <LinearLayout
-                android:id="@+id/linUsername"
+                android:id="@+id/linFirstname"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
                 android:layout_marginTop="20dp"
@@ -35,17 +35,16 @@
                 android:orientation="horizontal" >
 
                 <TextView
-                    android:id="@+id/tvEmail"
+                    android:id="@+id/tvFirst"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    android:text="Korisnicko ime:"/>
+                    android:text="Ime:"/>
 
                 <EditText
-                    android:layout_marginLeft="16dp"
-                    android:id="@+id/etEmail"
-                    android:editable="false"
+                    android:layout_marginLeft="120dp"
+                    android:id="@+id/etFirstname"
                     android:textSize="16dp"
                     android:text="Neki tekst"
                     android:layout_width="200dp"
@@ -54,11 +53,63 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linPassword"
+                android:id="@+id/linLastname"
                 android:layout_width="wrap_content"
                 android:layout_height="42dp"
+                android:layout_below="@+id/linFirstname"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvLastName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:text="Prezime:"/>
+
+                <EditText
+                    android:layout_marginLeft="80dp"
+                    android:id="@+id/etLastname"
+                    android:layout_width="200dp"
+                    android:textSize="16dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linUsername"
+                android:layout_below="@+id/linLastname"
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
+                android:layout_marginLeft="15dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/tvUsername"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:text="Korisničko ime:"/>
+
+                <EditText
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/etUsername"
+                    android:layout_width="200dp"
+                    android:textSize="16dp"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linPass"
                 android:layout_below="@+id/linUsername"
                 android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="42dp"
                 android:layout_marginLeft="15dp"
                 android:orientation="horizontal" >
 
@@ -71,68 +122,37 @@
                     android:text="Lozinka:"/>
 
                 <EditText
-                    android:layout_marginLeft="80dp"
+                    android:layout_marginLeft="85dp"
                     android:id="@+id/etPass"
+                    android:textSize="16dp"
                     android:inputType="textPassword"
                     android:layout_width="200dp"
-                    android:textSize="16dp"
-                    android:editable="false"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-
             <LinearLayout
-                android:id="@+id/linSmtp"
-                android:layout_below="@+id/linPassword"
+                android:id="@+id/linSpinner"
                 android:layout_marginTop="30dp"
                 android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_marginLeft="15dp"
-                android:orientation="horizontal" >
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/linPass">
 
-                <TextView
-                    android:id="@+id/tvSmtp"
+                <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:text="Smtp:"/>
+                    android:text="Kreiraj novi account"
+                    android:layout_below="@+id/linPass"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/btnNewAccount"/>
 
-                <EditText
-                    android:layout_marginLeft="105dp"
-                    android:id="@+id/etSmtp"
-                    android:layout_width="200dp"
-                    android:textSize="16dp"
-                    android:editable="false"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/linEmail"
-                android:layout_below="@+id/linSmtp"
-                android:layout_marginTop="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="42dp"
-                android:layout_marginLeft="15dp"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:id="@+id/tvEmail_address"
+                <Spiner
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="20dp"
-                    android:textStyle="bold"
-                    android:text="E-mail:"/>
-
-                <EditText
+                    android:textSize="14dp"
                     android:layout_marginLeft="50dp"
-                    android:id="@+id/etEmail_address"
-                    android:textSize="16dp"
-                    android:layout_width="250dp"
-                    android:editable="false"
-                    android:layout_height="wrap_content" />
-
+                    android:id="@+id/spinnerAccount"
+                    />
             </LinearLayout>
 
         </RelativeLayout>

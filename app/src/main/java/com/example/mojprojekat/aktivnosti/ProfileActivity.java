@@ -7,16 +7,19 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.example.mojprojekat.R;
+import com.example.mojprojekat.adapteri.SpinerAdapter;
 import com.example.mojprojekat.database.DBContentProviderUser;
 import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentProfile;
 import com.example.mojprojekat.model.Account;
+import com.example.mojprojekat.model.User;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
 
@@ -57,16 +60,18 @@ public class ProfileActivity extends AppCompatActivity {
         cursor.moveToFirst();
         Account account = createUser(cursor);*/
 
-        EditText etUsername=findViewById(R.id.etEmail);
+        EditText etUsername=findViewById(R.id.etUsername);
         EditText etPassword=findViewById(R.id.etPass);
-        EditText etSmtp=findViewById(R.id.etSmtp);
-        EditText etEmail=findViewById(R.id.etEmail_address);
-
-        Account a=Data.account;
-        etUsername.setText(a.getUsername());
-        etPassword.setText(a.getPassword());
-        etSmtp.setText(a.getSmtpAddress());
-        etEmail.setText(a.getUsername()+"@"+a.getSmtpAddress());
+        EditText etFirst=findViewById(R.id.etFirstname);
+        EditText etLast=findViewById(R.id.etLastname);
+        SpinerAdapter spinerAdapter=new SpinerAdapter(ProfileActivity.this,Data.accounts);
+        Spinner spiner=(Spinner) findViewById(R.id.spinnerAccount);
+        spiner.setAdapter(spinerAdapter);
+        User u=Data.user;
+        etUsername.setText(u.getUsername());
+        etPassword.setText(u.getPassword());
+        etFirst.setText(u.getFirst());
+        etLast.setText(u.getLast());
 
         //cursor.close();
     }

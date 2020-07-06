@@ -11,6 +11,7 @@ import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.model.Contact;
 import com.example.mojprojekat.model.Message;
+import com.example.mojprojekat.model.User;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -19,11 +20,13 @@ import java.util.List;
 
 public class Data {
 
+    public static Account account;
+    public static ArrayList<Account> accounts=new ArrayList<>();
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static ArrayList<Message> messages=new ArrayList<Message>();
     public static List<Message> newMessages=new ArrayList<Message>();
     public static long maxId=0;
-    public static Account account;
+    public static User user;
     public static MessageAdapter messageAdapter;
     public static ListView listView;
     public static List<Contact> contacts=new ArrayList<Contact>();
@@ -90,6 +93,16 @@ public class Data {
             message.setActive(false);
         }
         return message;
+    }
+
+    public static Contact createContact(Cursor cursor) throws ParseException {
+        Contact contact = new Contact();
+        contact.setId(cursor.getLong(0));
+        //Log.d("Id-------------------->",String.valueOf(message.getId()));
+        contact.setFirst(cursor.getString(1));
+        contact.setLast(cursor.getString(2));
+        contact.setEmail(cursor.getString(3));
+        return contact;
     }
 
     public static Message getMessageById(Long id) throws ParseException {
