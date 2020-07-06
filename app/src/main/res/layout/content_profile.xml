@@ -142,7 +142,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/linAccount">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -158,13 +159,29 @@
 
                 </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatButton
+                <LinearLayout
+                    android:layout_below="@+id/linAccount"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ukloni nalog"
+                        android:layout_below="@+id/linPass"
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/btnRemoveAccount"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kreiraj novi nalog"
                     android:layout_below="@+id/linPass"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="30dp"
                     android:id="@+id/btnNewAccount"/>
+
+            </LinearLayout>
             </LinearLayout>
 
         </RelativeLayout>

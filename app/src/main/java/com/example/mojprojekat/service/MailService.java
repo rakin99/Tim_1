@@ -45,6 +45,9 @@ public interface MailService {
     @GET(ServiceUtils.UPDATEACCOUNT)
     Call<Account> getAccountByUsername(@Path("username") String username);
 
+    @DELETE(ServiceUtils.DELETE_ACCOUNT)
+    Call<ResponseBody> deleteAccount(@Path("id") Long id);
+
     @POST(ServiceUtils.USERS)
     Call<User> addUser(@Body User user);
 

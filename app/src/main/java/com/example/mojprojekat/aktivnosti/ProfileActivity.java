@@ -24,6 +24,7 @@ import com.example.mojprojekat.database.ReviewerSQLiteHelper;
 import com.example.mojprojekat.fragmenti.FragmentProfile;
 import com.example.mojprojekat.model.Account;
 import com.example.mojprojekat.model.User;
+import com.example.mojprojekat.service.AccountService;
 import com.example.mojprojekat.service.UserService;
 import com.example.mojprojekat.tools.Data;
 import com.example.mojprojekat.tools.FragmentTransition;
@@ -35,7 +36,9 @@ public class ProfileActivity extends AppCompatActivity {
     DBContentProviderUser dbUser;
     private SharedPreferences sharedPreferences;
     private Button btnNewAccount;
+    private Button btnRemoveAccount;
     private Spinner spiner;
+    private ArrayAdapter<String> adp1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar tbCreateEmail=findViewById(R.id.tbProfile);
         setSupportActionBar(tbCreateEmail);
         btnNewAccount=findViewById(R.id.btnNewAccount);
+        btnRemoveAccount=findViewById(R.id.btnRemoveAccount);
 
         fillData();
     }
@@ -74,7 +78,7 @@ public class ProfileActivity extends AppCompatActivity {
         EditText etFirst=findViewById(R.id.etFirstname);
         EditText etLast=findViewById(R.id.etLastname);
         spiner=(Spinner) findViewById(R.id.spinnerAccount);
-        ArrayAdapter<String> adp1 = new ArrayAdapter<String>(this,
+        adp1 = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, getEmailsFromAccounts());
         adp1.clear();
         adp1.addAll(getEmailsFromAccounts());
@@ -170,6 +174,39 @@ public class ProfileActivity extends AppCompatActivity {
             }
 
         });
+
+        btnRemoveAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Account account=findByEmail(spiner.getSelectedItem().toString());
+                Data.accounts.remove(account);
+                adp1.remove(spiner.getSelectedItem().toString());
+                if(Data.accounts.size()>0){
+                    spiner.setSelection(0);
+                }else{
+                    String ulogovani=sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog");
+                    ulogovani=Data.userAccount("username",ulogovani);
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString(getString(R.string.login),ulogovani+"|");
+                    editor.commit();
+                }
+                Intent i=new Intent(ProfileActivity.this, AccountService.class);
+                i.putExtra("id",String.valueOf(account.getId()));
+                i.putExtra("option","delete");
+                startService(i);
+            }
+        });
+    }
+
+    private static Account findByEmail(String email){
+        for (Account a:Data.accounts
+             ) {
+            if((a.getUsername()+"@"+a.getSmtpAddress()).equals(email))
+            {
+                return a;
+            }
+        }
+        return null;
     }
 
     @Override

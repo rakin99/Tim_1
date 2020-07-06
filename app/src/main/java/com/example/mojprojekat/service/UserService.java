@@ -57,6 +57,7 @@ public class UserService extends Service {
                                 Log.d("REZ", "Get user: "+response.code());
                                 User user = response.body();
                                 Data.user=user;
+                                System.out.println("User: "+Data.user.getFirst());
                                 Intent i2=new Intent(UserService.this, AccountService.class);
                                 i2.putExtra("username",user.getUsername());
                                 i2.putExtra("option","login");

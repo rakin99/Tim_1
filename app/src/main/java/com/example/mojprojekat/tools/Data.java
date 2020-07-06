@@ -24,7 +24,6 @@ public class Data {
     public static ArrayList<Account> accounts=new ArrayList<>();
     private  static DBContentProviderEmail dbContentProviderEmail;
     public static ArrayList<Message> messages=new ArrayList<Message>();
-    private static ArrayList<Message> globalMessage=new ArrayList<Message>();
     public static List<Message> newMessages=new ArrayList<Message>();
     public static long maxId=0;
     public static User user;
@@ -68,7 +67,6 @@ public class Data {
                 }
                 if(message.isActive()){
                     messages.add(message);
-                    globalMessage.add(message);
                 }
             }
         }
@@ -151,7 +149,6 @@ public class Data {
             if(message.isUnread()){
                 newMessages.add(message);
             }
-            globalMessage.add(message);
             messages.add(message);
             if(sort.equals("DESC")){
                 messageAdapter.sort(new Comparator<Message>() {

@@ -17,6 +17,7 @@ import com.example.mojprojekat.tools.ReviewerTools;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +64,7 @@ public class AccountService extends Service {
                                 Account account = response.body();
                                 Data.account=account;
                             } else {
+                                Data.accounts.clear();
                                 Log.d("REZ", "Get account: " + response.code());
                                 Toast.makeText(AccountService.this,"Za sada nemate ni jedan kreirani e-mail nalog!", Toast.LENGTH_SHORT).show();
 
@@ -72,6 +74,29 @@ public class AccountService extends Service {
 
                         @Override
                         public void onFailure(Call<Account> call, Throwable t) {
+                            Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
+                        }
+                    });
+                    break;
+                }
+                case "delete":{
+                    long id=Long.parseLong(intent.getStringExtra("id"));
+                    Call<ResponseBody> call = ServiceUtils.mailService.deleteAccount(id);
+                    call.enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            if (response.code() == 204) {
+                                Log.d("REZ", "Get account: "+response.code());
+                                Toast.makeText(AccountService.this, "Uspešno ste uklonili nalog!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.d("REZ", "Get account: " + response.code());
+
+                            }
+                            sendBroadcast(ints);
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
                             Log.d("REZ", t.getMessage() != null ? t.getMessage() : "error");
                         }
                     });
@@ -127,7 +152,6 @@ public class AccountService extends Service {
                         @Override
                         public void onResponse(Call<List<Account>> call, Response<List<Account>> response) {
                             if (response.code() == 200) {
-                                Data.accounts.clear();
                                 Log.d("REZ", "Get account: ");
                                 sharedPreferences = PreferenceManager.getDefaultSharedPreferences(AccountService.this);
                                 Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
@@ -153,9 +177,8 @@ public class AccountService extends Service {
                                         Log.d("Ulogovani: ",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
                                     }
                                 }
-                                Intent i = new Intent(AccountService.this, EmailsActivity.class);
-                                startActivity(i);
                             } else {
+                                Data.accounts.clear();
                                 Log.d("REZ", "Get account u accountService: " + response.code());
                                 Toast.makeText(AccountService.this,"Za sada nemate ni jedan kreirani e-mail nalog!", Toast.LENGTH_SHORT).show();
 
