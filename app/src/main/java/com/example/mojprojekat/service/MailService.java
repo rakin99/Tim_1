@@ -28,7 +28,7 @@ public interface MailService {
             "Content-Type:application/json"
     })
     @GET(ServiceUtils.MESSAGES)
-    Call<List<MessageDTO>> getMessages(@Path("username") String username);
+    Call<List<MessageDTO>> getMessages(@Path("username") String username,@Path("sort") String sort);
 
     @GET(ServiceUtils.USER)
     Call<User> getUser(@Path("username") String username, @Path("password") String password);

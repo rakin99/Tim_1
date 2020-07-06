@@ -22,8 +22,6 @@ import com.example.mojprojekat.aktivnosti.EmailActivity;
 import com.example.mojprojekat.model.Message;
 import com.example.mojprojekat.tools.Data;
 
-import java.util.Comparator;
-
 public class FragmentEmails extends ListFragment {
 
     public static String USER_KEY = "com.example.mojprojekat.USER_KEY";
@@ -75,21 +73,6 @@ public class FragmentEmails extends ListFragment {
         adapter = new MessageAdapter(getActivity(),Data.messages);
         setListAdapter(adapter);
         adapter.setNotifyOnChange(true);
-        if(sort.equals("DESC")){
-            adapter.sort(new Comparator<Message>() {
-                @Override
-                public int compare(Message a, Message b) {
-                    return (b.getDateTime()).compareTo(a.getDateTime());
-                }
-            });
-        }else if(sort.equals("ASC")){
-            adapter.sort(new Comparator<Message>() {
-                @Override
-                public int compare(Message a, Message b) {
-                    return (a.getDateTime()).compareTo(b.getDateTime());
-                }
-            });
-        }
         Data.listView=getListView();
         Data.messageAdapter=adapter;
     }

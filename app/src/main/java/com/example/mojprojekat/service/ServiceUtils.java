@@ -12,7 +12,7 @@ public class ServiceUtils {
     //EXAMPLE: http://192.168.43.73:8080/rs.ftn.reviewer.rest/rest/proizvodi/
     //ipconfig ako se promeni ip adresa
     public static final String SERVICE_API_PATH = "http://192.168.115.1:8080/api/";
-    public static final String MESSAGES = "messages/{username}";
+    public static final String MESSAGES = "messagess/{username}/{sort}";
     public static final String SEND ="messages";
     public static final String UPDATE="messages/{id}";
     public static final String DELETE="messages/{id}";

@@ -15,7 +15,6 @@ import com.example.mojprojekat.model.User;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 public class Data {
@@ -55,7 +54,7 @@ public class Data {
 
             String selectionClause=ReviewerSQLiteHelper.COLUMN_TO+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_CC+" LIKE ? OR "+ReviewerSQLiteHelper.COLUMN_BCC+" LIKE ?";
             String[] selectionArgs={"%"+username+"%","%"+username+"%","%"+username+"%"};
-            String sort=ReviewerSQLiteHelper.COLUMN_DATE_TIME+" "+keyword;
+            String sort=ReviewerSQLiteHelper.COLUMN_DATE_TIME+" "+"DESC";
 
             Cursor cursor = activity.getContentResolver().query(dbContentProviderEmail.CONTENT_URI_EMAIL, allColumns, selectionClause, selectionArgs,
                     sort);
@@ -150,24 +149,14 @@ public class Data {
                 newMessages.add(message);
             }
             messages.add(message);
-            if(sort.equals("DESC")){
-                messageAdapter.sort(new Comparator<Message>() {
-                    @Override
-                    public int compare(Message a, Message b) {
-                        return (b.getDateTime()).compareTo(a.getDateTime());
-                    }
-                });
-            }else if(sort.equals("ASC")){
-                messageAdapter.sort(new Comparator<Message>() {
-                    @Override
-                    public int compare(Message a, Message b) {
-                        return (a.getDateTime()).compareTo(b.getDateTime());
-                    }
-                });
-            }
+            messageAdapter.notifyDataSetChanged();
             System.out.println("\nUpisivanje u bazu poslate poruke!<---------------------------\n");
             System.out.println("Id poruke: "+message.getId());
             Util.insertMessage(service,message);
+        }else{
+            System.out.println("\n\n\nDodajem poruku!<---------------------------\n");
+            messages.add(message);
+            messageAdapter.notifyDataSetChanged();
         }
     }
 

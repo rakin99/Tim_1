@@ -58,13 +58,13 @@ public class SyncService extends Service {
             String ulogovani=Data.userAccount("email",sharedPreferences.getString(getString(R.string.login),"Nema ulogovanog"));
             String username=ulogovani;
             System.out.println("\nUsername: "+username+"<--------------------------------\n");
-            Call<List<MessageDTO>> call = ServiceUtils.mailService.getMessages(username);
+            Call<List<MessageDTO>> call = ServiceUtils.mailService.getMessages(username,sort);
             call.enqueue(new Callback<List<MessageDTO>>() {
                 @Override
                 public void onResponse(Call<List<MessageDTO>> call, Response<List<MessageDTO>> response) {
                     if (response.code() == 200) {
                         Log.d("REZ", "Meesages recieved, status 200");
-
+                        Data.messages.clear();
                         for (int i=0; i<response.body().size(); i++
                         ) {
                             MessageDTO messageDTO = response.body().get(i);

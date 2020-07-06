@@ -163,7 +163,7 @@ public class AccountService extends Service {
                                      ) {
                                     Data.accounts.add(a);
                                 }
-                                if(email.equals("")){
+                                if(email.length()==0){
                                     System.out.println("Trazim novi account");
                                     Account account = response.body().get(0);
                                     if(account!=null){

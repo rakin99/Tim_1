@@ -299,7 +299,7 @@ public class EmailsActivity extends AppCompatActivity {
         synctime = sharedPreferences.getString(getString(R.string.pref_sync_list), "1");
         System.out.println("\nsynctime: "+synctime+"<-----------------------------------\n");// pola minuta
         allowSync = sharedPreferences.getBoolean(getString(R.string.pref_sync), true);
-        sort = sharedPreferences.getString(getString(R.string.sort), "DESC");
+        sort = "DESC";
         System.out.println("\nsort: "+sort+"<-----------------------------------\n");
     }
 

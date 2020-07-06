@@ -41,6 +41,7 @@ public class SplashActivity extends AppCompatActivity {
                         intent2.putExtra("option","getUserByUsername");
                         startService(intent2);
                         startActivity(i);
+                        finish();
                     }
                 }
             }, SPLASH_TIME_OUT);
