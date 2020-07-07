@@ -10,9 +10,12 @@
     </string-array>
 
     <string-array name="sortiranje">
-        <item>naslov-u</item>
-        <item>pošiljaocu</item>
-        <item>datumu</item>
+        <item>naslov-u/rastuce</item>
+        <item>naslov-u/opadajuce</item>
+        <item>pošiljaocu/rastuce</item>
+        <item>pošiljaocu-u/opadajuce</item>
+        <item>datumu/rastuce</item>
+        <item>datumu/opadajuce</item>
     </string-array>
 
     <string-array name="pref_syncConnectionTypes_values">
@@ -24,9 +27,12 @@
     </string-array>
 
     <string-array name="sortiranje_vrednosti">
-        <item>subject</item>
-        <item>from</item>
-        <item>dateTime</item>
+        <item>subject|asc</item>
+        <item>subject|desc</item>
+        <item>from|asc</item>
+        <item>from|desc</item>
+        <item>dateTime|asc</item>
+        <item>dateTime|desc</item>
     </string-array>
 
 </resources>
